@@ -25,6 +25,7 @@ public class ChallengeRecord extends BaseEntity {
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
 
+    @Column(name = "verificated_date", nullable = false)
     private LocalDateTime verificatedDate;
 
     @Enumerated(EnumType.STRING)

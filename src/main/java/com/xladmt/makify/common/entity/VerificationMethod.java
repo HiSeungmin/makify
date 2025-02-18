@@ -1,5 +1,6 @@
 package com.xladmt.makify.common.entity;
 
+import com.xladmt.makify.common.constant.VerificatedMethod;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,11 +15,21 @@ public class VerificationMethod extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String explanation;
-    private String count;
-    private String startDate;
-    private String endDate;
-    private String countInDay;
-    private String countAll;
-    private String verificationMethod;
+    @Column(name = "explanation", nullable = false, length = 100)
+    private String explanation; // 인증 방법 설명
+
+    @Column(name = "count", nullable = false)
+    private Integer count; // 인증 빈도
+
+    @Column(name = "start_time", nullable = false)
+    private String startTime; // 인증 시작 시간
+
+    @Column(name = "end_time", nullable = false)
+    private String endTime; // 인증 종료 시간
+
+    private Integer countInDay; // 하루 인증 횟수
+    private Integer countAll; // 전체 인증 횟수
+
+    @Enumerated(EnumType.STRING)
+    private VerificatedMethod method; // 인증 수단
 }

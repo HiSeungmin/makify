@@ -1,9 +1,12 @@
 package com.xladmt.makify.common.entity;
 
+import com.xladmt.makify.common.constant.PaidStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -22,9 +25,13 @@ public class Payment extends BaseEntity {
     @JoinColumn(name = "user_id")
     private Member user;
 
-    private String stripePaymentId;
-    private Integer amount;
-    private Integer depositAmt;
-    private Integer paidAmt;
-    private String paymentDate;
+    private String stripePaymentId; // 네이버페이, 카카오페이 결제 ID
+
+    private Integer amount; // 결제 금액
+    private Integer depositAmt; // 예치금 사용 금액
+
+    @Enumerated(EnumType.STRING)
+    private PaidStatus status; // 결제 상태
+
+    private LocalDateTime paymentDate; // 결제 날짜
 }

@@ -5,8 +5,9 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum PayoutStatus {
+public enum RefundStatus {
     FAIL("실패"),
+    CANCLE("취소"),
     COMPLETE("완료"),
     IN_PROGRESS("진행"),
     PENDING("대기");

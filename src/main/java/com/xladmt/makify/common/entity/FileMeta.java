@@ -24,8 +24,15 @@ public class FileMeta extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ImageType type;
 
+    @Column(name = "file_name", nullable = false, length = 100)
     private String fileName; // 파일명
+
+    @Column(name = "path", nullable = false, length = 100)
     private String path; // 파일 경로
+
+    @Column(name = "size", nullable = false, length = 300)
     private String size; // 파일 크기
+
+    @Column(name = "format", nullable = false, length = 10)
     private String format; // 확장자
 }

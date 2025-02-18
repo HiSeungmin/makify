@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,8 +23,12 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    private String content;
-    private String start;
-    private String createDate;
-    private String updateDate;
+    @Column(name = "content", nullable = false, length = 50)
+    private String content; // 후기 내용
+
+    @Column(name = "start", nullable = false, length = 10)
+    private Long start; // 별점
+
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
 }

@@ -1,5 +1,7 @@
 package com.xladmt.makify.common.entity;
 
+import com.xladmt.makify.common.constant.ReportStatus;
+import com.xladmt.makify.common.constant.ReportType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,13 +18,17 @@ public class Report extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member member; // 신고자
 
-    @ManyToOne
-    @JoinColumn(name = "challenge_record")
-    private ChallengeRecord challengeRecord;
+    @Enumerated(EnumType.STRING)
+    private ReportType type; // 인증 기록
 
-    private String reason;
-    private String status;
-    private String reportedDate;
+    private Long referenceId; // 신고 참조 ID (인증샷, 게시글 ID)
+
+    private String reason; // 신고 사유
+
+    @Enumerated(EnumType.STRING)
+    private ReportStatus status; // 신고 상태
+
+    private String reportedDate; // 신고 날짜
 }
