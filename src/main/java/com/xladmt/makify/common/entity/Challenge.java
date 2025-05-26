@@ -1,6 +1,7 @@
 package com.xladmt.makify.common.entity;
 
 import com.xladmt.makify.common.constant.Category;
+import com.xladmt.makify.common.constant.ChallengeStatus;
 import com.xladmt.makify.common.constant.YN;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -18,7 +19,7 @@ public class Challenge extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member memberId;
 
@@ -41,7 +42,7 @@ public class Challenge extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "verification_id", nullable = false)
-    private VerificationMethod verificationId; // 인증 방법ID
+    private VerificationMethod verificationId; // 인증 방법 ID
 
     private String privateCode; // 비공개 참여 코드
 
@@ -50,6 +51,9 @@ public class Challenge extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Category category;
+
+    @Enumerated(EnumType.STRING)
+    private ChallengeStatus status;
 
     @Enumerated(EnumType.STRING)
     private YN isVisible;

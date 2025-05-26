@@ -5,11 +5,10 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ImageType {
-    PROFILE("회원 프로필"),
-    VERIFICATION("인증 이미지"),
-    CHALLENGE("챌린지 대표 이미지"),
-    EXPLANATION("챌린지 설명");
+public enum Verifination_Method {
+    ONLY_CAMERA("카메라 허용"),
+    ONLY_ALBUM("앨범만 허용"),
+    ALL("카메라, 앨범 허용");
 
     private final String description;
 }

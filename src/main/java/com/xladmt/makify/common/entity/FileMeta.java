@@ -1,5 +1,6 @@
 package com.xladmt.makify.common.entity;
 
+import com.xladmt.makify.common.constant.Format;
 import com.xladmt.makify.common.constant.ImageType;
 import com.xladmt.makify.common.constant.YN;
 import jakarta.persistence.*;
@@ -26,6 +27,9 @@ public class FileMeta extends BaseEntity {
 
     private String fileName; // 파일명
     private String path; // 파일 경로
-    private String size; // 파일 크기
-    private String format; // 확장자
+
+    private Integer size; // 파일 크기
+
+    @Enumerated(EnumType.STRING)
+    private Format format; // 확장자
 }

@@ -5,11 +5,10 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ImageType {
-    PROFILE("회원 프로필"),
-    VERIFICATION("인증 이미지"),
-    CHALLENGE("챌린지 대표 이미지"),
-    EXPLANATION("챌린지 설명");
-
+public enum RefundStatus {
+    COMPLETE("완료"),
+    IN_PROGRESS("진행"),
+    PENDING("대기"),
+    FAIL("실패");
     private final String description;
 }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "MoneyBack")
+@Table(name = "MoneyBack") // 환급
 public class Payout extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,6 @@ public class Payout extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PayoutStatus status; // 환급 상태
 
-    private String stripePayoutId; // 환급 ID
+    private String stripePayoutId; // 간편결제 고유 ID
     private LocalDateTime payoutDate; // 환급 날짜
 }

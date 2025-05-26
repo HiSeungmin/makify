@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum PayoutStatus {
     COMPLETE("완료"),
     IN_PROGRESS("진행"),
-    PENDING("대기");
-
+    PENDING("대기"),
+    FAIL("실패");
     private final String description;
 }
