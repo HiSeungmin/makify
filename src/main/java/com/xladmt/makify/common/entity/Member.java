@@ -3,12 +3,15 @@ package com.xladmt.makify.common.entity;
 import com.xladmt.makify.common.constant.MemberStatus;
 import com.xladmt.makify.common.constant.Role;
 import com.xladmt.makify.common.constant.YN;
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -53,5 +56,44 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private YN srvChk; // 서비스 이용약관
 
-    private String joinDate; // 가입일
+    private LocalDateTime joinDate; // 가입일
+
+    // 생성 메서드
+    public static Member create(String loginId, String password, Role role, String name, String email,
+                                LocalDate birthDate, String phoneNumber) {
+        Member member = new Member();
+        member.name         = name;
+        member.role         = role;
+        member.email        = email;
+        member.loginId      = loginId;
+        member.password     = password;
+        member.birthDate    = birthDate;
+        member.phoneNumber  = phoneNumber;
+        return member;
+    }
+
+    // 수정 메서드
+    public void update(String name, String email, String phoneNumber, Role role) {
+        this.name               = StringUtils.isNotBlank(name) ? name : this.name;
+        this.role               = Objects.nonNull(role) ? role : this.role;
+        this.email              = Objects.nonNull(email) ? email : this.email;
+        this.phoneNumber        = StringUtils.isNotBlank(phoneNumber) ? phoneNumber : this.phoneNumber;
+    }
+
+    // 비밀번호 재설정
+    public void resetPassword(String password){
+        this.password = password;
+    }
+
+    // 삭제 메서드
+    public void delete() {
+        this.status = MemberStatus.INACTIVE;
+    }
+
+    // 탈퇴 메서드
+    public void withDraw() {
+        this.status = MemberStatus.WITHDRAW;
+    }
+
+
 }
