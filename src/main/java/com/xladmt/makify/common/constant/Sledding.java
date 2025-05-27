@@ -5,11 +5,12 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ReportStatus {
-    FAIL("실패"),
+public enum Sledding {
+    FAIL("중단"),
+    CANCLE("실패"),
     COMPLETE("완료"),
     IN_PROGRESS("진행"),
-    PENDING("대기");
+    PENDING("시작 전");
 
     private final String description;
 }

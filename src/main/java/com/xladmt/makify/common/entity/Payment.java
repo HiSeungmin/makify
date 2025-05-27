@@ -1,5 +1,6 @@
 package com.xladmt.makify.common.entity;
 
+import com.xladmt.makify.common.constant.PaidStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,25 +11,27 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "Payment") // 결제
+@Table(name = "Payment")
 public class Payment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "challenge_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "challenge_id")
     private Challenge challenge;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private Member user;
 
-    private String stripePaymentId; //결제고유번호
+    private String stripePaymentId; // 네이버페이, 카카오페이 결제 ID
 
-    private Integer amount;
-    private Integer depositAmt;
-    private Integer paidAmt;
+    private Integer amount; // 결제 금액
+    private Integer depositAmt; // 예치금 사용 금액
 
-    private LocalDateTime paymentDate;
+    @Enumerated(EnumType.STRING)
+    private PaidStatus status; // 결제 상태
+
+    private LocalDateTime paymentDate; // 결제 날짜
 }

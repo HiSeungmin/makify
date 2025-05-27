@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "Refund") // 환불
+@Table(name = "Refund")
 public class Refund extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,13 +19,16 @@ public class Refund extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id", nullable = false)
-    private Payment paymentId; // 결제 ID
+    private Payment payment;
 
-    private Integer amount; // 환불금액
-    private Integer depositAmt; //
+    private Integer amount; // 환불 금액
+
+    private String reason; // 환불 사유
 
     @Enumerated(EnumType.STRING)
     private RefundStatus status; // 환불 상태
+
+    private String stripePayoutId; // 환급 ID
 
     private LocalDateTime refundDate;
 }

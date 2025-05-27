@@ -15,19 +15,19 @@ public class Review extends BaseEntity {
     @Id
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "challenge_id", nullable = false)
     private Challenge challenge;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @Column(name = "content", nullable = false, length = 200)
-    private String content; //리뷰내용
+    @Column(name = "content", nullable = false, length = 50)
+    private String content; // 후기 내용
 
-    @Column(name = "star", nullable = false, precision = 2, scale = 1)
-    private Long star; //별점
+    @Column(name = "start", nullable = false, length = 10)
+    private Long start; // 별점
 
     private LocalDateTime createDate;
     private LocalDateTime updateDate;

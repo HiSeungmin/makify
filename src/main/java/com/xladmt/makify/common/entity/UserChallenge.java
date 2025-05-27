@@ -1,6 +1,6 @@
 package com.xladmt.makify.common.entity;
 
-import com.xladmt.makify.common.constant.YN;
+import com.xladmt.makify.common.constant.Sledding;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,15 +25,17 @@ public class UserChallenge extends BaseEntity {
 
     private Double progress;
 
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private String startDate; // 참여 날짜
+    private String endDate; // 완료 날짜
 
     private Integer targetFrequency; // 목표 수행 횟수
     private Integer actualFrequency; // 실제 수행 횟수
 
-    @Enumerated(EnumType.STRING)
-    private YN isAlram;
+    private String alarmTime; // 알림 설정 시간
+    private String alarmDate; // 알림 반복 요일
 
     @Enumerated(EnumType.STRING)
-    private YN isActive;
+    private Sledding status;
+
+    private Integer deAmt; // 예치금
 }
