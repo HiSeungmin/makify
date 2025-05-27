@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Makify</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-transparent position-absolute top-0 start-0 w-100" id="mainNavbar">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-dark" href="#">Makify</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#">홈</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">기능</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">연락</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section class="hero position-relative">
+  <video autoplay muted loop playsinline class="w-100 h-100 position-absolute top-0 start-0 object-fit-cover z-n1">
+    <source src="/videos/motivation.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <h1>당신의 아이디어를 실현하세요</h1>
+  <p>Makify는 당신의 창작 활동을 돕는 웹 플랫폼입니다. 함께 도전하고, 인증하고, 성취를 나누세요.</p>
+  <a href="#" class="btn btn-light text-primary">시작하기</a>
+</section>
+
+<section class="container py-5">
+  <div class="row text-center mb-4">
+    <h2 class="fw-bold">주요 기능</h2>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="p-4 bg-white feature-card">
+        <i class="bi bi-person-check fs-1 text-primary"></i>
+        <h5 class="mt-3 fw-bold">도전 인증</h5>
+        <p>사진으로 도전 결과를 인증하고 나의 성장을 기록하세요.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="p-4 bg-white feature-card">
+        <i class="bi bi-people fs-1 text-primary"></i>
+        <h5 class="mt-3 fw-bold">함께하는 참여</h5>
+        <p>친구와 함께 참여하면 더 큰 동기부여가 됩니다.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="p-4 bg-white feature-card">
+        <i class="bi bi-bar-chart fs-1 text-primary"></i>
+        <h5 class="mt-3 fw-bold">성과 분석</h5>
+        <p>성공률과 패턴을 한눈에! 데이터 기반 피드백 제공.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="bg-white text-center py-4 border-top">
+  <small>© 2025 Makify. All rights reserved.</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>
