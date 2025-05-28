@@ -38,3 +38,5 @@ out/
 
 # videos
 src/main/resources/static/videos/*
+
+.env
