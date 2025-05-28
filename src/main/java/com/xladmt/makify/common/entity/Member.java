@@ -53,9 +53,6 @@ public class Member extends BaseEntity {
     private Integer deAmt; // 예치금
     private Integer cpAmt; // 상금
 
-    @Enumerated(EnumType.STRING)
-    private YN srvChk; // 서비스 이용약관
-
     private LocalDateTime joinDate; // 가입일
 
     // 생성 메서드
