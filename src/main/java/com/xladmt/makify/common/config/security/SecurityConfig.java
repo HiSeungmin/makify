@@ -1,11 +1,17 @@
 package com.xladmt.makify.common.config.security;
 
 import com.xladmt.makify.common.jwt.JwtAuthenticationFilter;
+import com.xladmt.makify.common.jwt.JwtLoginFilter;
+import com.xladmt.makify.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -14,34 +20,34 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter; // 다음 단계에서 구현
+    private final JwtUtil jwtUtil;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final MemberDetailsService memberDetailsService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
+
+        JwtLoginFilter jwtLoginFilter = new JwtLoginFilter(authenticationManager, jwtUtil, redisTemplate);
+        jwtLoginFilter.setFilterProcessesUrl("/auth/login"); // 로그인 경로 지정
+
         http
-                .csrf(csrf -> csrf.disable()) // REST API + JWT는 CSRF 비활성화
-                .sessionManagement(session -> session.disable()) // 세션 비활성화
+                .csrf(csrf -> csrf.disable())
+                .formLogin(form -> form.disable())
+                .httpBasic(httpBasic -> httpBasic.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilter(jwtLoginFilter)
+                .addFilterBefore(jwtAuthenticationFilter, JwtLoginFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/signup", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/login", "/css/**", "/js/**", "/images/**","/videos/**","/auth/reissue").permitAll()
+                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
-                )
-                .formLogin(login -> login
-                        .loginPage("/login")  // 내가 만든 로그인 페이지
-                        .loginProcessingUrl("/login") // form action
-                        .defaultSuccessUrl("/", true)
-                        .failureUrl("/login?error=true")
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/")
-                        .deleteCookies("access-token", "refresh-token") // 쿠키 제거
-                        .permitAll()
                 );
-
-        // JWT 인증 필터 추가 (UsernamePasswordAuthenticationFilter 앞에 실행)
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 }

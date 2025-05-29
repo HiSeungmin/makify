@@ -2,6 +2,7 @@ package com.xladmt.makify.common.jwt;
 
 import com.xladmt.makify.common.config.security.MemberDetails;
 import com.xladmt.makify.common.config.security.MemberDetailsService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -26,42 +27,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final MemberDetailsService memberDetailsService;
 
     @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain
-    ) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
-        String accessToken = extractTokenFromCookie(request, "access-token");
+        String accessToken = extractTokenFromCookies(request, "access-token");
 
         if (accessToken != null && jwtUtil.validateToken(accessToken)) {
 
-            // Redis 블랙리스트 체크
+            // 블랙리스트 체크
             String isBlacklisted = redisTemplate.opsForValue().get("auth:blacklist:" + accessToken);
             if (isBlacklisted != null) {
                 filterChain.doFilter(request, response);
                 return;
             }
 
-            String userId = jwtUtil.getSubject(accessToken);
-            MemberDetails userDetails = (MemberDetails) memberDetailsService.loadUserByUsername(userId);
+            try {
+                String userId = jwtUtil.getUserIdFromToken(accessToken);
+                MemberDetails memberDetails = (MemberDetails) memberDetailsService.loadUserByUsername(userId);
 
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(memberDetails, null, memberDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (ExpiredJwtException e) {
+                // 로그 남기거나 Refresh 로직으로 분기할 수도 있음
+            }
         }
 
         filterChain.doFilter(request, response);
     }
 
-    private String extractTokenFromCookie(HttpServletRequest request, String name) {
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if (cookie.getName().equals(name)) {
-                    return cookie.getValue();
-                }
+    private String extractTokenFromCookies(HttpServletRequest request, String name) {
+        if (request.getCookies() == null) return null;
+        for (Cookie cookie : request.getCookies()) {
+            if (cookie.getName().equals(name)) {
+                return cookie.getValue();
             }
         }
         return null;

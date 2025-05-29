@@ -50,7 +50,7 @@ public class JwtUtil {
     }
 
     // userId 꺼내기
-    public String getSubject(String token) {
+    public String getUserIdFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key).build()
                 .parseClaimsJws(token)
