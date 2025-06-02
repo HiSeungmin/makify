@@ -78,12 +78,12 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // 쿠키 생성
         Cookie accessCookie = new Cookie("access-token", accessToken);
-        accessCookie.setHttpOnly(true);
+        accessCookie.setHttpOnly(false);
         accessCookie.setPath("/");
         accessCookie.setMaxAge(60 * 15);
 
         Cookie refreshCookie = new Cookie("refresh-token", refreshToken);
-        refreshCookie.setHttpOnly(true);
+        refreshCookie.setHttpOnly(false);
         refreshCookie.setPath("/");
         refreshCookie.setMaxAge(60 * 60 * 24 * 30);
 

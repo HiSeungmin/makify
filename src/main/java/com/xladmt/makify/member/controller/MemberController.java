@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class MemberController {
 
+    @GetMapping("/login")
     public String loginForm() {
         return "member/login"; // 로그인 폼
     }

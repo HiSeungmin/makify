@@ -3,6 +3,7 @@ package com.xladmt.makify.common.config.security;
 import com.xladmt.makify.common.jwt.JwtAuthenticationFilter;
 import com.xladmt.makify.common.jwt.JwtLoginFilter;
 import com.xladmt.makify.common.jwt.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,11 +52,13 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .addFilterAt(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterAt(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
+
+
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {

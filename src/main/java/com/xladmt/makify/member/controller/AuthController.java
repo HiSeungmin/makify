@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -35,7 +37,7 @@ public class AuthController {
         String newAccessToken = jwtUtil.createAccessToken(userId);
 
         Cookie accessCookie = new Cookie("access-token", newAccessToken);
-        accessCookie.setHttpOnly(true);
+        accessCookie.setHttpOnly(false);
         accessCookie.setPath("/");
         accessCookie.setMaxAge(60 * 15); // 15분
 
