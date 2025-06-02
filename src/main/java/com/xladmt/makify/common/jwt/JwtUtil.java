@@ -23,9 +23,9 @@ public class JwtUtil {
     }
 
     // Access Token 생성
-    public String createAccessToken(String userId) {
+    public String createAccessToken(String loginId) {
         return Jwts.builder()
-                .setSubject(userId)
+                .setSubject(loginId)
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();

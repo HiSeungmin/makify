@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,32 +18,38 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final RedisTemplate<String, String> redisTemplate;
 
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
 
-        if (!"POST".equalsIgnoreCase(request.getMethod())) {
-            throw new RuntimeException("지원하지 않는 인증 방식입니다: " + request.getMethod());
-        }
+        log.info("로그인 필터 들어옴");
 
         try {
-            LoginRequest loginRequest = new ObjectMapper().readValue(request.getInputStream(), LoginRequest.class);
+            // 스트림을 한 번만 읽고 문자열로 저장
+            String raw = new BufferedReader(new InputStreamReader(request.getInputStream(), StandardCharsets.UTF_8))
+                    .lines().collect(Collectors.joining("\n"));
 
-            if (loginRequest.getLoginId() == null || loginRequest.getPassword() == null) {
-                throw new RuntimeException("아이디 또는 비밀번호 누락");
-            }
+            log.info("🚨 [RAW BODY] " + raw);
+            log.info("Content-Type: " + request.getContentType());
+
+            // 문자열에서 객체로 변환
+            ObjectMapper objectMapper = new ObjectMapper();
+            LoginRequest loginRequest = objectMapper.readValue(raw, LoginRequest.class);
 
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(loginRequest.getLoginId(), loginRequest.getPassword());
@@ -61,43 +68,29 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
                                             Authentication authResult) throws IOException, ServletException {
 
         MemberDetails userDetails = (MemberDetails) authResult.getPrincipal();
-        String userId = userDetails.getMember().getId().toString();
+        String loginId = userDetails.getMember().getLoginId().toString();
 
-        // 토큰 생성
-        String accessToken = jwtUtil.createAccessToken(userId);
+        String accessToken = jwtUtil.createAccessToken(loginId);
         String refreshToken = jwtUtil.createRefreshToken();
 
-        // Refresh 토큰 Redis 저장 (30일)
-        redisTemplate.opsForValue().set(
-                "auth:refresh:" + userId,
-                refreshToken,
-                30,
-                TimeUnit.DAYS
-        );
+        // Redis에 refresh-token 저장
+        redisTemplate.opsForValue().set("auth:refresh:" + loginId, refreshToken, 30, TimeUnit.DAYS);
 
-        // 쿠키로 전달
+        // 쿠키 생성
         Cookie accessCookie = new Cookie("access-token", accessToken);
         accessCookie.setHttpOnly(true);
         accessCookie.setPath("/");
-        accessCookie.setMaxAge(60 * 15); // 15분
+        accessCookie.setMaxAge(60 * 15);
 
         Cookie refreshCookie = new Cookie("refresh-token", refreshToken);
         refreshCookie.setHttpOnly(true);
         refreshCookie.setPath("/");
-        refreshCookie.setMaxAge(60 * 60 * 24 * 30); // 30일
-
-        accessCookie.setSecure(false);
-        refreshCookie.setSecure(false);
+        refreshCookie.setMaxAge(60 * 60 * 24 * 30);
 
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
 
-        log.info("Access Token: {}", accessToken);
-        log.info("Refresh Token: {}", refreshToken);
-        log.info("Access Cookie: {}", accessCookie.getName() + "=" + accessCookie.getValue());
-        log.info("Refresh Cookie: {}", refreshCookie.getName() + "=" + refreshCookie.getValue());
-
-        // 상태 코드 200 OK
+        // 200 OK 설정
         response.setStatus(HttpServletResponse.SC_OK);
     }
 

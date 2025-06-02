@@ -23,7 +23,7 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "login_id", nullable = false, length = 25)
+    @Column(name = "login_id", nullable = false, unique = true)
     private String loginId;
 
     @Column(name = "password", nullable = false, length = 30)
@@ -91,6 +91,4 @@ public class Member extends BaseEntity {
     public void withDraw() {
         this.status = MemberStatus.WITHDRAW;
     }
-
-
 }

@@ -1,5 +1,6 @@
 package com.xladmt.makify.member.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,13 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class MemberController {
 
-    @GetMapping("/login")
     public String loginForm() {
         return "member/login"; // 로그인 폼
     }
 
 //    @PostMapping("/login")
-//    public void doLogin(@RequestParam String username,
+//    public String login(@RequestParam String username,
 //                          @RequestParam String password,
 //                          HttpSession session, Model model) {
 //
@@ -28,6 +28,5 @@ public class MemberController {
 ////            model.addAttribute("loginError", true);
 ////            return "member/login";
 ////        }
-//        //return "redirect:/";
 //    }
 }
