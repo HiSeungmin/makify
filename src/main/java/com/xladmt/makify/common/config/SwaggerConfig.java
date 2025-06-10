@@ -1,7 +1,7 @@
 package com.xladmt.makify.common.config;
 
 // Swagger UI 주소입니다.
-// http://localhost:8080/swagger-ui/index.html#/
+// http://localhost:8001/swagger-ui/index.html#/
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -22,7 +22,7 @@ public class SwaggerConfig {
     public GroupedOpenApi memberApi() {
         return GroupedOpenApi.builder()
                 .group("Member API")
-                .pathsToMatch("/member/**") // '/member'로 시작하는 모든 엔드포인트를 포함
+                .pathsToExclude("/login/**")
                 .build();
     }
 
@@ -30,7 +30,7 @@ public class SwaggerConfig {
     public GroupedOpenApi challengeApi() {
         return GroupedOpenApi.builder()
                 .group("Challenge API")
-                .pathsToMatch("/ch/**") // '/ch'로 시작하는 모든 엔드포인트를 포함
+                .pathsToMatch("/challenges/**") // '/ch'로 시작하는 모든 엔드포인트를 포함
                 .build();
     }
 

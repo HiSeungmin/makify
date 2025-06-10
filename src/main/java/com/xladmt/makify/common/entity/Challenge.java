@@ -29,8 +29,8 @@ public class Challenge extends BaseEntity {
     @Column(name = "description", nullable = false, length = 100)
     private String description;
 
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private String startDate;
+    private String endDate;
 
     @Enumerated(EnumType.STRING)
     private YN isPublic; // 공개 여부
@@ -40,7 +40,7 @@ public class Challenge extends BaseEntity {
 
     private Integer maxDeposit;  // 예치금
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "verification_id", nullable = false)
     private VerificationMethod verificationId; // 인증 방법 ID
 

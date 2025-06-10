@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>챌린지 생성</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .form-section {
+      padding: 4rem 1rem;
+    }
+
+    .form-container {
+      background-color: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      padding: 3rem;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .form-title {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      font-weight: 700;
+      font-size: 2rem;
+    }
+
+    .form-label {
+      font-weight: 600;
+    }
+
+    .conditional-field {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<section class="container py-5">
+  <div class="mx-auto" style="max-width: 900px;">
+    <h2 class="text-center fw-bold mb-4 mt-5">챌린지 생성하기</h2>
+
+    <form th:action="@{/challenges}" method="post">
+      <!-- 기본 정보 -->
+      <div class="p-4 mb-4 bg-white rounded-4 shadow-sm">
+        <h5 class="fw-semibold mb-3 text-primary">기본 정보</h5>
+
+        <div class="mb-3">
+          <label for="title" class="form-label small" >챌린지 이름</label>
+          <input type="text" id="title" name="title" class="form-control" required placeholder="예) 매일 달리기 챌린지">
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label small">설명</label>
+          <textarea id="description" name="description" class="form-control" rows="3" required placeholder="예) 매일 달리기를 인증합니다. 아침 가능! 퇴근 후 가능!"></textarea>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="startDate" class="form-label small">시작 날짜</label>
+            <input type="date" id="startDate" name="startDate" class="form-control" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="endDate" class="form-label small">종료 날짜</label>
+            <input type="date" id="endDate" name="endDate" class="form-control" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- 인증 설정 -->
+      <div class="p-4 mb-4 bg-white rounded-4 shadow-sm">
+        <h5 class="fw-semibold mb-3 text-primary">인증 설정</h5>
+
+        <div class="row">
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label small">인증 수단</label>
+            <select name="verificationMethod" class="form-select" required>
+              <option value="CAMERA">카메라</option>
+              <option value="ALBUM">앨범</option>
+              <option value="ALL">모두 허용</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label small">인증 시작 시간</label>
+            <input type="time" name="startTime" class="form-control" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label small">인증 종료 시간</label>
+            <input type="time" name="endTime" class="form-control" required>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label small">인증 빈도</label>
+            <select name="frequency" class="form-select" required>
+              <option value="DAILY">매일</option>
+              <option value="WEEKDAYS">평일</option>
+              <option value="WEEKENDS">주말</option>
+              <option value="one_PER_WEEK">주 1회</option>
+              <option value="two_PER_WEEK">주 2회</option>
+              <option value="THREE_PER_WEEK">주 3회</option>
+              <option value="four_PER_WEEK">주 4회</option>
+              <option value="five_PER_WEEK">주 5회</option>
+              <option value="six_PER_WEEK">주 6회</option>
+              <option value="CUSTOM">기타(제한 없음)</option>
+            </select>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label class="form-label small">최소 인증 횟수 (1일)</label>
+            <input type="number" name="minDailyCount" class="form-control" min="1" required>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label small">전체 인증 횟수</label>
+          <input type="number" name="totalVerificationCount" class="form-control" min="1" required>
+        </div>
+      </div>
+
+      <!-- 공개 및 예치금 -->
+      <div class="p-4 mb-4 bg-white rounded-4 shadow-sm">
+        <h5 class="fw-semibold mb-3 text-primary">기타 설정</h5>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label small">공개 여부</label>
+            <select name="isPublic" id="isPublic" class="form-select" onchange="togglePrivateCodeField()" required>
+              <option value="true">공개</option>
+              <option value="false">비공개</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3" id="privateCodeField" style="display:none;">
+            <label class="form-label small">비공개 참여 코드</label>
+            <input type="text" name="privateCode" class="form-control">
+          </div>
+        </div>
+
+        <!-- 고정 예치금 여부 -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold d-block">고정 예치금 여부
+              <i class="bi bi-info-circle-fill ms-1"
+                 style="color: #6c757d;"
+                 data-bs-toggle="tooltip"
+                 data-bs-placement="top"
+                 title="모든 참가자에게 동일한 예치금을 설정합니다. 고정 금액만큼 자동으로 걸려요.">
+              </i>
+            </label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="isFixedDeposit" id="fixedYes" value="Y" onchange="toggleDepositFields()" />
+              <label class="form-check-label" for="fixedYes">예</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="isFixedDeposit" id="fixedNo" value="N" onchange="toggleDepositFields()" checked />
+              <label class="form-check-label" for="fixedNo">아니오</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 고정 예치금 입력 -->
+        <div class="row mb-3" id="fixedDepositGroup" style="display: none;">
+          <div class="col-md-6">
+            <label class="form-label">고정 예치금 (원)</label>
+            <input type="number" class="form-control" name="fixedDeposit" placeholder="고정 예치금 입력">
+          </div>
+        </div>
+
+        <!-- 최대 예치금 입력 -->
+        <div class="row mb-3" id="maxDepositGroup">
+          <div class="col-md-6">
+            <label class="form-label">최대 예치금 (원)</label>
+            <input type="number" class="form-control" name="maxDeposit" placeholder="최대 200,000원까지 가능">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label small">카테고리</label>
+          <select name="category" class="form-select" required>
+            <option value="ROUTINE">규칙적인 생활</option>
+            <option value="EXERCISE">운동</option>
+            <option value="MINDFULNESS">마음챙김</option>
+            <option value="EATING_HABITS">식습관</option>
+            <option value="HOBBY">취미</option>
+            <option value="STUDY">공부</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill shadow">챌린지 생성</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/navbar.js}"></script>
+<script>
+  // Bootstrap 5 Tooltip 초기화
+  document.addEventListener("DOMContentLoaded", function () {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  });
+  function toggleDepositFields() {
+    const isFixed = document.getElementById("fixedYes").checked;
+    document.getElementById("fixedDepositGroup").style.display = isFixed ? "block" : "none";
+    document.getElementById("maxDepositGroup").style.display = isFixed ? "none" : "block";
+  }
+</script>
+</body>
+</html>

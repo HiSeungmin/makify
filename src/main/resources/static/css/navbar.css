@@ -1,0 +1,13 @@
+.navbar {
+  z-index: 10;
+}
+
+.navbar .nav-link,
+.navbar .navbar-brand {
+  color: black;
+}
+
+.navbar .navbar-brand {
+    font-size: 2rem;
+    padding-top: 10px;
+}
