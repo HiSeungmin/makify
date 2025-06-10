@@ -24,8 +24,8 @@ public class VerificationMethod extends BaseEntity {
     private LocalDateTime startDate; // 인증 시작 시간
     private LocalDateTime endDate; // 인증 종료 시간
 
-    private String countInDay; // 하루 인증 횟수
-    private String countAll; // 전체 인증 횟수
+    private Integer countInDay; // 최소 하루 인증 횟수
+    private Integer countAll; // 최소 전체 인증 횟수
 
     @Enumerated(EnumType.STRING)
     private Verifination_Method verificationMethod; // 인증 수단

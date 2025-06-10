@@ -22,17 +22,17 @@ public class SwaggerConfig {
     public GroupedOpenApi memberApi() {
         return GroupedOpenApi.builder()
                 .group("Member API")
-                .pathsToExclude("/auth/**") // '/auth'로 시작하는 모든 엔드포인트를 포함
+                .pathsToExclude("/login/**")
                 .build();
     }
 
-//    @Bean
-//    public GroupedOpenApi challengeApi() {
-//        return GroupedOpenApi.builder()
-//                .group("Challenge API")
-//                .pathsToMatch("/ch/**") // '/ch'로 시작하는 모든 엔드포인트를 포함
-//                .build();
-//    }
+    @Bean
+    public GroupedOpenApi challengeApi() {
+        return GroupedOpenApi.builder()
+                .group("Challenge API")
+                .pathsToMatch("/challenges/**") // '/ch'로 시작하는 모든 엔드포인트를 포함
+                .build();
+    }
 
 //    @Bean
 //    public GroupedOpenApi concatApi() {
@@ -67,12 +67,12 @@ public class SwaggerConfig {
 //                .build();
 //    }
 //
-    @Bean
-    public GroupedOpenApi defaultApi() {
-        return GroupedOpenApi.builder()
-                .group("Default API") // 특정 그룹에 포함되지 않은 엔드포인트
-                .pathsToExclude("/tts/**", "/vc/**", "/concat/**", "/s3_test/**", "/workspace/**", "/member/**",
-                        "/task/**") // 다른 그룹들에서 제외된 엔드포인트만 포함
-                .build();
-    }
+//    @Bean
+//    public GroupedOpenApi defaultApi() {
+//        return GroupedOpenApi.builder()
+//                .group("Default API") // 특정 그룹에 포함되지 않은 엔드포인트
+//                .pathsToExclude("/tts/**", "/vc/**", "/concat/**", "/s3_test/**", "/workspace/**", "/member/**",
+//                        "/task/**") // 다른 그룹들에서 제외된 엔드포인트만 포함
+//                .build();
+//    }
 }

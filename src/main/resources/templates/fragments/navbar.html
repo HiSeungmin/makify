@@ -1,0 +1,25 @@
+<nav class="navbar navbar-expand-lg bg-transparent position-absolute top-0 start-0 w-100" id="mainNavbar"
+     th:fragment="navbar" xmlns:th="http://www.thymeleaf.org">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-dark" href="/">Makify</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#">서비스 소개</a></li>
+        <!--        <li class="nav-item"><a class="nav-link" href="/login">로그인</a></li>-->
+
+        <li class="nav-item"><a class="nav-link" href="/challenges">챌린지 둘러보기</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">문의하기</a></li>
+        <li class="nav-item" id="login-btn">
+          <a class="nav-link" href="/login">로그인</a>
+        </li>
+        <li class="nav-item d-none" id="logout-btn">
+          <a class="nav-link" href="/" onclick="logout()">로그아웃</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

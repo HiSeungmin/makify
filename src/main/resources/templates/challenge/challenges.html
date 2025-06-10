@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>챌린지 둘러보기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- SUIT (한글) + Inter (영문) -->
+  <link href="https://cdn.jsdelivr.net/npm/suitcss-fonts@1.0.0/css/suit.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Gmarket+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+  <style>
+
+    .search-section h2 {
+      font-size: 25px;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #0c4a6e;
+    }
+
+    .search-bar input {
+      border-radius: 2rem;
+      padding: 0.75rem 1.5rem;
+      border: 1px solid #ced4da;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .search-bar button {
+      border-radius: 2rem;
+      padding: 0.75rem 2rem;
+    }
+
+    .card {
+      border: none;
+      border-radius: 1rem;
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .card img {
+      height: 180px;
+      object-fit: cover;
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
+    }
+
+    .card-body h5 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .card-footer {
+      background-color: transparent;
+      border-top: none;
+    }
+
+    .btn-outline-primary {
+      border-radius: 30px;
+      font-weight: 500;
+    }
+
+    select.form-select {
+     min-width: 180px;
+    }
+
+    .search-section {
+      text-align: center;
+      background-color: #f5f7fa;
+      padding: 8rem 0;
+      background-size: 600% 600%;
+    }
+
+    .typing {
+      overflow: hidden;
+      white-space: nowrap;
+      width: 0;
+      animation: typing 3s steps(30, end) forwards;
+      font-weight: 700;
+      color: #0c4a6e;
+      display: inline-block;
+    }
+
+    .cursor {
+      display: inline-block;
+      animation: blink 0.7s infinite;
+      color: #0c4a6e;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1 }
+      50% { opacity: 0 }
+    }
+
+  </style>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<!-- 검색 영역 -->
+<section class="search-section">
+  <div class="container-fluid d-flex justify-content-center">
+    <div class="bg-white bg-opacity-75 rounded-5 shadow p-5 w-100" style="max-width: 900px;">
+      <!-- 제목 -->
+      <h2 class="typing">원하는 챌린지를 찾아보세요!<span class="cursor">|</span></h2>
+
+      <!-- 검색창 -->
+      <form th:action="@{/challenges}" method="get" class="search-bar d-flex justify-content-center gap-2 flex-wrap mb-4">
+        <input type="text" name="keyword" class="form-control" placeholder="챌린지 제목 또는 설명 입력" />
+        <button type="submit" class="btn btn-primary">검색</button>
+      </form>
+
+      <!-- 필터 -->
+      <div class="d-flex flex-wrap justify-content-center gap-3 align-items-end">
+        <!-- 카테고리 선택 -->
+        <div class="form-group">
+          <label for="category" class="form-label mb-1 fw-semibold">카테고리</label>
+          <select class="form-select rounded-pill" id="category" name="category">
+            <option value="">전체</option>
+            <option value="ROUTINE">루틴</option>
+            <option value="MINDSET">마인드셋</option>
+            <option value="EATING_HABITS">식습관</option>
+            <option value="EXERCISE">운동</option>
+            <option value="SAVING">금융</option>
+          </select>
+        </div>
+
+        <!-- 정렬 기준 선택 -->
+        <div class="form-group">
+          <label for="sort" class="form-label mb-1 fw-semibold">정렬 기준</label>
+          <select class="form-select rounded-pill" id="sort" name="sort">
+            <option value="latest">최신 등록순</option>
+            <option value="popular">인기순</option>
+            <option value="soon">곧 시작 순</option>
+          </select>
+        </div>
+
+        <!-- 필터 적용 버튼 -->
+        <div class="form-group d-flex flex-column">
+          <label class="form-label mb-1 invisible">⠀</label> <!-- 빈 라벨로 높이 맞추기 -->
+          <button type="submit" class="btn btn-outline-primary px-4 rounded-pill h-100">필터 적용</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 챌린지 목록 카드 -->
+<section class="container py-5">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+    <div class="col" th:each="challenge : ${challenges}">
+      <div class="card h-100 shadow-sm">
+        <!-- 이미지가 있다면 추가 -->
+        <!--        <img th:src="@{${challenge.imageUrl}}" class="card-img-top" alt="챌린지 이미지">-->
+        <div class="card-body">
+          <h5 th:text="${challenge.title}">챌린지 제목</h5>
+          <p class="text-muted small mb-2">
+            <i class="bi bi-calendar-check"></i>
+            <span th:text="${challenge.startDate}">2025.06.10</span>
+            ~
+            <span th:text="${challenge.endDate}">2025.06.24</span>
+          </p>
+          <p class="mb-0 text-muted small">
+<!--            <i class="bi bi-check-circle"></i> 최소 인증 횟수: <span th:text="${challenge.checkCount}">14</span>회-->
+            <i class="bi bi-check-circle"></i> 최소 인증 횟수: 14회
+          </p>
+        </div>
+        <div class="card-footer text-end">
+          <a th:href="@{'/challenges/' + ${challenge.id}}" class="btn btn-outline-primary btn-sm px-4">자세히 보기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<a href="/challenges/new"
+   class="btn btn-primary rounded-circle shadow"
+   style="position: fixed; bottom: 2rem; right: 2rem; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;"
+   data-bs-toggle="tooltip"
+   data-bs-placement="left"
+   title="챌린지 만들기">
+  <i class="bi bi-plus"></i>
+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/navbar.js}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+      new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  });
+</script>
+</body>
+</html>
