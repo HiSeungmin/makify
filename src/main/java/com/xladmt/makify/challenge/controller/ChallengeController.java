@@ -1,7 +1,9 @@
 package com.xladmt.makify.challenge.controller;
 
+import com.xladmt.makify.challenge.dto.ChallengeCreateRequest;
 import com.xladmt.makify.challenge.service.ChallengeService;
 import com.xladmt.makify.common.entity.Challenge;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,11 +32,17 @@ public class ChallengeController {
         return "challenge/challenges";
     }
 
-    @GetMapping("/challenges/new")
+   @GetMapping("/challenges/new")
     public String showCreateChallengeForm(Model model) {
         // 폼에서 사용할 기본 객체가 있다면 여기서 추가 가능
         // model.addAttribute("challengeForm", new ChallengeForm());
         return "challenge/create"; // templates/challenge/create.html
+    }
+
+    @PostMapping("/challenges/new")
+    public String createChallenge(@ModelAttribute ChallengeCreateRequest request) {
+        challengeService.create(request);
+        return "redirect:challenge/challenges";
     }
 
 }

@@ -1,6 +1,7 @@
 package com.xladmt.makify.challenge.service;
 
 
+import com.xladmt.makify.challenge.dto.ChallengeCreateRequest;
 import com.xladmt.makify.challenge.repository.ChallengeRepository;
 import com.xladmt.makify.common.entity.Challenge;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,7 @@ public class ChallengeService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 챌린지를 찾을 수 없습니다. id = " + id));
     }
 
-    // TODO: 검색 조건 등 추가 구현
+    public void create(ChallengeCreateRequest request) {
+
+    }
 }

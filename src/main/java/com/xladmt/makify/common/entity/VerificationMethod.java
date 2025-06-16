@@ -1,6 +1,6 @@
 package com.xladmt.makify.common.entity;
 
-import com.xladmt.makify.common.constant.VerificatedMethod;
+import com.xladmt.makify.common.constant.Verifination_Method;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,5 +31,5 @@ public class VerificationMethod extends BaseEntity {
     private Integer countAll; // 전체 인증 횟수
 
     @Enumerated(EnumType.STRING)
-    private VerificatedMethod method; // 인증 수단
+    private Verifination_Method method; // 인증 수단
 }

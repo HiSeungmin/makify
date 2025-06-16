@@ -59,6 +59,19 @@
           <input type="text" id="title" name="title" class="form-control" required placeholder="예) 매일 달리기 챌린지">
         </div>
 
+        <!-- 카테고리 -->
+        <div class="mb-3">
+          <label class="form-label small">카테고리</label>
+          <select name="category" class="form-select" required>
+            <option value="ROUTINE">규칙적인 생활</option>
+            <option value="EXERCISE">운동</option>
+            <option value="MINDFULNESS">마음챙김</option>
+            <option value="EATING_HABITS">식습관</option>
+            <option value="HOBBY">취미</option>
+            <option value="STUDY">공부</option>
+          </select>
+        </div>
+
         <div class="mb-3">
           <label for="description" class="form-label small">설명</label>
           <textarea id="description" name="description" class="form-control" rows="3" required placeholder="예) 매일 달리기를 인증합니다. 아침 가능! 퇴근 후 가능!"></textarea>
@@ -80,9 +93,9 @@
       <div class="p-4 mb-4 bg-white rounded-4 shadow-sm">
         <h5 class="fw-semibold mb-3 text-primary">인증 설정</h5>
 
-        <div class="row">
-
-          <div class="col-md-6 mb-3">
+        <!-- 인증 수단 -->
+        <div class="row g-3">
+          <div class="col-md-6">
             <label class="form-label small">인증 수단</label>
             <select name="verificationMethod" class="form-select" required>
               <option value="CAMERA">카메라</option>
@@ -92,17 +105,21 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md-4 mb-3">
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
             <label class="form-label small">인증 시작 시간</label>
             <input type="time" name="startTime" class="form-control" required>
           </div>
-          <div class="col-md-4 mb-3">
+          <div class="col-md-6">
             <label class="form-label small">인증 종료 시간</label>
             <input type="time" name="endTime" class="form-control" required>
           </div>
 
-          <div class="col-md-6 mb-3">
+        </div>
+
+        <!-- 최소 인증 횟수 + 전체 인증 횟수 -->
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
             <label class="form-label small">인증 빈도</label>
             <select name="frequency" class="form-select" required>
               <option value="DAILY">매일</option>
@@ -117,16 +134,10 @@
               <option value="CUSTOM">기타(제한 없음)</option>
             </select>
           </div>
-
-          <div class="col-md-4 mb-3">
-            <label class="form-label small">최소 인증 횟수 (1일)</label>
+          <div class="col-md-6">
+            <label class="form-label small">최소 인증 횟수 (1일 기준)</label>
             <input type="number" name="minDailyCount" class="form-control" min="1" required>
           </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label small">전체 인증 횟수</label>
-          <input type="number" name="totalVerificationCount" class="form-control" min="1" required>
         </div>
       </div>
 
@@ -134,68 +145,63 @@
       <div class="p-4 mb-4 bg-white rounded-4 shadow-sm">
         <h5 class="fw-semibold mb-3 text-primary">기타 설정</h5>
 
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label class="form-label small">공개 여부</label>
-            <select name="isPublic" id="isPublic" class="form-select" onchange="togglePrivateCodeField()" required>
-              <option value="true">공개</option>
-              <option value="false">비공개</option>
-            </select>
+        <div class="row g-3 mb-3 align-items-end">
+          <!-- 공개 여부 -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold d-block">공개 여부
+              <i class="bi bi-info-circle-fill ms-1 text-secondary"
+                 data-bs-toggle="tooltip"
+                 data-bs-placement="top"
+                 title="공개 챌린지는 누구나 검색을 통해 참여할 수 있습니다. 비공개 챌린지는 참여 코드를 통해서만 입장 가능합니다."></i>
+            </label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="isPublic" id="publicYes" value="Y" onchange="togglePrivateCodeField()" checked>
+              <label class="form-check-label" for="publicYes">공개</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="isPublic" id="publicNo" value="N" onchange="togglePrivateCodeField()">
+              <label class="form-check-label" for="publicNo">비공개</label>
+            </div>
           </div>
-          <div class="col-md-6 mb-3" id="privateCodeField" style="display:none;">
-            <label class="form-label small">비공개 참여 코드</label>
-            <input type="text" name="privateCode" class="form-control">
+
+          <!-- 비공개 참여 코드 -->
+          <div class="col-md-6" id="privateCodeField" style="display: none;">
+            <label for="privateCode" class="form-label">비공개 참여 코드</label>
+            <input type="text" id="privateCode" name="privateCode" class="form-control" placeholder="참여 코드를 입력하세요">
           </div>
         </div>
 
         <!-- 고정 예치금 여부 -->
-        <div class="row mb-3">
+        <div class="row g-3 mb-3 align-items-end">
           <div class="col-md-6">
             <label class="form-label fw-semibold d-block">고정 예치금 여부
-              <i class="bi bi-info-circle-fill ms-1"
-                 style="color: #6c757d;"
+              <i class="bi bi-info-circle-fill ms-1 text-secondary"
                  data-bs-toggle="tooltip"
                  data-bs-placement="top"
-                 title="모든 참가자에게 동일한 예치금을 설정합니다. 고정 금액만큼 자동으로 걸려요.">
-              </i>
+                 title="모든 참가자에게 동일한 예치금을 설정합니다. 고정 금액만큼 자동으로 걸려요."></i>
             </label>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="isFixedDeposit" id="fixedYes" value="Y" onchange="toggleDepositFields()" />
+              <input class="form-check-input" type="radio" name="isFixedDeposit" id="fixedYes" value="Y" onchange="toggleDepositFields()">
               <label class="form-check-label" for="fixedYes">예</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="isFixedDeposit" id="fixedNo" value="N" onchange="toggleDepositFields()" checked />
+              <input class="form-check-input" type="radio" name="isFixedDeposit" id="fixedNo" value="N" onchange="toggleDepositFields()" checked>
               <label class="form-check-label" for="fixedNo">아니오</label>
             </div>
           </div>
-        </div>
 
-        <!-- 고정 예치금 입력 -->
-        <div class="row mb-3" id="fixedDepositGroup" style="display: none;">
           <div class="col-md-6">
-            <label class="form-label">고정 예치금 (원)</label>
-            <input type="number" class="form-control" name="fixedDeposit" placeholder="고정 예치금 입력">
+            <!-- 고정 예치금 입력 -->
+            <div id="fixedDepositGroup" style="display: none;">
+              <label class="form-label">고정 예치금 (원)</label>
+              <input type="number" class="form-control" name="fixedDeposit" placeholder="고정 예치금 입력">
+            </div>
+            <!-- 최대 예치금 입력 -->
+            <div id="maxDepositGroup">
+              <label class="form-label">최대 예치금 (원)</label>
+              <input type="number" class="form-control" name="maxDeposit" placeholder="최대 200,000원까지 가능">
+            </div>
           </div>
-        </div>
-
-        <!-- 최대 예치금 입력 -->
-        <div class="row mb-3" id="maxDepositGroup">
-          <div class="col-md-6">
-            <label class="form-label">최대 예치금 (원)</label>
-            <input type="number" class="form-control" name="maxDeposit" placeholder="최대 200,000원까지 가능">
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label small">카테고리</label>
-          <select name="category" class="form-select" required>
-            <option value="ROUTINE">규칙적인 생활</option>
-            <option value="EXERCISE">운동</option>
-            <option value="MINDFULNESS">마음챙김</option>
-            <option value="EATING_HABITS">식습관</option>
-            <option value="HOBBY">취미</option>
-            <option value="STUDY">공부</option>
-          </select>
         </div>
       </div>
 
@@ -221,6 +227,15 @@
     document.getElementById("fixedDepositGroup").style.display = isFixed ? "block" : "none";
     document.getElementById("maxDepositGroup").style.display = isFixed ? "none" : "block";
   }
+
+  function togglePrivateCodeField() {
+    const isPublic = document.querySelector('input[name="isPublic"]:checked').value;
+    const codeField = document.getElementById('privateCodeField');
+    codeField.style.display = isPublic === 'N' ? 'block' : 'none';
+  }
+
+  // 페이지 로드시 비공개일 경우 필드 보이게 설정
+  document.addEventListener('DOMContentLoaded', togglePrivateCodeField);
 </script>
 </body>
 </html>

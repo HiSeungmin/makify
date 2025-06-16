@@ -17,22 +17,22 @@ public class SwaggerConfig {
                 .info(new Info().title("Makify API").version("1.0.0")
                         .description("Makify API 문서 백엔드 개발용"));
     }
-
-    @Bean
-    public GroupedOpenApi memberApi() {
-        return GroupedOpenApi.builder()
-                .group("Member API")
-                .pathsToExclude("/login/**")
-                .build();
-    }
-
-    @Bean
-    public GroupedOpenApi challengeApi() {
-        return GroupedOpenApi.builder()
-                .group("Challenge API")
-                .pathsToMatch("/challenges/**") // '/ch'로 시작하는 모든 엔드포인트를 포함
-                .build();
-    }
+//
+//    @Bean
+//    public GroupedOpenApi memberApi() {
+//        return GroupedOpenApi.builder()
+//                .group("Member API")
+//                .pathsToExclude("/login/**")
+//                .build();
+//    }
+//
+//    @Bean
+//    public GroupedOpenApi challengeApi() {
+//        return GroupedOpenApi.builder()
+//                .group("Challenge API")
+//                .pathsToMatch("/challenges/**") // '/ch'로 시작하는 모든 엔드포인트를 포함
+//                .build();
+//    }
 
 //    @Bean
 //    public GroupedOpenApi concatApi() {
