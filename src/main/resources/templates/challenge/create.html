@@ -49,7 +49,7 @@
   <div class="mx-auto" style="max-width: 900px;">
     <h2 class="text-center fw-bold mb-4 mt-5">챌린지 생성하기</h2>
 
-    <form th:action="@{/challenges}" method="post">
+    <form th:action="@{/challenges/new}" method="post">
       <!-- 기본 정보 -->
       <div class="p-4 mb-4 bg-white rounded-4 shadow-sm">
         <h5 class="fw-semibold mb-3 text-primary">기본 정보</h5>
@@ -236,6 +236,9 @@
 
   // 페이지 로드시 비공개일 경우 필드 보이게 설정
   document.addEventListener('DOMContentLoaded', togglePrivateCodeField);
+</script>
+<script th:if="${errorMessage != null}">
+  alert([[${errorMessage}]]);
 </script>
 </body>
 </html>

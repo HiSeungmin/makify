@@ -1,10 +1,10 @@
 package com.xladmt.makify.challenge.controller;
 
 import com.xladmt.makify.challenge.dto.ChallengeCreateRequest;
-import com.xladmt.makify.challenge.service.ChallengeService;
+import com.xladmt.makify.challenge.service.ChallengeServiceImpl;
 import com.xladmt.makify.common.entity.Challenge;
-import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid;
+import com.xladmt.makify.common.validator.ChallengeCreateRequestValidator;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -13,8 +13,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.net.Authenticator;
+import java.util.Enumeration;
 import java.util.List;
 
 @Controller
@@ -22,7 +24,8 @@ import java.util.List;
 @Slf4j
 public class ChallengeController {
 
-    private final ChallengeService challengeService;
+    private final ChallengeServiceImpl challengeService;
+    private final ChallengeCreateRequestValidator challengeCreateRequestValidator;
 
     @GetMapping("/challenges")
     public String showChallenges(Model model) {
@@ -40,9 +43,28 @@ public class ChallengeController {
     }
 
     @PostMapping("/challenges/new")
-    public String createChallenge(@ModelAttribute ChallengeCreateRequest request) {
+    public String createChallenge(@ModelAttribute ChallengeCreateRequest request, BindingResult bindingResult, Model model) {
+        challengeCreateRequestValidator.validate(request, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            // 에러 메시지 하나만 전달 (여러 개 하고 싶으면 리스트 처리)
+            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            model.addAttribute("errorMessage", errorMessage);
+
+            return "challenge/create"; // 그대로 보여주되 기존 데이터는 유지됨
+        }
+
+        //        System.out.println(request.toString());
+//        // 헤더 출력
+//        Enumeration<String> headerNames = httpRequest.getHeaderNames();
+//        while (headerNames.hasMoreElements()) {
+//            String headerName = headerNames.nextElement();
+//            String headerValue = httpRequest.getHeader(headerName);
+//            System.out.println("[Header] " + headerName + " : " + headerValue);
+//        }
+
         challengeService.create(request);
-        return "redirect:challenge/challenges";
+        return "redirect:/challenges";
     }
 
 }
