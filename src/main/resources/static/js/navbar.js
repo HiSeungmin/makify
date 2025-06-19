@@ -24,13 +24,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const loginBtn = document.getElementById("login-btn");
     const logoutBtn = document.getElementById("logout-btn");
+    const mypageBtn = document.getElementById("mypage-btn");
 
     if (accessToken) {
       loginBtn?.classList.add("d-none");
       logoutBtn?.classList.remove("d-none");
+      mypageBtn?.classList.remove("d-none");
     } else {
       loginBtn?.classList.remove("d-none");
       logoutBtn?.classList.add("d-none");
+      mypageBtn?.classList.add("d-none");
     }
   });
 

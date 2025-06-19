@@ -3,13 +3,17 @@ package com.xladmt.makify.challenge.controller;
 import com.xladmt.makify.challenge.dto.ChallengeCreateRequest;
 import com.xladmt.makify.challenge.service.ChallengeServiceImpl;
 import com.xladmt.makify.common.entity.Challenge;
+import com.xladmt.makify.common.exception.BusinessException;
+import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.common.validator.ChallengeCreateRequestValidator;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,18 +47,9 @@ public class ChallengeController {
     }
 
     @PostMapping("/challenges/new")
-    public String createChallenge(@ModelAttribute ChallengeCreateRequest request, BindingResult bindingResult, Model model) {
-        challengeCreateRequestValidator.validate(request, bindingResult);
+    public String createChallenge(@ModelAttribute ChallengeCreateRequest request, HttpServletRequest httpRequest, BindingResult bindingResult, Model model) {
 
-        if (bindingResult.hasErrors()) {
-            // 에러 메시지 하나만 전달 (여러 개 하고 싶으면 리스트 처리)
-            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
-            model.addAttribute("errorMessage", errorMessage);
-
-            return "challenge/create"; // 그대로 보여주되 기존 데이터는 유지됨
-        }
-
-        //        System.out.println(request.toString());
+//        System.out.println(request.toString());
 //        // 헤더 출력
 //        Enumeration<String> headerNames = httpRequest.getHeaderNames();
 //        while (headerNames.hasMoreElements()) {
@@ -63,7 +58,31 @@ public class ChallengeController {
 //            System.out.println("[Header] " + headerName + " : " + headerValue);
 //        }
 
+        challengeCreateRequestValidator.validate(request, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            // 첫 번째 에러 메시지로 BusinessException 생성
+            FieldError firstError = (FieldError) bindingResult.getAllErrors().get(0);
+            String field = firstError.getField();
+
+            ErrorCode errorCode = switch (field) {
+                case "title" -> ErrorCode.CHALLENGE_TITLE_REQUIRED;
+                case "description" -> ErrorCode.CHALLENGE_DESCRIPTION_REQUIRED;
+                case "category" -> ErrorCode.CHALLENGE_CATEGORY_REQUIRED;
+                case "endDate" -> ErrorCode.CHALLENGE_INVALID_DATE_RANGE;
+                case "endTime" -> ErrorCode.CHALLENGE_INVALID_TIME_RANGE;
+                case "privateCode" -> ErrorCode.CHALLENGE_PRIVATE_CODE_REQUIRED;
+                case "fixedDeposit" -> ErrorCode.CHALLENGE_FIXED_DEPOSIT_REQUIRED;
+                case "maxDeposit" -> ErrorCode.CHALLENGE_MAX_DEPOSIT_REQUIRED;
+                case "minDailyCount" -> ErrorCode.CHALLENGE_MIN_DAILY_COUNT_REQUIRED;
+                default -> ErrorCode.CHALLENGE_TITLE_REQUIRED; // fallback
+            };
+
+            throw new BusinessException(errorCode);
+        }
+
         challengeService.create(request);
+
         return "redirect:/challenges";
     }
 

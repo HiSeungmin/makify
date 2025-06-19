@@ -237,8 +237,112 @@
   // 페이지 로드시 비공개일 경우 필드 보이게 설정
   document.addEventListener('DOMContentLoaded', togglePrivateCodeField);
 </script>
-<script th:if="${errorMessage != null}">
-  alert([[${errorMessage}]]);
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form");
+    const errors = {};
+
+    const showError = (name, message) => {
+      const input = document.querySelector(`[name="${name}"]`);
+      let errorDiv = input.parentElement.querySelector(".invalid-feedback");
+      if (!errorDiv) {
+        errorDiv = document.createElement("div");
+        errorDiv.className = "invalid-feedback d-block";
+        input.parentElement.appendChild(errorDiv);
+      }
+      errorDiv.textContent = message;
+      errors[name] = true;
+    };
+
+    const clearError = (name) => {
+      const input = document.querySelector(`[name="${name}"]`);
+      const errorDiv = input.parentElement.querySelector(".invalid-feedback");
+      if (errorDiv) errorDiv.remove();
+      delete errors[name];
+    };
+
+    const validateForm = () => {
+      // 초기화
+      Object.keys(errors).forEach(clearError);
+
+      const startDate = new Date(document.querySelector("[name='startDate']").value);
+      const endDate = new Date(document.querySelector("[name='endDate']").value);
+      const startTime = document.querySelector("[name='startTime']").value;
+      const endTime = document.querySelector("[name='endTime']").value;
+      const isPublic = document.querySelector("input[name='isPublic']:checked").value;
+      const privateCode = document.querySelector("[name='privateCode']").value;
+      const isFixedDeposit = document.querySelector("input[name='isFixedDeposit']:checked").value;
+      const fixedDeposit = document.querySelector("[name='fixedDeposit']").value;
+      const maxDeposit = document.querySelector("[name='maxDeposit']").value;
+      const title = document.querySelector("[name='title']").value;
+      const description = document.querySelector("[name='description']").value;
+      const category = document.querySelector("[name='category']").value;
+
+      // 날짜
+      if (startDate && endDate && endDate < startDate) {
+        showError("endDate", "종료 날짜는 시작 날짜보다 빠를 수 없습니다.");
+      }
+
+      // 시간
+      if (startTime && endTime && endTime < startTime) {
+        showError("endTime", "인증 종료 시간은 시작 시간보다 빠를 수 없습니다.");
+      }
+
+      // 비공개일 경우 참여코드 필요
+      if (isPublic === "N" && (!privateCode || privateCode.trim() === "")) {
+        showError("privateCode", "비공개 챌린지는 참여 코드가 필요합니다.");
+      }
+
+      // 예치금 조건
+      // 예치금 조건
+      if (isFixedDeposit === "Y") {
+        if (!fixedDeposit || fixedDeposit.trim() === "") {
+          showError("fixedDeposit", "고정 예치금이 필요합니다.");
+        } else {
+          const fixedValue = parseInt(fixedDeposit, 10);
+          if (fixedValue < 1000 || fixedValue > 200000) {
+            showError("fixedDeposit", "고정 예치금은 1,000원 이상 200,000원 이하로 입력해주세요.");
+          }
+        }
+      }
+
+      if (isFixedDeposit === "N") {
+        if (!maxDeposit || maxDeposit.trim() === "") {
+          showError("maxDeposit", "최대 예치금이 필요합니다.");
+        } else {
+          const maxValue = parseInt(maxDeposit, 10);
+          if (maxValue < 1000 || maxValue > 200000) {
+            showError("maxDeposit", "최대 예치금은 1,000원 이상 200,000원 이하로 입력해주세요.");
+          }
+        }
+      }
+
+      // 기본 정보
+      if (!title || title.trim() === "") {
+        showError("title", "제목은 필수입니다.");
+      }
+      if (!description || description.trim() === "") {
+        showError("description", "설명은 필수입니다.");
+      }
+      if (!category || category.trim() === "") {
+        showError("category", "카테고리를 선택해주세요.");
+      }
+
+      return Object.keys(errors).length === 0;
+    };
+
+    form.addEventListener("submit", function (e) {
+      if (!validateForm()) {
+        e.preventDefault();
+
+        // 에러가 있는 첫 번째 필드로 스크롤 이동
+        const firstErrorElement = document.querySelector(".invalid-feedback");
+        if (firstErrorElement) {
+          firstErrorElement.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }
+    });
+  });
 </script>
 </body>
 </html>

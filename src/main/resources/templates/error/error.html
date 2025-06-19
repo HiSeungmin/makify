@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>😢 에러가 발생했어요!</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: "Noto Sans KR", sans-serif;
+    }
+
+    .error-box {
+      max-width: 600px;
+      margin: 80px auto;
+      padding: 40px;
+      border-radius: 16px;
+      background-color: #fff;
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.05);
+    }
+
+    .emoji {
+      font-size: 72px;
+    }
+
+    .home-btn {
+      margin-top: 30px;
+      padding: 10px 30px;
+      font-size: 16px;
+    }
+
+    .error-detail {
+      text-align: left;
+      margin-top: 20px;
+      font-size: 15px;
+      color: #6c757d;
+    }
+
+    .error-detail strong {
+      color: #212529;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="error-box text-center">
+    <div class="emoji">🚧</div>
+    <h2 class="fw-bold">앗! 문제가 생겼어요 😢</h2>
+    <p class="mt-2">죄송해요, 요청하신 작업을 처리하지 못했어요.<br>
+      개발자가 이 사실을 곧 알게 될 거예요! 🛠️</p>
+
+    <div class="error-detail">
+      <p><strong>에러 코드:</strong> <span th:text="${code}">-</span></p>
+      <p><strong>상태:</strong> <span th:text="${status}">-</span></p>
+      <p><strong>메시지:</strong> <span th:text="${message}">에러 메시지가 없습니다.</span></p>
+    </div>
+
+    <a href="/" class="btn btn-primary rounded-pill home-btn">🏠 홈으로 돌아가기</a>
+  </div>
+</div>
+</body>
+</html>

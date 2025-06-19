@@ -23,7 +23,6 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
 
-
     public void create(ChallengeCreateRequest request) {
 
     }

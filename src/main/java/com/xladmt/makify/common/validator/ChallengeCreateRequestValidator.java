@@ -44,10 +44,14 @@ public class ChallengeCreateRequestValidator implements Validator {
         if (request.getIsFixedDeposit() == YN.Y) {
             if (request.getFixedDeposit() == null) {
                 errors.rejectValue("fixedDeposit", "Required", "고정 예치금이 필요합니다.");
+            } else if (request.getFixedDeposit() < 1000 || request.getFixedDeposit() > 200000) {
+                errors.rejectValue("fixedDeposit", "InvalidValue", "고정 예치금은 1,000원 이상 200,000원 이하이어야 합니다.");
             }
         } else if (request.getIsFixedDeposit() == YN.N) {
             if (request.getMaxDeposit() == null) {
                 errors.rejectValue("maxDeposit", "Required", "최대 예치금이 필요합니다.");
+            } else if (request.getMaxDeposit() < 1000 || request.getMaxDeposit() > 200000) {
+                errors.rejectValue("maxDeposit", "InvalidValue", "최대 예치금은 1,000원 이상 200,000원 이하이어야 합니다.");
             }
         }
 

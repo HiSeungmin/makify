@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>마이페이지</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Inter', sans-serif;
+    }
+    .profile-card {
+      background-color: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .tab-content {
+      margin-top: 2rem;
+    }
+    .card-section {
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <!-- 프로필 카드 -->
+      <div class="profile-card mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h4 class="fw-bold mb-1">닉네임: <span th:text="${member.nickname}">사용자닉네임</span></h4>
+            <p class="mb-0 text-muted">이름: <span th:text="${member.name}">홍길동</span> | 생일: <span th:text="${member.birth}">1995-01-01</span></p>
+          </div>
+          <button class="btn btn-outline-primary rounded-pill px-4" onclick="location.href='/profile/edit'">정보 수정</button>
+        </div>
+      </div>
+
+      <!-- 탭 메뉴 -->
+      <ul class="nav nav-tabs nav-justified" id="mypageTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="challenges-tab" data-bs-toggle="tab" data-bs-target="#challenges" type="button" role="tab">내 챌린지</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">내 후기</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="inquiries-tab" data-bs-toggle="tab" data-bs-target="#inquiries" type="button" role="tab">문의 내역</button>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="mypageTabContent">
+        <!-- 내 챌린지 -->
+        <div class="tab-pane fade show active" id="challenges" role="tabpanel">
+          <div class="card-section">
+            <h5 class="fw-semibold">진행중인 챌린지</h5>
+            <div class="row row-cols-1 row-cols-md-2 g-3">
+              <div class="col" th:each="c : ${progressingChallenges}">
+                <div class="card shadow-sm">
+                  <div class="card-body">
+                    <h6 class="card-title" th:text="${c.title}">챌린지 제목</h6>
+                    <p class="card-text text-muted" th:text="${c.description}">설명</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-section">
+            <h5 class="fw-semibold">시작 예정 챌린지</h5>
+            <div class="row row-cols-1 row-cols-md-2 g-3">
+              <div class="col" th:each="c : ${upcomingChallenges}">
+                <div class="card shadow-sm">
+                  <div class="card-body">
+                    <h6 class="card-title" th:text="${c.title}">챌린지 제목</h6>
+                    <p class="card-text text-muted" th:text="${c.description}">설명</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-section">
+            <h5 class="fw-semibold">완료된 챌린지</h5>
+            <div class="row row-cols-1 row-cols-md-2 g-3">
+              <div class="col" th:each="c : ${completedChallenges}">
+                <div class="card shadow-sm">
+                  <div class="card-body">
+                    <h6 class="card-title" th:text="${c.title}">챌린지 제목</h6>
+                    <p class="card-text text-muted" th:text="${c.description}">설명</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 내 후기 -->
+        <div class="tab-pane fade" id="reviews" role="tabpanel">
+          <div class="card-section">
+            <h5 class="fw-semibold">작성한 후기</h5>
+            <div class="list-group">
+              <div class="list-group-item" th:each="r : ${myReviews}">
+                <h6 class="mb-1" th:text="${r.challengeTitle}">챌린지 제목</h6>
+                <p class="mb-1 text-muted" th:text="${r.content}">후기 내용</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 문의 내역 -->
+        <div class="tab-pane fade" id="inquiries" role="tabpanel">
+          <div class="card-section">
+            <h5 class="fw-semibold">문의 내역</h5>
+            <div class="list-group">
+              <div class="list-group-item" th:each="q : ${myInquiries}">
+                <h6 class="mb-1" th:text="${q.title}">문의 제목</h6>
+                <p class="mb-1 text-muted" th:text="${q.status}">답변 상태</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/navbar.js}"></script>
+</body>
+</html>

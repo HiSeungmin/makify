@@ -1,7 +1,9 @@
 package com.xladmt.makify.member.controller;
 
+import com.xladmt.makify.common.config.security.MemberDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,4 +32,11 @@ public class MemberController {
 ////            return "member/login";
 ////        }
 //    }
+
+
+    @GetMapping("/mypage")
+    public String mypage(@AuthenticationPrincipal MemberDetails member, Model model) {
+        model.addAttribute("member", member);
+        return "member/mypage";
+    }
 }
