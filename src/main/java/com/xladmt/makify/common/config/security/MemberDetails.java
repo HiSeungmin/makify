@@ -19,6 +19,10 @@ public class MemberDetails implements UserDetails {
         this.member = member;
     }
 
+    public Long getId() {
+        return member.getId();
+    }
+
     @Override
     public String getUsername() {
         return member.getId().toString(); // userId (PK)

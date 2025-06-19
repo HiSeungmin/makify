@@ -49,7 +49,7 @@
   <div class="mx-auto" style="max-width: 900px;">
     <h2 class="text-center fw-bold mb-4 mt-5">챌린지 생성하기</h2>
 
-    <form th:action="@{/challenges/new}" method="post">
+    <form th:action="@{/challenges/new}" method="post" enctype="multipart/form-data">
       <!-- 기본 정보 -->
       <div class="p-4 mb-4 bg-white rounded-4 shadow-sm">
         <h5 class="fw-semibold mb-3 text-primary">기본 정보</h5>
@@ -87,6 +87,23 @@
             <input type="date" id="endDate" name="endDate" class="form-control" required>
           </div>
         </div>
+        <!-- 최대 모집 인원 -->
+        <div class="mb-3">
+          <label for="maxParticipants" class="form-label small">최대 모집 인원</label>
+          <input type="number" id="maxParticipants" name="maxParticipants" class="form-control" min="1" max="9999" required>
+        </div>
+
+        <!-- 챌린지 이미지 업로드 (드래그 앤 드롭) -->
+        <div class="mb-3">
+          <label class="form-label small">챌린지 이미지 업로드 (최대 5장)</label>
+          <div id="drop-area" class="border border-2 border-secondary rounded-3 p-4 text-center bg-light">
+            <p class="text-muted">이곳에 이미지를 드래그하거나 클릭하여 업로드 (최대 5장)</p>
+            <input type="file" id="imageInput" name="images" class="d-none" accept="image/*" multiple>
+            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('imageInput').click()">파일 선택</button>
+            <div id="preview" class="d-flex flex-wrap justify-content-start mt-3 gap-2"></div>
+          </div>
+        </div>
+
       </div>
 
       <!-- 인증 설정 -->
@@ -342,6 +359,92 @@
         }
       }
     });
+  });
+</script>
+<script>
+  const dropArea = document.getElementById("drop-area");
+  const input = document.getElementById("imageInput");
+  const preview = document.getElementById("preview");
+
+  let files = [];
+
+  function updatePreview() {
+    preview.innerHTML = "";
+    files.forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("position-relative", "d-inline-block");
+
+        const img = document.createElement("img");
+        img.src = reader.result;
+        img.classList.add("img-thumbnail", "me-2");
+        img.style.width = "100px";
+        img.style.height = "100px";
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "btn-close position-absolute top-0 end-0 bg-white";
+        btn.style.transform = "scale(0.8)";
+        btn.title = "삭제";
+        btn.onclick = () => {
+          files.splice(index, 1);
+          updatePreview();
+        };
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(btn);
+        preview.appendChild(wrapper);
+      };
+    reader.readAsDataURL(file);
+  });
+
+  // 실제 form input에 업데이트
+  const dataTransfer = new DataTransfer();
+  files.forEach(file => dataTransfer.items.add(file));
+  input.files = dataTransfer.files;
+}
+
+  function handleFiles(selectedFiles) {
+    const newFiles = [...selectedFiles].filter(file => {
+      if (!file.type.startsWith("image/")) {
+        alert("이미지 파일만 업로드할 수 있습니다.");
+        return false;
+      }
+      return true;
+    });
+
+    if (files.length + newFiles.length > 5) {
+      alert("최대 5개의 이미지만 업로드할 수 있습니다.");
+      return;
+    }
+
+    files = files.concat(newFiles);
+    updatePreview();
+
+    // 실제 form 전송을 위해 input.files 업데이트
+    const dataTransfer = new DataTransfer();
+    files.forEach(file => dataTransfer.items.add(file));
+    input.files = dataTransfer.files;
+  }
+
+  dropArea.addEventListener("dragover", e => {
+    e.preventDefault();
+    dropArea.classList.add("border-primary");
+  });
+
+  dropArea.addEventListener("dragleave", () => {
+    dropArea.classList.remove("border-primary");
+  });
+
+  dropArea.addEventListener("drop", e => {
+    e.preventDefault();
+    dropArea.classList.remove("border-primary");
+    handleFiles(e.dataTransfer.files);
+  });
+
+  input.addEventListener("change", () => {
+    handleFiles(input.files);
   });
 </script>
 </body>

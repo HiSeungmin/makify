@@ -56,10 +56,11 @@ public class Member extends BaseEntity {
     private LocalDateTime joinDate; // 가입일
 
     // 생성 메서드
-    public static Member create(String loginId, String password, Role role, String name, String email,
+    public static Member create(String loginId, String password, Role role, String name, String nickname, String email,
                                 LocalDate birthDate, String phoneNumber) {
         Member member = new Member();
         member.name         = name;
+        member.nickname     = nickname;
         member.role         = role;
         member.email        = email;
         member.loginId      = loginId;

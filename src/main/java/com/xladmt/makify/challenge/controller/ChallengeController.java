@@ -2,6 +2,7 @@ package com.xladmt.makify.challenge.controller;
 
 import com.xladmt.makify.challenge.dto.ChallengeCreateRequest;
 import com.xladmt.makify.challenge.service.ChallengeServiceImpl;
+import com.xladmt.makify.common.config.security.MemberDetails;
 import com.xladmt.makify.common.entity.Challenge;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,7 +49,7 @@ public class ChallengeController {
     }
 
     @PostMapping("/challenges/new")
-    public String createChallenge(@ModelAttribute ChallengeCreateRequest request, HttpServletRequest httpRequest, BindingResult bindingResult, Model model) {
+    public String createChallenge(@ModelAttribute ChallengeCreateRequest request, @AuthenticationPrincipal MemberDetails memberDetails, BindingResult bindingResult) {
 
 //        System.out.println(request.toString());
 //        // 헤더 출력
@@ -81,7 +83,7 @@ public class ChallengeController {
             throw new BusinessException(errorCode);
         }
 
-        challengeService.create(request);
+        challengeService.create(request, memberDetails.getId());
 
         return "redirect:/challenges";
     }

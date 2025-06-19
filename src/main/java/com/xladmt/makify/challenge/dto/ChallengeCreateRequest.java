@@ -1,14 +1,15 @@
 package com.xladmt.makify.challenge.dto;
 
 import com.xladmt.makify.common.constant.Category;
-import com.xladmt.makify.common.constant.Verifination_Method;
+import com.xladmt.makify.common.constant.VerificationType;
 import com.xladmt.makify.common.constant.YN;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,8 +18,9 @@ public class ChallengeCreateRequest {
     public String description;
     public LocalDate startDate;
     public LocalDate endDate;
+    private Integer maxParticipants;
 
-    public Verifination_Method verificationMethod;
+    public VerificationType verificationType;
     public LocalTime startTime;
     public LocalTime endTime;
     public String frequency;
@@ -32,6 +34,7 @@ public class ChallengeCreateRequest {
     public Integer maxDeposit;
 
     public Category category;
+    private List<MultipartFile> images;
 
     @Override
     public String toString() {
@@ -40,7 +43,7 @@ public class ChallengeCreateRequest {
                 ", description='" + description + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", verificationMethod=" + verificationMethod +
+                ", verificationType=" + verificationType +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", frequency='" + frequency + '\'' +

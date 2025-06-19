@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public String handleBusinessException(BusinessException ex, Model model, HttpServletResponse response) {
+        ex.printStackTrace();
         ErrorCode errorCode = ex.getErrorCode();
         response.setStatus(errorCode.getHttpStatus().value());
 
@@ -22,6 +23,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public String handleOtherExceptions(Exception ex, Model model, HttpServletResponse response) {
+        ex.printStackTrace();
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 
         model.addAttribute("status", 500);

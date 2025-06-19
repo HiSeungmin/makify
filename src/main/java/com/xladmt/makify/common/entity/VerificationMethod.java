@@ -1,10 +1,14 @@
 package com.xladmt.makify.common.entity;
 
-import com.xladmt.makify.common.constant.Verifination_Method;
+import com.xladmt.makify.common.constant.Frequency;
+import com.xladmt.makify.common.constant.VerificationType;
+import com.xladmt.makify.common.constant.YN;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -15,21 +19,51 @@ public class VerificationMethod extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "explanation", nullable = false, length = 100)
-    private String explanation; // 인증 방법 설명
-
-    @Column(name = "count", nullable = false)
-    private Integer count; // 인증 빈도
+    @Enumerated(EnumType.STRING)
+    private Frequency frequency; // 인증 빈도
 
     @Column(name = "start_time", nullable = false)
-    private String startTime; // 인증 시작 시간
+    private LocalTime startTime; // 인증 시작 시간
 
     @Column(name = "end_time", nullable = false)
-    private String endTime; // 인증 종료 시간
+    private LocalTime endTime; // 인증 종료 시간
 
-    private Integer countInDay; // 하루 인증 횟수
-    private Integer countAll; // 전체 인증 횟수
+    private Integer minDailyCount; // 하루 인증 횟수
 
     @Enumerated(EnumType.STRING)
-    private Verifination_Method method; // 인증 수단
+    private VerificationType method; // 인증 수단
+
+    @Enumerated(EnumType.STRING)
+    private YN isVisible;
+
+    public static VerificationMethod create( Frequency frequency,
+                                             LocalTime startTime,
+                                             LocalTime endTime,
+                                             Integer minDailyCount,
+                                             VerificationType method) {
+        VerificationMethod setting = new VerificationMethod();
+        setting.frequency = frequency;
+        setting.startTime = startTime;
+        setting.endTime = endTime;
+        setting.minDailyCount = minDailyCount;
+        setting.method = method;
+        setting.isVisible = YN.Y; // 기본값으로 보이도록
+        return setting;
+    }
+
+    public void update(Frequency frequency,
+                       LocalTime startTime,
+                       LocalTime endTime,
+                       Integer minDailyCount,
+                       VerificationType method) {
+        this.frequency = frequency;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.minDailyCount = minDailyCount;
+        this.method = method;
+    }
+
+    public void delete() {
+        this.isVisible = YN.N;
+    }
 }
