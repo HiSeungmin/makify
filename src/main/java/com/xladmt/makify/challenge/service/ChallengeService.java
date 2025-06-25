@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ChallengeService {
     List<Challenge> getAllVisibleChallenges();
+    Challenge getChallenge(Long id);
     void create(ChallengeCreateRequest request, Long memberId);
 }

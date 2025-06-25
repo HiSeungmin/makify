@@ -11,6 +11,7 @@ import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -23,7 +24,7 @@ public class Challenge extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
-    private Member memberId;
+    private Member member;
 
     @Column(name = "title", nullable = false, length = 50)
     private String title;
@@ -74,7 +75,7 @@ public class Challenge extends BaseEntity {
                                    Integer maxParticipants,
                                    Category category) {
         Challenge challenge = new Challenge();
-        challenge.memberId = member;
+        challenge.member = member;
         challenge.title = title;
         challenge.description = description;
         challenge.startDate = startDate;
@@ -83,7 +84,7 @@ public class Challenge extends BaseEntity {
         challenge.isFixedDeposit = isFixedDeposit;
         challenge.maxDeposit = maxDeposit;
         challenge.verificationMethod = verificationMethod;
-        challenge.privateCode = privateCode;
+        challenge.privateCode = Objects.nonNull(privateCode)?privateCode:null;
         challenge.maxParticipants = maxParticipants;
         challenge.category = category;
         challenge.status = ChallengeStatus.NOT_STARTED;

@@ -172,8 +172,7 @@
             <span th:text="${challenge.endDate}">2025.06.24</span>
           </p>
           <p class="mb-0 text-muted small">
-<!--            <i class="bi bi-check-circle"></i> 최소 인증 횟수: <span th:text="${challenge.checkCount}">14</span>회-->
-            <i class="bi bi-check-circle"></i> 최소 인증 횟수: 14회
+            <i class="bi bi-check-circle"></i> 인증 주기 : <span th:text="${challenge.verificationMethod.frequency.label}">0</span>
           </p>
         </div>
         <div class="card-footer text-end">

@@ -1,0 +1,106 @@
+ <!DOCTYPE html>
+ <html xmlns:th="http://www.thymeleaf.org">
+ <head>
+   <meta charset="UTF-8">
+   <title th:text="${challenge.title}">챌린지 상세</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+   <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+   <style>
+     body {
+       background-color: #ffffff;
+       font-size: 0.95rem;
+     }
+     .content-container {
+       max-width: 720px;
+       margin: 3rem auto 6rem auto;
+       background-color: #fff;
+       padding: 2rem;
+       border-radius: 0.75rem;
+       box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.04);
+     }
+     .fixed-bottom-btn {
+       position: fixed;
+       bottom: 20px;
+       left: 50%;
+       transform: translateX(-50%);
+       z-index: 999;
+     }
+     .section-title {
+       font-weight: 600;
+       font-size: 1.05rem;
+       margin-top: 2rem;
+       margin-bottom: 1rem;
+       border-bottom: 1px solid #dee2e6;
+       padding-bottom: 0.4rem;
+     }
+     .challenge-image {
+       max-height: 280px;
+       object-fit: cover;
+       border-radius: 0.5rem;
+     }
+     .challenge-meta {
+       color: #6c757d;
+       font-size: 0.9rem;
+     }
+   </style>
+ </head>
+ <body>
+ <div th:replace="fragments/navbar :: navbar"></div>
+
+ <div class="container">
+   <div class="content-container" style="margin-top: 120px;">
+
+     <!-- 이미지 -->
+     <div class="mb-4 text-center">
+       <img th:src="@{/images/default-challenge.avif}" class="img-fluid challenge-image shadow-sm" alt="챌린지 이미지">
+     </div>
+
+     <!-- 기본 정보 -->
+     <h3 th:text="${challenge.title}" class="fw-semibold mb-2">챌린지 제목</h3>
+     <p class="challenge-meta mb-1">
+       <i class="bi bi-calendar-event"></i>
+       <span th:text="${challenge.startDate}">2025.06.10</span> ~
+       <span th:text="${challenge.endDate}">2025.06.24</span>
+     </p>
+     <p class="challenge-meta mb-3">
+       <i class="bi bi-people"></i> 최대 <span th:text="${challenge.maxParticipants}">30</span>명
+       &nbsp;|&nbsp;
+       <i class="bi bi-cash-coin"></i>
+       <span th:if="${challenge.isFixedDeposit.name() == 'Y'}" th:text="${challenge.maxDeposit} + '원 (고정)'"></span>
+       <span th:if="${challenge.isFixedDeposit.name() == 'N'}" th:text="${challenge.maxDeposit} + '원까지'"></span>
+     </p>
+
+     <!-- 설명 -->
+     <div class="section-title"><i class="bi bi-info-circle"></i> 챌린지 설명</div>
+     <p class="fs-6" th:text="${challenge.description}">챌린지 설명</p>
+
+     <!-- 개설자 정보 -->
+     <div class="section-title"><i class="bi bi-person-circle"></i> 개설자 정보</div>
+     <p class="fs-6"><strong>닉네임:</strong> <span th:text="${challenge.member?.loginId}">알 수 없음</span></p>
+
+     <!-- 인증 방법 -->
+     <div class="section-title"><i class="bi bi-check-circle"></i> 인증 방법</div>
+     <ul class="list-unstyled fs-6">
+       <li><strong>주기:</strong> <span th:text="${challenge.verificationMethod.frequency.label}">매일</span></li>
+       <li><strong>시간:</strong> <span th:text="${challenge.verificationMethod.startTime}">08:00</span> ~ <span th:text="${challenge.verificationMethod.endTime}">22:00</span></li>
+       <li><strong>하루 인증 횟수:</strong> <span th:text="${challenge.verificationMethod.minDailyCount}">1</span>회</li>
+       <li><strong>수단:</strong> <span th:text="${challenge.verificationMethod.method.description}">사진</span></li>
+     </ul>
+
+     <!-- 리뷰 (임시) -->
+     <div class="section-title"><i class="bi bi-chat-dots"></i> 리뷰</div>
+     <div class="border rounded p-3 bg-light mb-2">아직 작성된 리뷰가 없습니다.</div>
+     <div class="border rounded p-3 bg-light mb-2">참여자가 리뷰를 남기면 여기에 표시됩니다.</div>
+
+   </div>
+ </div>
+
+ <!-- 하단 고정 버튼 -->
+ <div class="fixed-bottom-btn">
+   <a href="#" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">🚀 챌린지 참여하기</a>
+ </div>
+
+ <script th:src="@{/js/navbar.js}"></script>
+ </body>
+ </html>

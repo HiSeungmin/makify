@@ -70,4 +70,10 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         challengeRepository.save(challenge);
     }
+
+    public Challenge getChallenge(Long id) {
+        Challenge challenge = challengeRepository.findByIdWithMember(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
+        return challenge;
+    }
 }

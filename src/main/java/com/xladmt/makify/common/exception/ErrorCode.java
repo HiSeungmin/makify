@@ -24,8 +24,9 @@ public enum ErrorCode {
     CHALLENGE_FIXED_DEPOSIT_INVALID_RANGE(2009, HttpStatus.BAD_REQUEST, "고정 예치금은 1,000원 이상 200,000원 이하여야 합니다."),
     CHALLENGE_MAX_DEPOSIT_INVALID_RANGE(2010, HttpStatus.BAD_REQUEST, "최대 예치금은 1,000원 이상 200,000원 이하여야 합니다."),
     CHALLENGE_MIN_DAILY_COUNT_REQUIRED(2011, HttpStatus.BAD_REQUEST, "최소 인증 횟수는 필수입니다."),
-    CHALLENGE_MIN_DAILY_COUNT_INVALID(2012, HttpStatus.BAD_REQUEST, "최소 인증 횟수는 1 이상이어야 합니다.");
+    CHALLENGE_MIN_DAILY_COUNT_INVALID(2012, HttpStatus.BAD_REQUEST, "최소 인증 횟수는 1 이상이어야 합니다."),
 
+    CHALLENGE_NOT_FOUND(2013,HttpStatus.NOT_FOUND, "챌린지 정보를 찾을 수 없습니다.")
 
 
     ;

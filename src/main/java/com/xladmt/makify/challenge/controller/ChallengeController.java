@@ -16,10 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.Authenticator;
 import java.util.Enumeration;
@@ -39,6 +36,14 @@ public class ChallengeController {
         log.info(challenges.size()+" <--- 챌린지 수");
         model.addAttribute("challenges", challenges);
         return "challenge/challenges";
+    }
+
+    @GetMapping("/challenges/{id}")
+    public String getChallengeDetail(@PathVariable Long id, Model model) {
+        Challenge challenge = challengeService.getChallenge(id);
+
+        model.addAttribute("challenge", challenge);
+        return "challenge/detail"; // detail.html
     }
 
    @GetMapping("/challenges/new")
