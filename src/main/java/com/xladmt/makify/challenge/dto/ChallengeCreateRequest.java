@@ -35,25 +35,4 @@ public class ChallengeCreateRequest {
 
     public Category category;
     private List<MultipartFile> images;
-
-    @Override
-    public String toString() {
-        return "ChallengeCreateRequest{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", verificationType=" + verificationType +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", frequency='" + frequency + '\'' +
-                ", minDailyCount=" + minDailyCount +
-                ", isPublic=" + isPublic +
-                ", privateCode='" + privateCode + '\'' +
-                ", isFixedDeposit=" + isFixedDeposit +
-                ", fixedDeposit=" + fixedDeposit +
-                ", maxDeposit=" + maxDeposit +
-                ", category=" + category +
-                '}';
-    }
 }

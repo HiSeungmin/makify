@@ -1,6 +1,7 @@
 package com.xladmt.makify.challenge.controller;
 
 import com.xladmt.makify.challenge.dto.ChallengeCreateRequest;
+import com.xladmt.makify.challenge.dto.ChallengeDetailResponse;
 import com.xladmt.makify.challenge.service.ChallengeServiceImpl;
 import com.xladmt.makify.common.config.security.MemberDetails;
 import com.xladmt.makify.common.entity.Challenge;
@@ -39,8 +40,13 @@ public class ChallengeController {
     }
 
     @GetMapping("/challenges/{id}")
-    public String getChallengeDetail(@PathVariable Long id, Model model) {
-        Challenge challenge = challengeService.getChallenge(id);
+    public String getChallengeDetail(@PathVariable Long id, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
+        ChallengeDetailResponse challenge = challengeService.getChallenge(id);
+
+        // 로그인한 사용자 ID 전달
+        if (memberDetails != null) {
+            model.addAttribute("loginMemberId", memberDetails.getMember().getLoginId());
+        }
 
         model.addAttribute("challenge", challenge);
         return "challenge/detail"; // detail.html

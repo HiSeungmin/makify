@@ -26,7 +26,10 @@ public enum ErrorCode {
     CHALLENGE_MIN_DAILY_COUNT_REQUIRED(2011, HttpStatus.BAD_REQUEST, "최소 인증 횟수는 필수입니다."),
     CHALLENGE_MIN_DAILY_COUNT_INVALID(2012, HttpStatus.BAD_REQUEST, "최소 인증 횟수는 1 이상이어야 합니다."),
 
-    CHALLENGE_NOT_FOUND(2013,HttpStatus.NOT_FOUND, "챌린지 정보를 찾을 수 없습니다.")
+    CHALLENGE_NOT_FOUND(2013,HttpStatus.NOT_FOUND, "챌린지 정보를 찾을 수 없습니다."),
+
+    // 인증 관련 에러
+    VERIFICATION_METHOD_NOT_FOUND(3001,HttpStatus.NOT_FOUND, "인증 수단 정보를 찾을 수 없습니다."),
 
 
     ;
