@@ -90,13 +90,14 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .maxParticipants(challenge.getMaxParticipants())
                 .isFixedDeposit(challenge.getIsFixedDeposit())
                 .maxDeposit(challenge.getMaxDeposit())
+                .status(challenge.getStatus())
                 .creatorLoginId(challenge.getMember().getLoginId())
                 .frequencyLabel(verificationMethod.getFrequency().getLabel())
                 .startTime(verificationMethod.getStartTime())
                 .endTime(verificationMethod.getEndTime())
                 .minDailyCount(verificationMethod.getMinDailyCount())
                 .verificationType(verificationMethod.getMethod().getDescription())
-                .category(challenge.getCategory())
+                .category(challenge.getCategory().getDescription())
                 .build();
     }
 }

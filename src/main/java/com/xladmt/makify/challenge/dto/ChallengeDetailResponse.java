@@ -1,6 +1,7 @@
 package com.xladmt.makify.challenge.dto;
 
 import com.xladmt.makify.common.constant.Category;
+import com.xladmt.makify.common.constant.ChallengeStatus;
 import com.xladmt.makify.common.constant.VerificationType;
 import com.xladmt.makify.common.constant.YN;
 import lombok.Builder;
@@ -24,6 +25,7 @@ public class ChallengeDetailResponse {
     private Integer maxParticipants;
     private YN isFixedDeposit;
     private Integer maxDeposit;
+    private ChallengeStatus status;
 
     // 개설자
     private String creatorLoginId;
@@ -36,5 +38,5 @@ public class ChallengeDetailResponse {
     private String verificationType;
 
     // 기타
-    private Category category;
+    private String category;
 }
