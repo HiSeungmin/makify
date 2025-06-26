@@ -10,6 +10,7 @@
   <link href="https://cdn.jsdelivr.net/npm/suitcss-fonts@1.0.0/css/suit.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Gmarket+Sans:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+  <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.png}">
   <style>
 
     .search-section h2 {
@@ -161,8 +162,17 @@
   <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
     <div class="col" th:each="challenge : ${challenges}">
       <div class="card h-100 shadow-sm">
-        <!-- 이미지가 있다면 추가 -->
-        <!--        <img th:src="@{${challenge.imageUrl}}" class="card-img-top" alt="챌린지 이미지">-->
+        <!-- 상태 배지 -->
+        <span class="position-absolute top-0 end-0 badge m-2 px-3 py-2 fs-6"
+              th:classappend="
+                ${challenge.status.name()} == 'NOT_STARTED' ? 'bg-primary' :
+                (${challenge.status.name()} == 'IN_PROGRESS' ? 'bg-success' :
+                (${challenge.status.name()} == 'COMPLETED' ? 'bg-secondary' : 'bg-dark'))"
+              th:text="${challenge.status.description}">
+          시작 전
+        </span>
+        <!-- 이미지 추가 -->
+        <img th:src="@{/images/default-challenge.avif}" class="card-img-top" alt="챌린지 이미지">
         <div class="card-body">
           <h5 th:text="${challenge.title}">챌린지 제목</h5>
           <p class="text-muted small mb-2">

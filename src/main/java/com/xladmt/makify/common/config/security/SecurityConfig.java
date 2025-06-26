@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/", "/login","/auth/login", "/signup", "/css/**", "/js/**", "/images/**", "/videos/**"
+                                "/", "/login","/auth/login", "/signup", "/css/**", "/js/**", "/images/**", "/videos/**", "/challenges"
                         ).permitAll()
                         .requestMatchers("/auth/reissue").permitAll()
                         .anyRequest().authenticated()

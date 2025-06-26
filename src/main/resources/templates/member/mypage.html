@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>마이페이지</title>
@@ -26,6 +26,7 @@
   </style>
 </head>
 <body>
+<!-- 네브바 자리 -->
 <div th:replace="fragments/navbar :: navbar"></div>
 
 <div class="container py-5">
@@ -35,10 +36,10 @@
       <div class="profile-card mb-4">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <h4 class="fw-bold mb-1">닉네임: <span th:text="${member.nickname}">사용자닉네임</span></h4>
-            <p class="mb-0 text-muted">이름: <span th:text="${member.name}">홍길동</span> | 생일: <span th:text="${member.birth}">1995-01-01</span></p>
+            <h4 class="fw-bold mb-1">닉네임: 슬기로운챌린지</h4>
+            <p class="mb-0 text-muted">이름: 홍길동 | 생일: 1995-01-01</p>
           </div>
-          <button class="btn btn-outline-primary rounded-pill px-4" onclick="location.href='/profile/edit'">정보 수정</button>
+          <button class="btn btn-outline-primary rounded-pill px-4">정보 수정</button>
         </div>
       </div>
 
@@ -61,11 +62,19 @@
           <div class="card-section">
             <h5 class="fw-semibold">진행중인 챌린지</h5>
             <div class="row row-cols-1 row-cols-md-2 g-3">
-              <div class="col" th:each="c : ${progressingChallenges}">
+              <div class="col">
                 <div class="card shadow-sm">
                   <div class="card-body">
-                    <h6 class="card-title" th:text="${c.title}">챌린지 제목</h6>
-                    <p class="card-text text-muted" th:text="${c.description}">설명</p>
+                    <h6 class="card-title">매일 10분 스트레칭</h6>
+                    <p class="card-text text-muted">매일 스트레칭으로 유연성을 기르자!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card shadow-sm">
+                  <div class="card-body">
+                    <h6 class="card-title">물 2L 마시기</h6>
+                    <p class="card-text text-muted">하루 수분 섭취량을 챌린지로!</p>
                   </div>
                 </div>
               </div>
@@ -74,11 +83,11 @@
           <div class="card-section">
             <h5 class="fw-semibold">시작 예정 챌린지</h5>
             <div class="row row-cols-1 row-cols-md-2 g-3">
-              <div class="col" th:each="c : ${upcomingChallenges}">
+              <div class="col">
                 <div class="card shadow-sm">
                   <div class="card-body">
-                    <h6 class="card-title" th:text="${c.title}">챌린지 제목</h6>
-                    <p class="card-text text-muted" th:text="${c.description}">설명</p>
+                    <h6 class="card-title">아침 7시 기상</h6>
+                    <p class="card-text text-muted">부지런한 하루의 시작을 응원해요.</p>
                   </div>
                 </div>
               </div>
@@ -87,11 +96,11 @@
           <div class="card-section">
             <h5 class="fw-semibold">완료된 챌린지</h5>
             <div class="row row-cols-1 row-cols-md-2 g-3">
-              <div class="col" th:each="c : ${completedChallenges}">
+              <div class="col">
                 <div class="card shadow-sm">
                   <div class="card-body">
-                    <h6 class="card-title" th:text="${c.title}">챌린지 제목</h6>
-                    <p class="card-text text-muted" th:text="${c.description}">설명</p>
+                    <h6 class="card-title">한 달 독서 챌린지</h6>
+                    <p class="card-text text-muted">매일 독서 30분 실천 완료!</p>
                   </div>
                 </div>
               </div>
@@ -104,9 +113,9 @@
           <div class="card-section">
             <h5 class="fw-semibold">작성한 후기</h5>
             <div class="list-group">
-              <div class="list-group-item" th:each="r : ${myReviews}">
-                <h6 class="mb-1" th:text="${r.challengeTitle}">챌린지 제목</h6>
-                <p class="mb-1 text-muted" th:text="${r.content}">후기 내용</p>
+              <div class="list-group-item">
+                <h6 class="mb-1">물 2L 마시기</h6>
+                <p class="mb-1 text-muted">이 챌린지를 통해 진짜 몸이 가벼워졌어요!</p>
               </div>
             </div>
           </div>
@@ -117,9 +126,13 @@
           <div class="card-section">
             <h5 class="fw-semibold">문의 내역</h5>
             <div class="list-group">
-              <div class="list-group-item" th:each="q : ${myInquiries}">
-                <h6 class="mb-1" th:text="${q.title}">문의 제목</h6>
-                <p class="mb-1 text-muted" th:text="${q.status}">답변 상태</p>
+              <div class="list-group-item">
+                <h6 class="mb-1">환급 관련 문의</h6>
+                <p class="mb-1 text-muted">답변 완료</p>
+              </div>
+              <div class="list-group-item">
+                <h6 class="mb-1">챌린지 오류 제보</h6>
+                <p class="mb-1 text-muted">처리 중</p>
               </div>
             </div>
           </div>
@@ -129,6 +142,7 @@
     </div>
   </div>
 </div>
+<div th:replace="fragments/footer :: footer"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/navbar.js}"></script>
