@@ -10,4 +10,5 @@ public interface ChallengeService {
     List<Challenge> getAllVisibleChallenges();
     ChallengeDetailResponse getChallenge(Long id);
     void create(ChallengeCreateRequest request, Long memberId);
+    Challenge join (Long id);
 }

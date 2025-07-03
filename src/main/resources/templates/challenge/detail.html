@@ -120,12 +120,12 @@
             <div class="challenge-image-slider">
                 <div class="category-badge" th:text="'#' +${challenge.category}">건강</div>
                 <div class="top-right-buttons d-flex gap-2">
-                    <!-- ✏️ 수정 버튼: 로그인한 사용자와 개설자가 같을 때만 보임 -->
+                    <!-- 수정 버튼: 로그인한 사용자와 개설자가 같을 때만 보임 -->
                     <div th:if="${loginMemberId != null and loginMemberId == challenge.creatorLoginId}">
                         <a th:href="@{'/challenges/edit/' + ${challenge.id}}" class="btn btn-sm btn-outline-secondary">✏️</a>
                     </div>
 
-                    <!-- 점점점 드롭다운: 누구나 볼 수 있음 -->
+                    <!-- 설정 드롭다운: 신고하기 -->
                     <div class="dropdown">
                         <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-three-dots-vertical"></i>
@@ -198,7 +198,7 @@
 </div>
 
 <div class="fixed-bottom-btn">
-    <a href="#" class="btn btn-primary">🚀 챌린지 참여하기</a>
+    <a th:href="@{'/challenges/' + ${challenge.id} + '/join'}" class="btn btn-primary">🚀 챌린지 참여하기</a>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

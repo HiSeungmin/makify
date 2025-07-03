@@ -100,4 +100,10 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .category(challenge.getCategory().getDescription())
                 .build();
     }
+
+    public Challenge join (Long id){
+        return challengeRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
+
+    }
 }

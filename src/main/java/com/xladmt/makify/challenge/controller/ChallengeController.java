@@ -99,4 +99,16 @@ public class ChallengeController {
         return "redirect:/challenges";
     }
 
+    @GetMapping("/challenges/{id}/join")
+    public String showJoinPage(@PathVariable Long id, Model model) {
+        // 1. 챌린지 조회
+        Challenge challenge = challengeService.join(id);
+
+        // 2. 모델에 담기
+        model.addAttribute("challenge", challenge);
+
+        // 3. 참여 페이지 반환
+        return "challenge/join"; // templates/challenge/join.html
+    }
+
 }
