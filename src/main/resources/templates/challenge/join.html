@@ -5,45 +5,108 @@
   <title>챌린지 참여하기</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .challenge-box {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .section-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #343a40;
+    }
+
+    .form-label {
+      font-weight: 500;
+    }
+
+    .summary-box {
+      background-color: #f1f3f5;
+      padding: 1rem;
+      border-radius: 0.5rem;
+    }
+  </style>
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 
 <div class="container py-5">
-  <h2 class="fw-bold mb-4" th:text="${challenge.title}">챌린지 제목</h2>
+  <div class="challenge-box mx-auto" style="max-width: 720px;">
+    <h2 class="fw-bold mb-4 text-center" th:text="${challenge.title}">챌린지 제목</h2>
 
-  <!-- 챌린지 요약 -->
-  <div class="mb-4">
-    <p th:text="${challenge.description}">챌린지 설명</p>
-    <p>
-      <strong>기간:</strong> <span th:text="${challenge.startDate}"></span> ~ <span th:text="${challenge.endDate}"></span><br>
-      <strong>카테고리:</strong> <span th:text="${challenge.category}"></span><br>
-      <strong>예치금:</strong> <span th:text="${challenge.maxDeposit}"></span>원<br>
-<!--      <strong>인증:</strong> <span th:text="${challenge.verificationType.method.description}"></span> / <span th:text="${challenge.frequencyLabel}"></span>-->
-    </p>
+    <!-- 챌린지 요약 -->
+    <div class="summary-box mb-4">
+      <p class="mb-2" th:text="${challenge.description}">챌린지 설명</p>
+      <ul class="list-unstyled small">
+        <li><strong>기간:</strong> <span th:text="${challenge.startDate}"></span> ~ <span th:text="${challenge.endDate}"></span></li>
+        <li><strong>카테고리:</strong> <span th:text="${challenge.category}"></span></li>
+        <li>
+          <strong>예치금 유형:</strong>
+          <span th:text="${challenge.isFixedDeposit.name() == 'Y'} ? '고정 예치금' : '유동 예치금'"></span>
+        </li>
+        <li><strong>최대 예치금:</strong> <span th:text="${challenge.maxDeposit}"></span>원</li>
+      </ul>
+    </div>
+
+    <!-- 참여 조건 -->
+    <div class="mb-4">
+      <div class="section-title"><i class="bi bi-info-circle"></i> 참여 조건</div>
+      <ul class="small">
+        <li>예치금 결제가 필요합니다.</li>
+        <li>정해진 인증 횟수를 달성하지 못하면 일부 금액이 환급되지 않을 수 있습니다.</li>
+      </ul>
+    </div>
+
+    <!-- 결제 입력 -->
+    <form th:action="@{'/challenges/' + ${challenge.id} + '/join'}" method="post">
+
+      <div class="mb-4">
+        <label for="depositAmount" class="form-label">결제 금액</label>
+
+        <div th:if="${challenge.isFixedDeposit.name() == 'Y'}">
+          <input type="number" class="form-control" id="depositFixAmount" name="depositAmount"
+                 th:value="${challenge.maxDeposit}" readonly>
+          <div class="form-text text-muted">이 챌린지는 고정 예치금 챌린지입니다.</div>
+        </div>
+
+        <div th:if="${challenge.isFixedDeposit.name() != 'Y'}">
+          <input type="number" class="form-control" id="depositAmount" name="depositAmount"
+                 th:placeholder="'1000원 이상, 최대 ' + ${challenge.maxDeposit} + '원 이하'"
+                 min="1000" th:attr="max=${challenge.maxDeposit}" required>
+          <div class="form-text text-muted">원하는 금액을 입력하세요.</div>
+        </div>
+      </div>
+
+      <!-- 보유 자산 사용 -->
+      <div class="mb-4">
+        <label class="form-label">보유 예치금 / 상금 사용</label>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="useBalance" name="useBalance">
+          <label class="form-check-label" for="useBalance">사용하기</label>
+        </div>
+      </div>
+
+      <!-- 약관 동의 -->
+      <div class="mb-4">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="agree" required>
+          <label class="form-check-label" for="agree">
+            <a href="/policy" target="_blank">운영정책</a> 및 <a href="/terms" target="_blank">이용약관</a>에 동의합니다.
+          </label>
+        </div>
+      </div>
+
+      <!-- 참여 버튼 -->
+      <button type="submit" class="btn btn-primary btn-lg w-100">결제하기</button>
+    </form>
   </div>
-
-  <!-- 참여 조건 -->
-  <div class="mb-4">
-    <h5 class="fw-semibold">참여 조건 확인</h5>
-    <ul>
-      <li>예치금 결제가 필요합니다.</li>
-      <li>정해진 인증 횟수 이상 인증하지 않으면 일부 금액이 환급되지 않을 수 있습니다.</li>
-    </ul>
-  </div>
-
-  <!-- 약관 동의 -->
-  <div class="mb-4 form-check">
-    <input class="form-check-input" type="checkbox" id="agree" required>
-    <label class="form-check-label" for="agree">
-      <a href="/policy" target="_blank">운영정책</a> 및 <a href="/terms" target="_blank">이용약관</a>에 동의합니다.
-    </label>
-  </div>
-
-  <!-- 참여 버튼 -->
-  <form th:action="@{'/challenges/' + ${challenge.id} + '/join'}" method="post">
-    <button type="submit" class="btn btn-primary btn-lg w-100">💪 챌린지 참여하기</button>
-  </form>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

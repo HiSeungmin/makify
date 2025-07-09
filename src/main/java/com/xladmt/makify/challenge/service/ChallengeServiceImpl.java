@@ -5,16 +5,14 @@ import com.xladmt.makify.challenge.dto.ChallengeCreateRequest;
 import com.xladmt.makify.challenge.dto.ChallengeDetailResponse;
 import com.xladmt.makify.challenge.repository.ChallengeRepository;
 import com.xladmt.makify.challenge.repository.VerificationMethodRepository;
-import com.xladmt.makify.common.constant.Category;
 import com.xladmt.makify.common.constant.Frequency;
-import com.xladmt.makify.common.constant.VerificationType;
 import com.xladmt.makify.common.entity.Challenge;
 import com.xladmt.makify.common.entity.Member;
 import com.xladmt.makify.common.entity.VerificationMethod;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.member.repository.MemberRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -27,14 +25,13 @@ public class ChallengeServiceImpl implements ChallengeService {
     private final ChallengeRepository challengeRepository;
     private final VerificationMethodRepository verificationMethodRepository;
 
-
+    @Transactional(readOnly = true)
     public List<Challenge> getAllVisibleChallenges() {
         return challengeRepository.findAll()
                 .stream()
                 .filter(challenge -> challenge.getIsVisible().name().equals("Y"))
                 .toList();
     }
-
 
     @Transactional
     public void create(ChallengeCreateRequest request, Long memberId) {
@@ -50,10 +47,9 @@ public class ChallengeServiceImpl implements ChallengeService {
                 request.getMinDailyCount(),
                 request.getVerificationType()
         );
-        // 누락된 저장 로직
         verificationMethodRepository.save(verificationMethod);
 
-        // 이미지 파일 처리 필요
+        // TO-DO: 이미지 파일 처리 필요
 
         // 챌린지 생성
         Challenge challenge = Challenge.create(
@@ -74,6 +70,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         challengeRepository.save(challenge);
     }
 
+    @Transactional(readOnly = true)
     public ChallengeDetailResponse getChallenge(Long id) {
         Challenge challenge = challengeRepository.findByIdWithMember(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
@@ -101,9 +98,9 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .build();
     }
 
+
     public Challenge join (Long id){
         return challengeRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
-
     }
 }

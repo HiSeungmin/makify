@@ -53,6 +53,7 @@ public class Challenge extends BaseEntity {
     private Integer maxParticipants; // 최대 모집 인원
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "category", length = 20)
     private Category category;
 
     @Enumerated(EnumType.STRING)
