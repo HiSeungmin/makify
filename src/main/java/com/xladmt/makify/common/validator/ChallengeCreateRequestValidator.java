@@ -2,15 +2,31 @@ package com.xladmt.makify.common.validator;
 
 import com.xladmt.makify.challenge.dto.ChallengeCreateRequest;
 import com.xladmt.makify.common.constant.YN;
+import com.xladmt.makify.common.exception.ErrorCode;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.Validator;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Map;
 
 @Component
 public class ChallengeCreateRequestValidator implements Validator {
+
+    private static final Map<String, ErrorCode> FIELD_ERROR_CODE_MAP = Map.of(
+            "title", ErrorCode.CHALLENGE_TITLE_REQUIRED,
+            "description", ErrorCode.CHALLENGE_DESCRIPTION_REQUIRED,
+            "category", ErrorCode.CHALLENGE_CATEGORY_REQUIRED,
+            "endDate", ErrorCode.CHALLENGE_INVALID_DATE_RANGE,
+            "endTime", ErrorCode.CHALLENGE_INVALID_TIME_RANGE,
+            "privateCode", ErrorCode.CHALLENGE_PRIVATE_CODE_REQUIRED,
+            "fixedDeposit", ErrorCode.CHALLENGE_FIXED_DEPOSIT_REQUIRED,
+            "maxDeposit", ErrorCode.CHALLENGE_MAX_DEPOSIT_REQUIRED,
+            "minDailyCount", ErrorCode.CHALLENGE_MIN_DAILY_COUNT_REQUIRED
+    );
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -67,5 +83,11 @@ public class ChallengeCreateRequestValidator implements Validator {
         if (request.getCategory() == null) {
             errors.rejectValue("category", "Required", "카테고리를 선택해주세요.");
         }
+    }
+
+    public ErrorCode resolveErrorCode(BindingResult bindingResult) {
+        FieldError firstError = (FieldError) bindingResult.getAllErrors().get(0);
+        String field = firstError.getField();
+        return FIELD_ERROR_CODE_MAP.getOrDefault(field, ErrorCode.INVALID_REQUEST);
     }
 }
