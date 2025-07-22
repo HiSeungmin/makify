@@ -62,6 +62,18 @@ public class Challenge extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private YN isVisible;
 
+    public ChallengeStatus getStatus() {
+        LocalDate today = LocalDate.now();
+        if (today.isBefore(startDate)) {
+            return ChallengeStatus.NOT_STARTED;
+        } else if (today.isAfter(endDate)) {
+            return ChallengeStatus.COMPLETED;
+        } else {
+            return ChallengeStatus.IN_PROGRESS;
+        }
+    }
+
+
     // 생성 메서드
     public static Challenge create(Member member,
                                    String title,
