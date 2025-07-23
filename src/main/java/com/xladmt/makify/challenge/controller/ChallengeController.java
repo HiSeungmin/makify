@@ -40,10 +40,11 @@ public class ChallengeController {
 
     @GetMapping("/challenges/{id}")
     public String getChallengeDetail(@PathVariable Long id, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
-        ChallengeDetailResponse challenge = challengeService.getChallenge(id);
+        String loginId = memberDetails.getMember().getLoginId();
+        ChallengeDetailResponse challenge = challengeService.getChallenge(loginId, id);
 
         if (memberDetails != null) {
-            model.addAttribute("loginMemberId", memberDetails.getMember().getLoginId());
+            model.addAttribute("loginMemberId", loginId);
         }
 
         model.addAttribute("challenge", challenge);

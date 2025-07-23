@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ChallengeService {
     List<Challenge> getAllVisibleChallenges();
-    ChallengeDetailResponse getChallenge(Long id);
+    ChallengeDetailResponse getChallenge(String loginId, Long challengeId);
     void create(ChallengeCreateRequest request, Long memberId);
     Challenge join (Long id);
 }

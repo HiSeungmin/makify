@@ -39,4 +39,6 @@ public class ChallengeDetailResponse {
 
     // 기타
     private String category;
+    private boolean alreadyJoined;
+    private Long currentParticipants;
 }

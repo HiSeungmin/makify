@@ -14,11 +14,14 @@ import java.time.LocalDateTime;
 @Table(name = "UserChallenge")
 public class UserChallenge extends BaseEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
     @ManyToOne
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;

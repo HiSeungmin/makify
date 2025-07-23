@@ -4,6 +4,7 @@ package com.xladmt.makify.challenge.service;
 import com.xladmt.makify.challenge.dto.ChallengeCreateRequest;
 import com.xladmt.makify.challenge.dto.ChallengeDetailResponse;
 import com.xladmt.makify.challenge.repository.ChallengeRepository;
+import com.xladmt.makify.challenge.repository.UserChallengeRepository;
 import com.xladmt.makify.challenge.repository.VerificationMethodRepository;
 import com.xladmt.makify.common.constant.Frequency;
 import com.xladmt.makify.common.entity.Challenge;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 
     private final MemberRepository memberRepository;
     private final ChallengeRepository challengeRepository;
+    private final UserChallengeRepository userChallengeRepository;
     private final VerificationMethodRepository verificationMethodRepository;
 
     @Transactional(readOnly = true)
@@ -71,12 +74,17 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Transactional(readOnly = true)
-    public ChallengeDetailResponse getChallenge(Long id) {
-        Challenge challenge = challengeRepository.findByIdWithMember(id)
+    public ChallengeDetailResponse getChallenge(String loginId, Long challengeId) {
+        Challenge challenge = challengeRepository.findByIdWithMember(challengeId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
+
+        Long memberId = memberRepository.findByLoginId(loginId).get().getId();
 
         VerificationMethod verificationMethod = verificationMethodRepository.findById(challenge.getVerificationMethod().getId())
                 .orElseThrow(()-> new BusinessException(ErrorCode.VERIFICATION_METHOD_NOT_FOUND));
+
+        boolean alreadyJoined = hasJoinedChallenge(challenge.getId(), memberId);
+        Long currentParticipants = getParticipantCount(challenge.getId());
 
         return ChallengeDetailResponse.builder()
                 .id(challenge.getId())
@@ -95,9 +103,19 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .minDailyCount(verificationMethod.getMinDailyCount())
                 .verificationType(verificationMethod.getMethod().getDescription())
                 .category(challenge.getCategory().getDescription())
+                .alreadyJoined(alreadyJoined)
+                .currentParticipants(currentParticipants)
                 .build();
     }
 
+    @Transactional(readOnly = true)
+    public long getParticipantCount(Long challengeId) {
+        return userChallengeRepository.countByChallengeId(challengeId);
+    }
+
+    public boolean hasJoinedChallenge(Long challengeId, Long memberId) {
+        return userChallengeRepository.existsByChallengeIdAndMemberId(challengeId, memberId);
+    }
 
     public Challenge join (Long id){
         return challengeRepository.findById(id)

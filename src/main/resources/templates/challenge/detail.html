@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.png}">
     <style>
         body {
             background-color: #fff;
@@ -197,8 +198,38 @@
     </div>
 </div>
 
-<div class="fixed-bottom-btn">
-    <a th:href="@{'/challenges/' + ${challenge.id} + '/join'}" class="btn btn-primary">🚀 챌린지 참여하기</a>
+
+<div th:if="${challenge.status.name() != 'IN_PROGRESS' and challenge.status.name() != 'COMPLETED'}">
+    <div class="fixed-bottom-btn">
+
+        <!-- 내가 만든 챌린지 -->
+        <button class="btn btn-secondary"
+                th:if="${loginMemberId != null and loginMemberId == challenge.creatorLoginId}"
+                disabled>
+            참가 인원 모집 중
+        </button>
+
+        <!-- 이미 참가 신청한 챌린지 -->
+        <button class="btn btn-secondary"
+                th:if="${challenge.alreadyJoined}"
+                disabled>
+            시작까지 <span id="countdown"></span> 남음
+        </button>
+
+        <!-- 인원 마감 -->
+        <button class="btn btn-secondary"
+                th:if="${challenge.currentParticipants >= challenge.maxParticipants}"
+                disabled>
+            모집 마감 (<span th:text="${challenge.currentParticipants}"></span> / <span th:text="${challenge.maxParticipants}"></span>)
+        </button>
+
+        <!-- 참가 가능 -->
+        <a th:href="@{'/challenges/' + ${challenge.id} + '/join'}"
+           class="btn btn-primary"
+           th:if="${loginMemberId != challenge.creatorLoginId and !challenge.alreadyJoined and challenge.currentParticipants < challenge.maxParticipants}">
+            🚀 챌린지 참여하기
+        </a>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
