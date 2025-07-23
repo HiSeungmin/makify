@@ -4,6 +4,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -11,14 +12,15 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-
-    private static final long ACCESS_TOKEN_EXPIRATION = 1000 * 60 * 15; // 15분
-    private static final long REFRESH_TOKEN_EXPIRATION = 1000L * 60 * 60 * 24 * 30; // 30일
-
     private final Key key;
 
-    public JwtUtil() {
-        String secret = "mysecretkeymakifysecuresecretmakifysecuresecret"; // 256bit 이상
+    @Value("${jwt.access-token-validity}")
+    private long ACCESS_TOKEN_EXPIRATION;
+
+    @Value("${jwt.refresh-token-validity}")
+    private long REFRESH_TOKEN_EXPIRATION;
+
+    public JwtUtil(@Value("${jwt.secret}") String secret) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
