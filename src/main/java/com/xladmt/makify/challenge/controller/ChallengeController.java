@@ -5,9 +5,11 @@ import com.xladmt.makify.challenge.dto.ChallengeDetailResponse;
 import com.xladmt.makify.challenge.service.ChallengeServiceImpl;
 import com.xladmt.makify.common.config.security.MemberDetails;
 import com.xladmt.makify.common.entity.Challenge;
+import com.xladmt.makify.common.entity.UserChallenge;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.common.validator.ChallengeCreateRequestValidator;
+import com.xladmt.makify.payment.dto.RequestPayDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.Authenticator;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -51,7 +55,7 @@ public class ChallengeController {
         return "challenge/detail"; // detail.html
     }
 
-   @GetMapping("/challenges/new")
+    @GetMapping("/challenges/new")
     public String createChallengeForm() {
         return "challenge/create";
     }
@@ -73,15 +77,32 @@ public class ChallengeController {
     }
 
     @GetMapping("/challenges/{id}/join")
-    public String showJoinPage(@PathVariable Long id, Model model) {
+    public String showJoinPage(@PathVariable Long id, @AuthenticationPrincipal MemberDetails memberDetails, Model model) {
         // 1. 챌린지 조회
-        Challenge challenge = challengeService.join(id);
+        Challenge challenge = challengeService.join(memberDetails.getId(), id);
+
+        RequestPayDto requestDto = challengeService.getRequestPayDto(challenge.getId(), memberDetails.getId());
 
         // 2. 모델에 담기
         model.addAttribute("challenge", challenge);
+        model.addAttribute("requestDto", requestDto);
 
         // 3. 참여 페이지 반환
         return "challenge/join"; // templates/challenge/join.html
     }
+
+//    @PostMapping("/challenges/{id}/join")
+//    public String join(@PathVariable Long id, @AuthenticationPrincipal MemberDetails memberDetails) {
+//        UserChallenge userChallenge = challengeService.join(memberDetails.getId(), id);
+//
+//        String message = "주문 실패";
+//        if(userChallenge != null) {
+//            message = "주문 성공";
+//        }
+//
+//        //String encode = URLEncoder.encode(message, StandardCharsets.UTF_8);
+//
+//        return "redirect:/challenges/{id}";
+//    }
 
 }

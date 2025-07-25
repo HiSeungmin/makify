@@ -7,17 +7,19 @@ import com.xladmt.makify.challenge.repository.ChallengeRepository;
 import com.xladmt.makify.challenge.repository.UserChallengeRepository;
 import com.xladmt.makify.challenge.repository.VerificationMethodRepository;
 import com.xladmt.makify.common.constant.Frequency;
-import com.xladmt.makify.common.entity.Challenge;
-import com.xladmt.makify.common.entity.Member;
-import com.xladmt.makify.common.entity.VerificationMethod;
+import com.xladmt.makify.common.constant.PaidStatus;
+import com.xladmt.makify.common.entity.*;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.member.repository.MemberRepository;
+import com.xladmt.makify.payment.dto.RequestPayDto;
+import com.xladmt.makify.payment.repository.PaymentRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +29,9 @@ public class ChallengeServiceImpl implements ChallengeService {
     private final ChallengeRepository challengeRepository;
     private final UserChallengeRepository userChallengeRepository;
     private final VerificationMethodRepository verificationMethodRepository;
+    private final PaymentRepository paymentRepository;
 
+    @Override
     @Transactional(readOnly = true)
     public List<Challenge> getAllVisibleChallenges() {
         return challengeRepository.findAll()
@@ -36,6 +40,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .toList();
     }
 
+    @Override
     @Transactional
     public void create(ChallengeCreateRequest request, Long memberId) {
 
@@ -73,6 +78,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         challengeRepository.save(challenge);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public ChallengeDetailResponse getChallenge(String loginId, Long challengeId) {
         Challenge challenge = challengeRepository.findByIdWithMember(challengeId)
@@ -117,8 +123,54 @@ public class ChallengeServiceImpl implements ChallengeService {
         return userChallengeRepository.existsByChallengeIdAndMemberId(challengeId, memberId);
     }
 
-    public Challenge join (Long id){
+
+    public Challenge showChallenge (Long id){
+
         return challengeRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
+
     }
+
+    @Override
+    @Transactional
+    public Challenge join (Long memberId, Long id){
+
+        Challenge challenge = challengeRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Payment payment = Payment.create(100L, PaidStatus.PENDING);
+
+        paymentRepository.save(payment);
+
+        UserChallenge userChallenge = UserChallenge.createUserChallenge(challenge, member, payment, UUID.randomUUID().toString());
+
+        userChallengeRepository.save(userChallenge);
+
+        return challenge;
+
+    }
+
+
+    public RequestPayDto getRequestPayDto(Long challengeId, Long memberId) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+
+        // 나중에 오류 고치기
+        UserChallenge userChallenge = userChallengeRepository.findByChallengeIdAndMemberId(challengeId, member.getId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
+
+        return RequestPayDto.builder()
+                .uuid(userChallenge.getUuid())
+                .buyerName(member.getName())
+                .buyerEmail(member.getEmail())
+                .build();
+
+    }
+
+
+
 }

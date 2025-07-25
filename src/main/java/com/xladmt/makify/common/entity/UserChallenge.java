@@ -18,13 +18,19 @@ public class UserChallenge extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
 
-    @ManyToOne
+    private String uuid; // 고유 번호
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
 
     private Double progress;
 
@@ -41,4 +47,21 @@ public class UserChallenge extends BaseEntity {
     private Sledding status;
 
     private Integer deAmt; // 예치금
+
+
+    public static UserChallenge createUserChallenge(
+            Challenge challenge,
+            Member member,
+            Payment payment,
+            String uuid
+    ) {
+        UserChallenge userChallenge = new UserChallenge();
+        userChallenge.challenge = challenge;
+        userChallenge.member = member;
+        userChallenge.payment = payment;
+        userChallenge.uuid = uuid;
+
+        return userChallenge;
+    }
+
 }
