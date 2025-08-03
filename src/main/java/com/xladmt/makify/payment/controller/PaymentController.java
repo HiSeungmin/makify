@@ -20,18 +20,13 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-//    @GetMapping("/payment/{id}")
-//    public String paymentPage(@PathVariable(name = "id", required = false) String id,
-//                              Model model) {
-//
-//        RequestPayDto requestDto = paymentService.findRequestDto(id);
-//        model.addAttribute("requestDto", requestDto);
-//        return "payment";
-//    }
-
     @ResponseBody
     @PostMapping("/payment")
     public ResponseEntity<IamportResponse<Payment>> validationPayment(@RequestBody PaymentCallbackRequest request) {
+        log.info("========== [POST] /payment =======");
+        log.info(request.getPaymentUid());
+        log.info(request.getUuid());
+
         IamportResponse<Payment> iamportResponse = paymentService.paymentByCallback(request);
 
         log.info("결제 응답={}", iamportResponse.getResponse().toString());
@@ -39,13 +34,10 @@ public class PaymentController {
         return new ResponseEntity<>(iamportResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/success-payment")
-    public String successPaymentPage() {
-        return "/payment/success-payment";
-    }
 
     @GetMapping("/fail-payment")
     public String failPaymentPage() {
         return "/payment/fail-payment";
     }
+
 }

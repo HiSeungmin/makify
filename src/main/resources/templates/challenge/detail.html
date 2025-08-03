@@ -212,8 +212,9 @@
         <!-- 이미 참가 신청한 챌린지 -->
         <button class="btn btn-secondary"
                 th:if="${challenge.alreadyJoined}"
-                disabled>
-            시작까지 <span id="countdown"></span> 남음
+                disabled
+                th:data-start="${challenge.startDate}">
+            <span id="countdown" class="mx-1"></span>후 시작
         </button>
 
         <!-- 인원 마감 -->
@@ -234,5 +235,36 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/navbar.js}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const countdownSpan = document.getElementById("countdown");
+      const button = document.querySelector("button[data-start]");
+      if (!button || !countdownSpan) return;
+
+      const startDateTimeStr = button.getAttribute("data-start");
+      const targetDate = new Date(startDateTimeStr);
+
+      function updateCountdown() {
+        const now = new Date();
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+          countdownSpan.textContent = "시작됨";
+          clearInterval(timer);
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        countdownSpan.textContent = `${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
+      }
+
+      updateCountdown(); // 초기 실행
+      const timer = setInterval(updateCountdown, 1000);
+    });
+</script>
 </body>
 </html>

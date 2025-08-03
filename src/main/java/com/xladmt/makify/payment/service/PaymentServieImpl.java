@@ -27,20 +27,6 @@ public class PaymentServieImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
     private final IamportClient iamportClient;
 
-//    @Override
-//    public RequestPayDto findRequestDto(String uuid) {
-//
-//        UserChallenge userChallenge = userChallengeRepository.findByUuid(uuid)
-//                .orElseThrow(() -> new IllegalArgumentException("주문 번호가 없습니다. Invalid UUID: " + uuid));
-//
-//        return RequestPayDto.builder()
-//                .buyerName(userChallenge.getMember().getName())
-//                .buyerEmail(userChallenge.getMember().getEmail())
-//                .paymentPrice(userChallenge.getPayment().getAmount())
-//                .challengeName(userChallenge.getChallenge().getTitle())
-//                .uuid(userChallenge.getUuid())
-//                .build();
-//    }
 
     @Override
     public IamportResponse<Payment> paymentByCallback(PaymentCallbackRequest request) {
@@ -48,7 +34,7 @@ public class PaymentServieImpl implements PaymentService {
             // 결제 단건 조회(아임포트)
             IamportResponse<Payment> iamportResponse = iamportClient.paymentByImpUid(request.getPaymentUid());
             // 주문내역 조회
-            UserChallenge userChallenge = userChallengeRepository.findPayment(request.getUuid())
+            UserChallenge userChallenge = userChallengeRepository.findByUuid(request.getUuid())
                     .orElseThrow(() -> new IllegalArgumentException("주문 내역이 없습니다."));
 
             // 결제 완료가 아니면

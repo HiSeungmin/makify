@@ -52,9 +52,7 @@
         var paymentPrice = 100;
         var buyerName = '[[${requestDto.buyerName}]]';
         var buyerEmail = '[[${requestDto.buyerEmail}]]';
-
-        var csrfToken = $("meta[name='_csrf']").attr("content");
-        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var challengeId = [[${challenge.id}]];
 
         IMP.request_pay({
           pg : 'html5_inicis.INIpayTest',
@@ -72,18 +70,17 @@
             jQuery.ajax({
               url: "/payment",
               method: "POST",
-              headers: {"Content-Type": "application/json",
-                [csrfHeader]: csrfToken},
+              headers: {
+                "Content-Type": "application/json"
+              },
               data: JSON.stringify({
                 "payment_uid": rsp.imp_uid,
                 "uuid": rsp.merchant_uid
               })
             }).done(function (response) {
-              alert('결제 완료!');
-              window.location.href = "/success-payment";
+              window.location.href = "/challenges/" + challengeId;
             });
           } else {
-            alert('결제 실패!');
             window.location.href = "/fail-payment";
           }
         });

@@ -124,13 +124,6 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
 
-    public Challenge showChallenge (Long id){
-
-        return challengeRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
-
-    }
-
     @Override
     @Transactional
     public Challenge join (Long memberId, Long id){
@@ -142,6 +135,8 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
         Payment payment = Payment.create(100L, PaidStatus.PENDING);
+
+        //userChallengeRepository.findByChallengeIdAndMemberId(challenge.getId(), member.getId())
 
         paymentRepository.save(payment);
 
