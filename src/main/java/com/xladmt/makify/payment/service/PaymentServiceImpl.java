@@ -9,7 +9,6 @@ import com.xladmt.makify.challenge.repository.UserChallengeRepository;
 import com.xladmt.makify.common.constant.PaidStatus;
 import com.xladmt.makify.common.entity.UserChallenge;
 import com.xladmt.makify.payment.dto.PaymentCallbackRequest;
-import com.xladmt.makify.payment.dto.RequestPayDto;
 import com.xladmt.makify.payment.repository.PaymentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ import java.math.BigDecimal;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PaymentServieImpl implements PaymentService {
+public class PaymentServiceImpl implements PaymentService {
 
     private final UserChallengeRepository userChallengeRepository;
     private final PaymentRepository paymentRepository;
@@ -29,6 +28,7 @@ public class PaymentServieImpl implements PaymentService {
 
 
     @Override
+    @Deprecated
     public IamportResponse<Payment> paymentByCallback(PaymentCallbackRequest request) {
         try {
             // 결제 단건 조회(아임포트)
@@ -72,6 +72,57 @@ public class PaymentServieImpl implements PaymentService {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public IamportResponse<Payment> verifyExternalPayment(String paymentUid) {
+        try {
+            IamportResponse<Payment> iamportResponse = iamportClient.paymentByImpUid(paymentUid);
+            
+            // 결제 완료 상태 확인
+            if (!iamportResponse.getResponse().getStatus().equals("paid")) {
+                throw new RuntimeException("결제가 완료되지 않았습니다.");
+            }
+            
+            return iamportResponse;
+            
+        } catch (IamportResponseException | IOException e) {
+            throw new RuntimeException("외부 결제 검증 실패: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void validatePaymentAmount(String uuid, Payment externalPayment) {
+        UserChallenge userChallenge = userChallengeRepository.findByUuid(uuid)
+                .orElseThrow(() -> new IllegalArgumentException("결제 정보가 존재하지 않습니다."));
+        
+        Long expectedAmount = userChallenge.getPayment().getAmount();
+        Long actualAmount = externalPayment.getAmount().longValue();
+        
+        if (!expectedAmount.equals(actualAmount)) {
+            throw new RuntimeException("결제 금액이 일치하지 않습니다. 예상: " + expectedAmount + ", 실제: " + actualAmount);
+        }
+    }
+
+    @Override
+    public void completePayment(String uuid, String paymentUid) {
+        UserChallenge userChallenge = userChallengeRepository.findByUuid(uuid)
+                .orElseThrow(() -> new IllegalArgumentException("결제 정보가 존재하지 않습니다."));
+        
+        // 결제 상태를 COMPLETE로 변경하고 paymentUid 저장
+        userChallenge.getPayment().updateStatus(PaidStatus.COMPLETE, paymentUid);
+    }
+
+    @Override
+    public void cancelExternalPayment(String paymentUid) {
+        try {
+            // 외부 결제 취소 요청
+            CancelData cancelData = new CancelData(paymentUid, true);
+            iamportClient.cancelPaymentByImpUid(cancelData);
+            
+        } catch (IamportResponseException | IOException e) {
+            throw new RuntimeException("외부 결제 취소 실패: " + e.getMessage(), e);
         }
     }
 }

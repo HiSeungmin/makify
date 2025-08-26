@@ -1,12 +1,13 @@
 package com.xladmt.makify.payment.dto;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PaymentCallbackRequest {
+    @JsonProperty("paymentUid") // JavaScript에서 보내는 이름과 일치
     private String paymentUid; // 결제 고유 번호
+    
     private String uuid; // 주문 고유 번호
+
 }

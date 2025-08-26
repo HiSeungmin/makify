@@ -1,12 +1,10 @@
 package com.xladmt.makify.common.entity;
 
-import com.xladmt.makify.common.constant.Sledding;
+import com.xladmt.makify.common.constant.UserChallengeStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -44,7 +42,7 @@ public class UserChallenge extends BaseEntity {
     private String alarmDate; // 알림 반복 요일
 
     @Enumerated(EnumType.STRING)
-    private Sledding status;
+    private UserChallengeStatus status;
 
     private Integer deAmt; // 예치금
 
@@ -60,8 +58,23 @@ public class UserChallenge extends BaseEntity {
         userChallenge.member = member;
         userChallenge.payment = payment;
         userChallenge.uuid = uuid;
+        userChallenge.status = UserChallengeStatus.PENDING; // 초기 상태는 PENDING
 
         return userChallenge;
+    }
+
+    /**
+     * 챌린지 참여 상태를 JOINED로 변경
+     */
+    public void markAsJoined() {
+        this.status = UserChallengeStatus.JOINED;
+    }
+
+    /**
+     * 챌린지 참여 상태를 취소로 변경
+     */
+    public void markAsCancelled() {
+        this.status = UserChallengeStatus.CANCEL; // CANCEL로 수정
     }
 
 }

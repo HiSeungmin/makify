@@ -2,6 +2,7 @@ package com.xladmt.makify.challenge.controller;
 
 import com.xladmt.makify.challenge.dto.ChallengeCreateRequest;
 import com.xladmt.makify.challenge.dto.ChallengeDetailResponse;
+import com.xladmt.makify.challenge.repository.ChallengeRepository;
 import com.xladmt.makify.challenge.service.ChallengeServiceImpl;
 import com.xladmt.makify.common.config.security.MemberDetails;
 import com.xladmt.makify.common.entity.Challenge;
@@ -33,6 +34,7 @@ import java.util.List;
 public class ChallengeController {
 
     private final ChallengeServiceImpl challengeService;
+    private final ChallengeRepository challengeRepository;
     private final ChallengeCreateRequestValidator challengeCreateRequestValidator;
 
     @GetMapping("/challenges")
@@ -42,16 +44,15 @@ public class ChallengeController {
         return "challenge/challenges";
     }
 
+    // 챌린지 상세 패이지
     @GetMapping("/challenges/{id}")
     public String getChallengeDetail(@PathVariable Long id, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
         String loginId = memberDetails.getMember().getLoginId();
         ChallengeDetailResponse challenge = challengeService.getChallenge(loginId, id);
 
-        if (memberDetails != null) {
-            model.addAttribute("loginMemberId", loginId);
-        }
-
+        model.addAttribute("loginMemberId", loginId);
         model.addAttribute("challenge", challenge);
+
         return "challenge/detail"; // detail.html
     }
 
@@ -76,33 +77,27 @@ public class ChallengeController {
         return "redirect:/challenges";
     }
 
+    // 챌린지 참여 페이지 - 결제 정보만 표시 (DB 생성 X)
     @GetMapping("/challenges/{id}/join")
     public String showJoinPage(@PathVariable Long id, @AuthenticationPrincipal MemberDetails memberDetails, Model model) {
         // 1. 챌린지 조회
-        Challenge challenge = challengeService.join(memberDetails.getId(), id);
-
-        RequestPayDto requestDto = challengeService.getRequestPayDto(challenge.getId(), memberDetails.getId());
-
-        // 2. 모델에 담기
+        Challenge challenge = challengeRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
+        
+        // 2. 참여 가능 여부 확인 (예외 발생시 에러 페이지로)
+        challengeService.validateJoinable(id, memberDetails.getId());
+        
+        // 3. 결제 정보만 준비 (uuid 없음)
+        RequestPayDto paymentInfo = challengeService.getPaymentInfo(id, memberDetails.getId());
+        
+        // 4. 모델에 담기
         model.addAttribute("challenge", challenge);
-        model.addAttribute("requestDto", requestDto);
-
-        // 3. 참여 페이지 반환
-        return "challenge/join"; // templates/challenge/join.html
+        model.addAttribute("paymentInfo", paymentInfo);
+        model.addAttribute("challengeId", id);
+        model.addAttribute("userId", memberDetails.getId());
+        
+        // 5. 참여 페이지 반환
+        return "challenge/join";
     }
-
-//    @PostMapping("/challenges/{id}/join")
-//    public String join(@PathVariable Long id, @AuthenticationPrincipal MemberDetails memberDetails) {
-//        UserChallenge userChallenge = challengeService.join(memberDetails.getId(), id);
-//
-//        String message = "주문 실패";
-//        if(userChallenge != null) {
-//            message = "주문 성공";
-//        }
-//
-//        //String encode = URLEncoder.encode(message, StandardCharsets.UTF_8);
-//
-//        return "redirect:/challenges/{id}";
-//    }
 
 }
