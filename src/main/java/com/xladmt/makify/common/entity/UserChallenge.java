@@ -63,18 +63,20 @@ public class UserChallenge extends BaseEntity {
         return userChallenge;
     }
 
-    /**
-     * 챌린지 참여 상태를 JOINED로 변경
-     */
+    // 챌린지 참여 상태를 JOINED로 변경
     public void markAsJoined() {
         this.status = UserChallengeStatus.JOINED;
     }
 
-    /**
-     * 챌린지 참여 상태를 취소로 변경
-     */
-    public void markAsCancelled() {
-        this.status = UserChallengeStatus.CANCEL; // CANCEL로 수정
+    // 챌린지 참여 상태를 FAILED로 변경
+    public void markAsFailed() {
+        this.status = UserChallengeStatus.FAIL;
     }
+
+    // 챌린지 참여 상태를 취소로 변경
+    public void markAsCancelled() {
+        this.status = UserChallengeStatus.CANCEL;
+    }
+
 
 }

@@ -128,71 +128,6 @@ public class ChallengeServiceImpl implements ChallengeService {
 
     @Override
     @Transactional
-    public Challenge join (Long memberId, Long id){
-
-//        Challenge challenge = challengeRepository.findById(id)
-//                .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
-//
-//        Member member = memberRepository.findById(memberId)
-//                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
-//
-//        // TODO 가격 임시로 설정 **
-//        Payment payment = Payment.create(100L, PaidStatus.PENDING);
-//
-//        paymentRepository.save(payment);
-//
-//        UserChallenge userChallenge = UserChallenge.createUserChallenge(challenge, member, payment, UUID.randomUUID().toString());
-//
-//        userChallengeRepository.save(userChallenge);
-//
-//        return challenge;
-        return null;
-    }
-
-
-//    @Deprecated
-//    public RequestPayDto getRequestPayDto(Long challengeId, Long memberId) {
-//        Member member = memberRepository.findById(memberId)
-//                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
-//
-//        UserChallenge userChallenge = userChallengeRepository
-//                .findByChallengeIdAndMemberId(challengeId, member.getId())
-//                .orElseThrow(() -> new BusinessException(ErrorCode.USER_CHALLENGE_NOT_FOUND));
-//
-//        return RequestPayDto.builder()
-//                .uuid(userChallenge.getUuid())
-//                .buyerName(member.getName())
-//                .buyerEmail(member.getEmail())
-//                .build();
-//    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public void validateJoinable(Long challengeId, Long userId) {
-        // 1. 챌린지 존재 확인
-        Challenge challenge = challengeRepository.findById(challengeId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
-        
-        // 2. 사용자 존재 확인
-        Member member = memberRepository.findById(userId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
-        
-        // 3. 이미 참여했는지 확인
-        if (hasJoinedChallenge(challengeId, member.getId())) {
-            throw new BusinessException(ErrorCode.ALREADY_JOINED_CHALLENGE);
-        }
-        
-        // 4. 참여 가능 인원 확인
-        long currentParticipants = getParticipantCount(challengeId);
-        if (currentParticipants >= challenge.getMaxParticipants()) {
-            throw new BusinessException(ErrorCode.CHALLENGE_FULL);
-        }
-        
-        // 5. 챌린지 시작 전인지 확인 등 추가 검증...
-    }
-
-    @Override
-    @Transactional
     public String createPendingUserChallenge(Long challengeId, Long userId) {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
@@ -200,7 +135,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
         
-        // 결제 금액 계산 (임시로 100L 설정, 나중에 로직 개선)
+        // 결제 금액 계산
         Long paymentAmount = 100L; // TODO: 실제 로직으로 변경
         
         // PENDING 상태로 Payment 생성
@@ -221,21 +156,18 @@ public class ChallengeServiceImpl implements ChallengeService {
         UserChallenge userChallenge = userChallengeRepository.findByUuid(uuid)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_CHALLENGE_NOT_FOUND));
         
-        // 상태를 JOINED로 변경 (UserChallenge 엔티티에 메서드 필요)
+        // 상태를 JOINED로 변경
         userChallenge.markAsJoined();
     }
 
     @Override
     @Transactional
-    public void updateFailUserChallenge(String uuid) {
+    public void failUserChallenge(String uuid) {
         UserChallenge userChallenge = userChallengeRepository.findByUuid(uuid)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_CHALLENGE_NOT_FOUND));
-        
-        // Payment도 함께 삭제
-        Payment payment = userChallenge.getPayment();
-        
-        userChallengeRepository.delete(userChallenge);
-        paymentRepository.delete(payment);
+
+        // 상태를 FAIL로 변경
+        userChallenge.markAsFailed();
     }
 
     @Override

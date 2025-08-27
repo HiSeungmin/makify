@@ -26,8 +26,6 @@ public class PaymentController {
     @ResponseBody
     @PostMapping("/payment/init")
     public ResponseEntity<Map<String, String>> initPayment(@RequestBody PaymentInitRequest request) {
-        log.info("========== [POST] /payment/init =======");
-        log.info("challengeId: {}, userId: {}", request.getChallengeId(), request.getUserId());
 
         try {
             String uuid = paymentFacade.initializePayment(request);
@@ -39,7 +37,7 @@ public class PaymentController {
             ));
             
         } catch (Exception e) {
-            log.error("결제 초기화 실패", e);
+
             return ResponseEntity.badRequest().body(Map.of(
                 "status", "error",
                 "message", e.getMessage()
@@ -53,14 +51,10 @@ public class PaymentController {
     @ResponseBody
     @PostMapping("/payment/callback")
     public ResponseEntity<Map<String, Object>> paymentCallback(@RequestBody PaymentCallbackRequest request) {
-        log.info("========== [POST] /payment/callback =======");
-        log.info("paymentUid: {}, uuid: {}", request.getPaymentUid(), request.getUuid());
 
         try {
             IamportResponse<Payment> iamportResponse = paymentFacade.processPaymentCallback(request);
-            
-            log.info("결제 완료 처리 성공 - amount: {}", iamportResponse.getResponse().getAmount());
-            
+
             return ResponseEntity.ok(Map.of(
                 "status", "success",
                 "message", "결제 완료",
@@ -68,7 +62,7 @@ public class PaymentController {
             ));
             
         } catch (Exception e) {
-            log.error("결제 완료 처리 실패", e);
+
             return ResponseEntity.badRequest().body(Map.of(
                 "status", "error",
                 "message", e.getMessage()

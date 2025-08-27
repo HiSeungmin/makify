@@ -10,6 +10,7 @@ import com.xladmt.makify.common.entity.UserChallenge;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.common.validator.ChallengeCreateRequestValidator;
+import com.xladmt.makify.common.validator.ChallengeValidator;
 import com.xladmt.makify.payment.dto.RequestPayDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,6 +37,7 @@ public class ChallengeController {
     private final ChallengeServiceImpl challengeService;
     private final ChallengeRepository challengeRepository;
     private final ChallengeCreateRequestValidator challengeCreateRequestValidator;
+    private final ChallengeValidator challengeValidator;
 
     @GetMapping("/challenges")
     public String getChallenges(Model model) {
@@ -84,8 +86,8 @@ public class ChallengeController {
         Challenge challenge = challengeRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
         
-        // 2. 참여 가능 여부 확인 (예외 발생시 에러 페이지로)
-        challengeService.validateJoinable(id, memberDetails.getId());
+        // 2. 참여 가능 여부 확인
+        challengeValidator.validateJoinable(id, memberDetails.getId());
         
         // 3. 결제 정보만 준비 (uuid 없음)
         RequestPayDto paymentInfo = challengeService.getPaymentInfo(id, memberDetails.getId());

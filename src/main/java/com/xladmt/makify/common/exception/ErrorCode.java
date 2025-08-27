@@ -30,9 +30,22 @@ public enum ErrorCode {
     USER_CHALLENGE_NOT_FOUND(2014,HttpStatus.NOT_FOUND, "사용자가 참여한 챌린지 정보를 찾을 수 없습니다."),
     ALREADY_JOINED_CHALLENGE(2015, HttpStatus.BAD_REQUEST, "이미 참여한 챌린지입니다."),
     CHALLENGE_FULL(2016, HttpStatus.BAD_REQUEST, "참여 가능한 인원이 모두 찬 챌린지입니다."),
+    CHALLENGE_ALREADY_STARTED(2017, HttpStatus.BAD_REQUEST, "이미 시작된 챌린지입니다."),
 
     // 인증 관련 에러
     VERIFICATION_METHOD_NOT_FOUND(3001,HttpStatus.NOT_FOUND, "인증 수단 정보를 찾을 수 없습니다."),
+
+    // 결제 관련 에러
+    PAYMENT_INIT_FAIL(4001, HttpStatus.BAD_REQUEST,"결제 초기화에 실패했습니다"),
+    PAYMENT_PROCESSING_FAIL(4002, HttpStatus.BAD_REQUEST,"결제 완료 처리에 실패했습니다"),
+    PAYMENT_NOT_FAIL(4003, HttpStatus.BAD_REQUEST,"결제 실패 처리에 실패했습니다"),
+
+    PAYMENT_NOT_FOUND(4004, HttpStatus.NOT_FOUND, "결제 정보를 찾을 수 없습니다."),
+    PAYMENT_NOT_COMPLETED(4005, HttpStatus.BAD_REQUEST, "결제가 완료되지 않았습니다."),
+    PAYMENT_AMOUNT_MISMATCH(4006, HttpStatus.BAD_REQUEST, "결제 금액이 일치하지 않습니다."),
+    PAYMENT_ALREADY_PROCESSED(4007, HttpStatus.BAD_REQUEST, "이미 처리된 결제입니다.")
+
+
 
 
     ;
