@@ -31,18 +31,13 @@ public class PaymentFacade {
     @Transactional
     public String initializePayment(PaymentInitRequest request) {
 
-        try {
-            // 1. 챌린지 참여 가능 여부 검증
-            challengeValidator.validateJoinable(request.getChallengeId(), request.getUserId());
-            
-            // 2. PENDING 상태로 UserChallenge + Payment 생성
-            String uuid = challengeService.createPendingUserChallenge(request.getChallengeId(), request.getUserId());
+        // 1. 챌린지 참여 가능 여부 검증
+        challengeValidator.validateJoinable(request.getChallengeId(), request.getUserId());
 
-            return uuid;
-            
-        } catch (Exception e) {
-            throw new BusinessException(ErrorCode.PAYMENT_INIT_FAIL);
-        }
+        // 2. PENDING 상태로 UserChallenge + Payment 생성
+        String uuid = challengeService.createPendingUserChallenge(request.getChallengeId(), request.getUserId());
+
+        return uuid;
     }
 
     /**
@@ -74,18 +69,14 @@ public class PaymentFacade {
      * 실패한 결제 처리
      */
     private void cleanupFailedPayment(String uuid, String paymentUid) {
-        try {
-            // 1. DB에서 PENDING -> CANCEL
-            challengeService.failUserChallenge(uuid);
-            paymentService.failPayment(uuid, paymentUid);
-            
-            // 2. 외부 결제 취소
-            if (paymentUid != null && !paymentUid.isEmpty()) {
-                paymentService.cancelExternalPayment(paymentUid);
-            }
 
-        } catch (Exception e) {
-            throw new BusinessException(ErrorCode.PAYMENT_NOT_FAIL);
+        // 1. DB에서 PENDING -> CANCEL
+        challengeService.failUserChallenge(uuid);
+        paymentService.failPayment(uuid, paymentUid);
+
+        // 2. 외부 결제 취소
+        if (paymentUid != null && !paymentUid.isEmpty()) {
+            paymentService.cancelExternalPayment(paymentUid);
         }
     }
 
