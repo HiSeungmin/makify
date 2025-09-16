@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" 
+      lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,7 +34,8 @@
             Makify는 당신의 창작 활동을 돕는 웹 플랫폼입니다.<br>
             함께 도전하고, 인증하고, 성취를 나누세요.
           </p>
-          <a href="#" class="btn btn-light btn-lg px-4 py-3">시작하기</a>
+          <a sec:authorize="isAuthenticated()" th:href="@{/challenges}" class="btn btn-light btn-lg px-3 py-2">시작하기</a>
+          <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="btn btn-light btn-lg px-3 py-2">시작하기</a>
         </div>
       </div>
     </div>
