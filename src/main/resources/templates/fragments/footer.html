@@ -1,34 +1,73 @@
-<footer class="bg-light text-center text-lg-start border-top mt-5 pt-2 pb-2">
-    <div class="container text-center text-md-start">
-        <div class="row">
-            <!-- 브랜드 정보 -->
-            <div class="col-md-4 col-lg-5 col-xl-5 mb-2 footer-text">
-                <h6 class="text-uppercase fw-bold">(주)Makify</h6>
-                <p>챌린지를 통해 건강하고 의미 있는 일상을 만들어가는 플랫폼</p>
-                <p>대표 : 오승민 | 사업자번호 : 등록안했음</p>
-                <p>주소 : 서울특별시 야근구 커피로 24, 불타는개발센터 9층</p>
-                <p>전화 : 02-404-0505 | 고객문의 : makify.team@gmail.com</p>
-            </div>
-
-            <!-- 링크 -->
-            <div class="col-md-2 col-lg-3 col-xl-3 mb-md-0 mb-2 footer-text">
-                <h6 class="text-uppercase fw-bold">서비스</h6>
-                <p><a href="#" class="text-reset text-decoration-none">이용약관</a></p>
-                <p><a href="#" class="text-reset text-decoration-none">개인정보처리방침</a></p>
-                <p><a href="#" class="text-reset text-decoration-none">운영정책</a></p>
-                <p><a href="https://forms.gle/STeLdyaJwnmzbkk9A" class="text-reset text-decoration-none">버그 리포트</a></p>
-            </div>
-
-            <!-- 연락처 -->
-            <div class="col-md-2 col-lg-3 col-xl-3 mb-md-0 mb-2 footer-text">
-                <h6 class="text-uppercase fw-bold">Contact</h6>
-                <p><i class="bi bi-envelope"></i> makify.team@gmail.com</p>
-                <p><i class="bi bi-github"></i> <a href="https://github.com/HiSeungmin/makify" class="text-reset text-decoration-none">GitHub</a></p>
-            </div>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<body>
+<footer class="footer" th:fragment="footer">
+  <div class="footer-content">
+    <div class="footer-top">
+      <!-- Brand Section -->
+      <div class="footer-brand">
+        <a href="/" class="footer-logo">
+          <div class="footer-logo-icon">
+            <i class="bi bi-check2-circle"></i>
+          </div>
+          HabitChallenge
+        </a>
+        <p class="footer-description">
+          건강한 습관으로 더 나은 삶을 만들어가는 챌린지 플랫폼
+        </p>
+        <div class="footer-social">
+          <a href="#" class="social-link" aria-label="Instagram">
+            <i class="bi bi-instagram"></i>
+          </a>
+          <a href="#" class="social-link" aria-label="Twitter">
+            <i class="bi bi-twitter"></i>
+          </a>
+          <a href="#" class="social-link" aria-label="YouTube">
+            <i class="bi bi-youtube"></i>
+          </a>
         </div>
+      </div>
+
+      <!-- Challenge Links -->
+      <div class="footer-section">
+        <h3 class="footer-title">챌린지</h3>
+        <ul class="footer-links">
+          <li><a href="/challenges/popular">인기 챌린지</a></li>
+          <li><a href="/challenges/new">새로운 챌린지</a></li>
+          <li><a href="/challenges/categories">카테고리별</a></li>
+          <li><a href="/challenges/create">챌린지 만들기</a></li>
+        </ul>
+      </div>
+
+      <!-- Community Links -->
+      <div class="footer-section">
+        <h3 class="footer-title">커뮤니티</h3>
+        <ul class="footer-links">
+          <li><a href="/community/feed">피드</a></li>
+          <li><a href="/community/ranking">랭킹</a></li>
+          <li><a href="/community/reviews">후기</a></li>
+          <li><a href="/community/faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- Support Links -->
+      <div class="footer-section">
+        <h3 class="footer-title">고객지원</h3>
+        <ul class="footer-links">
+          <li><a href="/support/notice">공지사항</a></li>
+          <li><a href="/support/contact">문의하기</a></li>
+          <li><a href="/support/terms">이용약관</a></li>
+          <li><a href="/support/privacy">개인정보처리방침</a></li>
+        </ul>
+      </div>
     </div>
 
-    <div class="text-center p-1 small text-muted border-top mt-2">
-        © 2025 Makify. All rights reserved.
+    <div class="footer-bottom">
+      <p class="footer-copyright">
+        © 2024 HabitChallenge. All rights reserved.
+      </p>
     </div>
+  </div>
 </footer>
+</body>
+</html>

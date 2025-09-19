@@ -1,232 +1,227 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" 
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security" 
-      lang="en">
+      lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Makify</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+  <link rel="stylesheet" th:href="@{/css/footer.css}" />
+  <link rel="stylesheet" th:href="@{/css/home.css}" />
   <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.png}">
 </head>
 <body>
-<div th:replace="fragments/navbar :: navbar"></div>
+  <div th:replace="fragments/navbar :: navbar"></div>
 
-<!-- Hero Section -->
-<section class="hero-enterprise">
-  <video autoplay muted loop playsinline class="hero-video">
-    <source src="/videos/motivation.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-8 text-center">
-          <h1 class="hero-title">
-            당신의 아이디어를 실현하세요
-          </h1>
-          <p class="hero-subtitle">
-            Makify는 당신의 창작 활동을 돕는 웹 플랫폼입니다.<br>
-            함께 도전하고, 인증하고, 성취를 나누세요.
-          </p>
-          <a sec:authorize="isAuthenticated()" th:href="@{/challenges}" class="btn btn-light btn-lg px-3 py-2">시작하기</a>
-          <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="btn btn-light btn-lg px-3 py-2">시작하기</a>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          좋은 습관,<br>
+          <span class="highlight">매일 조금씩</span>
+        </h1>
+        <p class="hero-subtitle">
+          새해 습관 개선 챌린지에 참여하고, 매일 인증하며 건강한 변화를
+          만들어보세요.
+        </p>
+        
+        <div class="hero-actions">
+          <a sec:authorize="isAuthenticated()" href="/challenges" class="btn-primary-large">챌린지 시작하기</a>
+          <a sec:authorize="!isAuthenticated()" href="/login" class="btn-primary-large">챌린지 시작하기</a>
+          <a href="/#" class="btn-secondary-large">둘러보기</a>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- Main Content Section -->
-<section class="main-content-section">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-10">
-        <div class="main-content">
-          <h2 class="main-title">
-            Makify가 당신의 도전을<br>
-            <span class="text-primary">성공으로 이끌어 냅니다</span>
-          </h2>
-          <p class="main-subtitle">
-            혁신적인 챌린지 플랫폼으로 연결하는 개인의 성장과 공동체의 힘<br>
-            Makify가 만들어가는 새로운 도전의 세상입니다.
-          </p>
-          <div class="main-keywords">
-            <span class="keyword">CHALLENGE</span>
-            <span class="keyword">GROWTH</span>
-            <span class="keyword">COMMUNITY</span>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-icon">
+              <i class="bi bi-hourglass-split" style="color: #10b981; font-size: 20px;"></i>
+            </div>
+            <div class="stat-number">1,234</div>
+            <div class="stat-label">완료된 챌린지</div>
+          </div>
+          
+          <div class="stat-item">
+            <div class="stat-icon">
+              <i class="bi bi-people" style="color: #10b981; font-size: 20px;"></i>
+            </div>
+            <div class="stat-number">5,678</div>
+            <div class="stat-label">활성 사용자</div>
+          </div>
+          
+          <div class="stat-item">
+            <div class="stat-icon">
+              <i class="bi bi-trophy" style="color: #f59e0b; font-size: 20px;"></i>
+            </div>
+            <div class="stat-number">42</div>
+            <div class="stat-label">챌린지 종류</div>
+          </div>
+          
+          <div class="stat-item">
+            <div class="stat-icon">
+              <i class="bi bi-graph-up" style="color: #10b981; font-size: 20px;"></i>
+            </div>
+            <div class="stat-number">89%</div>
+            <div class="stat-label">성공률</div>
           </div>
         </div>
       </div>
+      
+      <div class="hero-image">
+        <div class="hero-illustration"></div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Mission Statement -->
-<section class="mission-section">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-10">
-        <div class="mission-content">
-          <h2 class="mission-title">CHALLENGE<br>TRANSFORMATION</h2>
-          <div class="mission-text">
-            <p class="lead">
-              우리는 도전에 대한 답을 찾는 집단입니다. 개인의 성장을 향한 인간의 끊임없는 노력, 
-              데이터와 커뮤니티의 연결로 만들어 낼 가치, 지속 가능한 동기부여를 실현할 챌린지 생태계. 
-              전문적인 기술력을 갖춘 개발자들이 모여 개인 성장을 향한 인류의 오랜 고민에 대한 답을 찾아갑니다.
-            </p>
+  <!-- Popular Challenges Section -->
+  <section class="popular-challenges">
+    <div class="section-header">
+      <h2 class="section-title">인기 챌린지</h2>
+      <p class="section-subtitle">많은 사람들이 함께하고 있는 인기 챌린지에 참여해보세요</p>
+    </div>
+    
+    <div class="challenges-grid">
+      <!-- Challenge 1: 운동 -->
+      <div class="challenge-card">
+        <div class="challenge-image" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=200&fit=crop');">
+          <div class="challenge-badge">운동</div>
+          <div class="challenge-difficulty difficulty-초급">초급</div>
+        </div>
+        <div class="challenge-content">
+          <h3 class="challenge-title">매일 10,000보 걷기</h3>
+          <p class="challenge-description">건강한 몸을 위해 매일 만보 걷기 챌린지에 도전해보세요. 꾸준한 걷기로 체력 향상과 건강 관리...</p>
+          <div class="challenge-meta">
+            <span><i class="bi bi-people"></i> 15,420명 참여</span>
+            <span><i class="bi bi-calendar"></i> 30일</span>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Business Areas -->
-<section class="business-areas">
-  <div class="container">
-    <div class="section-header text-center mb-5">
-      <span class="section-label">BUSINESS AREA</span>
-      <h2 class="section-title">핵심 서비스 영역</h2>
-    </div>
-    
-    <div class="business-grid">
-      <!-- Photo Challenge -->
-      <div class="business-item">
-        <div class="business-image">
-          <i class="bi bi-camera-fill"></i>
-        </div>
-        <div class="business-content">
-          <h3>Photo Challenge</h3>
-          <p>
-            스마트폰과 카메라를 활용한 일상 인증 시스템. Makify는 간편한 사진 업로드와 
-            실시간 피드백으로 지속가능한 도전 환경을 제공하며, 개인의 꾸준한 성장을 
-            데이터 기반으로 지원합니다.
-          </p>
-          <a href="#" class="business-link">자세히 보기 <i class="bi bi-arrow-right"></i></a>
+          <div class="challenge-progress">
+            <div class="progress-text">
+              <span>진행률</span>
+              <span>65%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 65%"></div>
+            </div>
+          </div>
+          <a href="/challenges/1" class="challenge-join-btn">
+            <i class="bi bi-trophy"></i> 챌린지 참여
+          </a>
         </div>
       </div>
 
-      <!-- Social Platform -->
-      <div class="business-item">
-        <div class="business-image">
-          <i class="bi bi-people-fill"></i>
+      <!-- Challenge 2: 독서 -->
+      <div class="challenge-card">
+        <div class="challenge-image" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=200&fit=crop');">
+          <div class="challenge-badge">자기계발</div>
+          <div class="challenge-difficulty difficulty-중급">중급</div>
         </div>
-        <div class="business-content">
-          <h3>Social Platform</h3>
-          <p>
-            친구와 팀원들과 함께하는 소셜 챌린지 플랫폼. 실시간 진행상황 공유와 
-            상호 응원 시스템을 통해 개인의 동기부여를 극대화하고, 공동체의 힘으로 
-            더 큰 성취를 이루어낼 수 있습니다.
-          </p>
-          <a href="#" class="business-link">자세히 보기 <i class="bi bi-arrow-right"></i></a>
-        </div>
-      </div>
-
-      <!-- Data Analytics -->
-      <div class="business-item">
-        <div class="business-image">
-          <i class="bi bi-graph-up-arrow"></i>
-        </div>
-        <div class="business-content">
-          <h3>Data Analytics</h3>
-          <p>
-            개인의 도전 패턴과 성취도를 분석하는 인텔리전트 시스템. 축적된 데이터를 
-            기반으로 개인 맞춤형 인사이트를 제공하여 더 효과적인 목표 설정과 
-            지속가능한 성장 경로를 제시합니다.
-          </p>
-          <a href="#" class="business-link">자세히 보기 <i class="bi bi-arrow-right"></i></a>
+        <div class="challenge-content">
+          <h3 class="challenge-title">하루 한 권 독서하기</h3>
+          <p class="challenge-description">지식과 교양을 쌓는 독서 습관 만들기. 매일 책을 읽고 인증하며 독서왕이 되어보세요.</p>
+          <div class="challenge-meta">
+            <span><i class="bi bi-people"></i> 8,930명 참여</span>
+            <span><i class="bi bi-calendar"></i> 21일</span>
+          </div>
+          <div class="challenge-progress">
+            <div class="progress-text">
+              <span>진행률</span>
+              <span>42%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 42%"></div>
+            </div>
+          </div>
+          <a href="/challenges/2" class="challenge-join-btn">
+            <i class="bi bi-trophy"></i> 챌린지 참여
+          </a>
         </div>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- Statistics -->
-<section class="statistics-section">
-  <div class="container">
-    <div class="stats-grid">
-      <div class="stat-item">
-        <div class="stat-number">15K+</div>
-        <div class="stat-label">활성 사용자</div>
+      <!-- Challenge 3: 미라클 모닝 -->
+      <div class="challenge-card">
+        <div class="challenge-image" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=200&fit=crop');">
+          <div class="challenge-badge">라이프스타일</div>
+          <div class="challenge-difficulty difficulty-고급">고급</div>
+        </div>
+        <div class="challenge-content">
+          <h3 class="challenge-title">미라클 모닝 실천</h3>
+          <p class="challenge-description">새벽 6시 기상으로 하루를 활기차게 시작하세요. 성공하는 사람들의 아침 루틴을 만들어보세요.</p>
+          <div class="challenge-meta">
+            <span><i class="bi bi-people"></i> 12,650명 참여</span>
+            <span><i class="bi bi-calendar"></i> 14일</span>
+          </div>
+          <div class="challenge-progress">
+            <div class="progress-text">
+              <span>진행률</span>
+              <span>38%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 38%"></div>
+            </div>
+          </div>
+          <a href="/challenges/3" class="challenge-join-btn">
+            <i class="bi bi-trophy"></i> 챌린지 참여
+          </a>
+        </div>
       </div>
-      <div class="stat-item">
-        <div class="stat-number">89%</div>
-        <div class="stat-label">성공률</div>
+    </div>
+  </section>
+
+  <!-- Statistics Section -->
+  <section class="statistics-section">
+    <div class="stats-container">
+      <div class="stats-header">
+        <h2 class="stats-title">함께 만들어가는 성과</h2>
+        <p class="stats-subtitle">수많은 사람들이 함께 만들어가는 긍정적인 변화의 숫자들</p>
       </div>
-      <div class="stat-item">
-        <div class="stat-number">2.5M</div>
-        <div class="stat-label">완료된 챌린지</div>
+      
+      <div class="stats-grid">
+        <div class="stats-item">
+          <div class="stats-icon users">
+            <i class="bi bi-people"></i>
+          </div>
+          <div class="stats-number">50,000+</div>
+          <div class="stats-label">총 참여자</div>
+          <div class="stats-description">전국의 사용자들이 함께하고 있어요</div>
+        </div>
+        
+        <div class="stats-item">
+          <div class="stats-icon trophy">
+            <i class="bi bi-trophy"></i>
+          </div>
+          <div class="stats-number">125,000+</div>
+          <div class="stats-label">완료된 챌린지</div>
+          <div class="stats-description">성공적으로 완료된 챌린지 수</div>
+        </div>
+        
+        <div class="stats-item">
+          <div class="stats-icon chart">
+            <i class="bi bi-graph-up"></i>
+          </div>
+          <div class="stats-number">89%</div>
+          <div class="stats-label">성공률</div>
+          <div class="stats-description">평균 챌린지 완료 성공률</div>
+        </div>
+        
+        <div class="stats-item">
+          <div class="stats-icon calendar">
+            <i class="bi bi-calendar-check"></i>
+          </div>
+          <div class="stats-number">1,000,000+</div>
+          <div class="stats-label">누적 일수</div>
+          <div class="stats-description">모든 사용자의 챌린지 총 참여일</div>
+        </div>
       </div>
-      <div class="stat-item">
-        <div class="stat-number">4.9</div>
-        <div class="stat-label">평점 ⭐</div>
-      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- News & Articles Section -->
-<section class="news-section">
-  <div class="container">
-    <div class="section-header text-center mb-5">
-      <span class="section-label">NEWS & INSIGHTS</span>
-      <h2 class="section-title">최신 소식</h2>
-    </div>
-    
-    <div class="news-grid">
-      <!-- Success Story -->
-      <article class="news-item">
-        <div class="news-category">성공 스토리</div>
-        <div class="news-date">2024.12.15</div>
-        <h3 class="news-title">30일 운동 챌린지로 10kg 감량 성공한 김민수님의 이야기</h3>
-        <p class="news-excerpt">
-          "포기하고 싶었던 순간이 많았지만, Makify 커뮤니티의 응원 덕분에 끝까지 해낼 수 있었어요." 
-          직장인 김민수(32)님이 Makify 30일 운동 챌린지를 통해 건강한 생활습관을 만들어가는 과정을 소개합니다.
-        </p>
-        <a href="#" class="news-link">자세히 보기 <i class="bi bi-arrow-right"></i></a>
-      </article>
+  <div th:replace="fragments/footer :: footer"></div>
 
-      <!-- Platform Update -->
-      <article class="news-item">
-        <div class="news-category">플랫폼 업데이트</div>
-        <div class="news-date">2024.12.10</div>
-        <h3 class="news-title">Makify 2.0 업데이트 - 새로운 소셜 기능으로 더 강해진 동기부여</h3>
-        <p class="news-excerpt">
-          실시간 채팅, 팀 챌린지, 친구 초대 시스템 등 강화된 소셜 기능을 통해 혼자서는 어려웠던 도전도 
-          친구들과 함께라면 더 쉽고 재미있게 완주할 수 있습니다. 새로워진 Makify를 지금 경험해보세요.
-        </p>
-        <a href="#" class="news-link">자세히 보기 <i class="bi bi-arrow-right"></i></a>
-      </article>
-
-      <!-- Expert Insight -->
-      <article class="news-item">
-        <div class="news-category">전문가 인사이트</div>
-        <div class="news-date">2024.12.05</div>
-        <h3 class="news-title">심리학자가 말하는 지속가능한 습관 형성의 3가지 핵심 원리</h3>
-        <p class="news-excerpt">
-          "작은 성공의 반복이 큰 변화를 만든다" 연세대 심리학과 이지영 교수가 분석한 Makify 사용자 데이터를 바탕으로, 
-          21일이 아닌 66일이 진짜 습관 형성 기간인 이유와 성공률을 높이는 실전 팁을 공개합니다.
-        </p>
-        <a href="#" class="news-link">자세히 보기 <i class="bi bi-arrow-right"></i></a>
-      </article>
-    </div>
-    
-    <div class="text-center mt-5">
-      <a href="#" class="btn-more">더 많은 소식 보기</a>
-    </div>
-  </div>
-</section>
-
-<div th:replace="fragments/footer :: footer"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script th:src="@{/js/navbar.js}"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script th:src="@{/js/navbar.js}"></script>
 </body>
 </html>

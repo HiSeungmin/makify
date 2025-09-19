@@ -1,31 +1,37 @@
-<nav class="navbar navbar-expand-lg bg-transparent position-absolute top-0 start-0 w-100" id="mainNavbar"
-     th:fragment="navbar" xmlns:th="http://www.thymeleaf.org">
-  <div class="container">
-    <a class="navbar-brand fw-bold text-dark d-flex align-items-center gap-2" href="/">
-      <img src="/images/favicon.png" alt="Makify 로고" height="40">
-      Makify
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="#">서비스 소개</a></li>
-        <!--        <li class="nav-item"><a class="nav-link" href="/login">로그인</a></li>-->
-
-        <li class="nav-item"><a class="nav-link" href="/challenges">챌린지 둘러보기</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">문의하기</a></li>
-        <li class="nav-item" id="login-btn">
-          <a class="nav-link" href="/login">로그인</a>
-        </li>
-        <li class="nav-item d-none" id="mypage-btn">
-          <a class="nav-link" href="/mypage">마이페이지</a>
-        </li>
-        <li class="nav-item d-none" id="logout-btn">
-          <a class="nav-link" href="/" onclick="logout()">로그아웃</a>
-        </li>
-      </ul>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="ko">
+<body>
+<header class="habit-header" th:fragment="navbar">
+  <a href="/" class="habit-logo">
+    <div class="habit-logo-icon">
+      <i class="bi bi-check2-circle"></i>
     </div>
+    Makify
+    <span class="habit-beta-badge">Beta</span>
+  </a>
+
+  <nav>
+    <ul class="habit-nav-menu" id="habitNavMenu">
+      <li><a href="/">홈</a></li>
+      <li><a href="/challenges">챌린지</a></li>
+      <li><a href="/community">커뮤니티</a></li>
+      <li><a href="/ranking">랭킹</a></li>
+    </ul>
+  </nav>
+
+  <button class="habit-mobile-toggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div class="habit-nav-actions">
+    <a sec:authorize="isAuthenticated()" href="/notifications" class="habit-btn-login">알림</a>
+    <a sec:authorize="!isAuthenticated()" href="/login" class="habit-btn-login">로그인</a>
+    <a sec:authorize="!isAuthenticated()" href="/register" class="habit-btn-signup">회원가입</a>
   </div>
-</nav>
+</header>
+</body>
+</html>
