@@ -104,6 +104,64 @@
       50% { opacity: 0 }
     }
 
+    /* 페이지네이션 스타일 개선 */
+    .pagination {
+      gap: 0.25rem;
+    }
+
+    .pagination .page-link {
+      border: none;
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      color: #6b7280;
+      background-color: #f9fafb;
+      transition: all 0.2s ease-in-out;
+      margin: 0 0.125rem;
+    }
+
+    .pagination .page-link:hover {
+      background-color: #e5e7eb;
+      color: #374151;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .pagination .page-item.active .page-link {
+      background-color: #3b82f6;
+      color: white;
+      box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+    }
+
+    .pagination .page-item.active .page-link:hover {
+      background-color: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    .pagination .page-item:first-child .page-link,
+    .pagination .page-item:last-child .page-link {
+      border-radius: 0.75rem;
+      width: auto;
+      padding: 0 1rem;
+    }
+
+    .pagination .page-item.disabled .page-link {
+      background-color: #f3f4f6;
+      color: #d1d5db;
+      cursor: not-allowed;
+    }
+
+    .pagination .page-item.disabled .page-link:hover {
+      background-color: #f3f4f6;
+      color: #d1d5db;
+      transform: none;
+      box-shadow: none;
+    }
+
   </style>
 </head>
 <body>
@@ -117,49 +175,81 @@
       <h2 class="typing">원하는 챌린지를 찾아보세요!<span class="cursor">|</span></h2>
 
       <!-- 검색창 -->
-      <form th:action="@{/challenges}" method="get" class="search-bar d-flex justify-content-center gap-2 flex-wrap mb-4">
-        <input type="text" name="keyword" class="form-control" placeholder="챌린지 제목 또는 설명 입력" />
-        <button type="submit" class="btn btn-primary">검색</button>
-      </form>
+      <div class="search-bar d-flex justify-content-center gap-2 flex-wrap mb-4">
+        <input type="text" id="searchKeyword" class="form-control" placeholder="챌린지 제목 또는 설명 입력" />
+        <button type="button" id="searchBtn" class="btn btn-primary">검색</button>
+      </div>
 
       <!-- 필터 -->
       <div class="d-flex flex-wrap justify-content-center gap-3 align-items-end">
         <!-- 카테고리 선택 -->
         <div class="form-group">
-          <label for="category" class="form-label mb-1 fw-semibold">카테고리</label>
-          <select class="form-select rounded-pill" id="category" name="category">
+          <label for="categoryFilter" class="form-label mb-1 fw-semibold">카테고리</label>
+          <select class="form-select rounded-pill" id="categoryFilter">
             <option value="">전체</option>
-            <option value="ROUTINE">루틴</option>
-            <option value="MINDSET">마인드셋</option>
-            <option value="EATING_HABITS">식습관</option>
+            <option value="ROUTINE">규칙적인 생활</option>
             <option value="EXERCISE">운동</option>
-            <option value="SAVING">금융</option>
+            <option value="MINDSET">마음챙김</option>
+            <option value="EATING_HABITS">식습관</option>
+            <option value="HOBBY">취미</option>
+            <option value="STUDY">공부</option>
+          </select>
+        </div>
+
+        <!-- 상태 선택 -->
+        <div class="form-group">
+          <label for="statusFilter" class="form-label mb-1 fw-semibold">상태</label>
+          <select class="form-select rounded-pill" id="statusFilter">
+            <option value="">전체 상태</option>
+            <option value="NOT_STARTED">모집중</option>
+            <option value="IN_PROGRESS">진행중</option>
+            <option value="COMPLETED">완료</option>
           </select>
         </div>
 
         <!-- 정렬 기준 선택 -->
         <div class="form-group">
-          <label for="sort" class="form-label mb-1 fw-semibold">정렬 기준</label>
-          <select class="form-select rounded-pill" id="sort" name="sort">
+          <label for="sortFilter" class="form-label mb-1 fw-semibold">정렬 기준</label>
+          <select class="form-select rounded-pill" id="sortFilter">
             <option value="latest">최신 등록순</option>
-            <option value="popular">인기순</option>
-            <option value="soon">곧 시작 순</option>
+            <option value="popularity">인기순</option>
+            <option value="startDate">곧 시작 순 (모집중만)</option>
           </select>
         </div>
 
         <!-- 필터 적용 버튼 -->
         <div class="form-group d-flex flex-column">
-          <label class="form-label mb-1 invisible">⠀</label> <!-- 빈 라벨로 높이 맞추기 -->
-          <button type="submit" class="btn btn-outline-primary px-4 rounded-pill h-100">필터 적용</button>
+          <label class="form-label mb-1 invisible">⠀</label>
+          <button type="button" id="applyFilter" class="btn btn-outline-primary px-4 rounded-pill h-100">필터 적용</button>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- 검색 결과 상태 -->
+<div class="container mt-4">
+  <div id="searchStatus" class="d-none">
+    <div class="alert alert-info d-flex justify-content-between align-items-center">
+      <span id="searchStatusText"></span>
+      <button type="button" id="clearSearch" class="btn btn-sm btn-outline-secondary">전체 보기</button>
+    </div>
+  </div>
+</div>
+
 <!-- 챌린지 목록 카드 -->
 <section class="container py-5">
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+  <!-- 로딩 스피너 -->
+  <div id="loadingSpinner" class="text-center d-none">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">챌린지를 검색하는 중...</p>
+  </div>
+
+  <!-- 챌린지 목록 -->
+  <div id="challengeList" class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+    <!-- 기존 서버 렌더링 데이터 -->
     <div class="col" th:each="challenge : ${challenges}">
       <div class="card h-100 shadow-sm">
         <!-- 상태 배지 -->
@@ -171,10 +261,22 @@
               th:text="${challenge.status.description}">
           시작 전
         </span>
-        <!-- 이미지 추가 -->
+        <!-- 참여자 수 표시 -->
+        <div class="position-absolute top-0 start-0 m-2">
+          <span class="badge bg-light text-dark">
+            <i class="bi bi-people-fill"></i>
+            <span th:text="${challenge.participantCount ?: 0}">0</span>명 참여
+          </span>
+        </div>
+        
         <img th:src="@{/images/default-challenge.avif}" class="card-img-top" alt="챌린지 이미지">
         <div class="card-body">
+          <div class="mb-2">
+            <span class="badge bg-secondary rounded-pill" 
+                  th:text="${challenge.category.description}">카테고리</span>
+          </div>
           <h5 th:text="${challenge.title}">챌린지 제목</h5>
+          <p class="text-muted small mb-2" th:text="${challenge.description}">챌린지 설명</p>
           <p class="text-muted small mb-2">
             <i class="bi bi-calendar-check"></i>
             <span th:text="${challenge.startDate}">2025.06.10</span>
@@ -191,6 +293,20 @@
       </div>
     </div>
   </div>
+
+  <!-- 빈 결과 메시지 -->
+  <div id="emptyResult" class="text-center py-5 d-none">
+    <i class="bi bi-search display-4 text-muted"></i>
+    <h4 class="mt-3">검색 결과가 없습니다</h4>
+    <p class="text-muted">다른 키워드나 필터로 다시 시도해보세요.</p>
+  </div>
+
+  <!-- 페이지네이션 -->
+  <nav id="pagination" class="mt-5" aria-label="챌린지 목록 페이지네이션">
+    <ul class="pagination justify-content-center">
+      <!-- 페이지네이션 버튼들이 JavaScript로 동적 생성됩니다 -->
+    </ul>
+  </nav>
 </section>
 
 <a href="/challenges/new"
@@ -208,11 +324,369 @@
 <script th:src="@{/js/navbar.js}"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+    // Tooltip 초기화
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.forEach(function (tooltipTriggerEl) {
       new bootstrap.Tooltip(tooltipTriggerEl);
     });
+
+    // 검색 기능 초기화
+    initializeSearch();
+  })
+</script>
+<!-- 페이지네이션 정보를 hidden input으로 전달 -->
+<input type="hidden" id="totalPages" th:value="${totalPages ?: 1}">
+<input type="hidden" id="totalElements" th:value="${totalElements ?: 0}">
+<input type="hidden" id="currentPageHidden" th:value="${currentPage ?: 0}">
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script th:src="@{/js/navbar.js}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Tooltip 초기화
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+      new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // 검색 기능 초기화
+    initializeSearch();
+    
+    // 서버에서 전달받은 초기 페이징 정보 (hidden input에서 읽기)
+    const initialPagination = {
+      totalPages: parseInt(document.getElementById('totalPages').value) || 1,
+      currentPage: parseInt(document.getElementById('currentPageHidden').value) || 0,
+      totalElements: parseInt(document.getElementById('totalElements').value) || 0
+    };
+    
+    console.log('초기 페이징 정보:', initialPagination);
+    
+    // 초기 페이징 표시 (페이지가 2개 이상일 때만)
+    if (initialPagination.totalPages > 1) {
+      console.log('페이징 렌더링 시작');
+      renderInitialPagination(initialPagination);
+    } else {
+      console.log('페이징 숨김: totalPages =', initialPagination.totalPages);
+    }
   });
+
+  // 검색 관련 변수
+  let currentPage = 0;
+  let currentKeyword = '';
+  let currentCategory = '';
+  let currentStatus = '';  // 상태 변수 추가
+  let currentSort = 'latest';
+
+  function initializeSearch() {
+    const searchBtn = document.getElementById('searchBtn');
+    const applyFilterBtn = document.getElementById('applyFilter');
+    const clearSearchBtn = document.getElementById('clearSearch');
+    const searchKeyword = document.getElementById('searchKeyword');
+
+    // 검색 버튼 클릭
+    searchBtn.addEventListener('click', performSearch);
+    
+    // 필터 적용 버튼 클릭
+    applyFilterBtn.addEventListener('click', performSearch);
+    
+    // 전체 보기 버튼 클릭
+    clearSearchBtn.addEventListener('click', clearSearch);
+    
+    // 검색창 엔터키
+    searchKeyword.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        performSearch();
+      }
+    });
+  }
+
+  async function performSearch(page) {
+    // page가 이벤트 객체인 경우 0으로 설정
+    if (typeof page === 'object' || page === undefined) {
+      page = 0;
+    }
+    
+    const keyword = document.getElementById('searchKeyword').value.trim();
+    const category = document.getElementById('categoryFilter').value;
+    const status = document.getElementById('statusFilter').value;  // 이 줄이 빠져있었음!
+    const sort = document.getElementById('sortFilter').value;
+
+    // 현재 검색 조건 저장
+    currentPage = page;
+    currentKeyword = keyword;
+    currentCategory = category;
+    currentStatus = status;  // 추가
+    currentSort = sort;
+
+    // 로딩 상태 표시
+    showLoading(true);
+    
+    try {
+      // API 호출
+      const params = new URLSearchParams();
+      if (keyword) params.append('keyword', keyword);
+      if (category) params.append('category', category);
+      if (status) params.append('status', status);  // 이 줄도 추가
+      params.append('sortBy', sort);
+      params.append('page', page);
+      params.append('size', 12);
+
+      console.log('검색 요청:', `/api/challenges/search?${params}`);
+
+      const response = await fetch(`/api/challenges/search?${params}`);
+      
+      // 응답 상태 확인
+      if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error('접근 권한이 없습니다. 로그인이 필요할 수 있습니다.');
+        }
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      // Content-Type 확인
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('응답이 JSON이 아닙니다:', text);
+        throw new Error('서버에서 JSON 응답을 반환하지 않았습니다.');
+      }
+
+      const data = await response.json();
+      console.log('검색 응답:', data);
+
+      // 결과 렌더링
+      renderChallenges(data.content || []);
+      renderPagination(data);
+      updateSearchStatus(keyword, category, status, data.totalElements || 0);  // status 추가
+
+    } catch (error) {
+      console.error('검색 중 오류 발생:', error);
+      
+      // 구체적인 에러 메시지 표시
+      let errorMessage = '검색 중 오류가 발생했습니다.';
+      if (error.message.includes('접근 권한')) {
+        errorMessage = '접근 권한이 없습니다. 로그인 후 다시 시도해주세요.';
+      } else if (error.name === 'SyntaxError') {
+        errorMessage = '서버 응답 형식에 오류가 있습니다. 잠시 후 다시 시도해주세요.';
+      } else if (error.message.includes('HTTP')) {
+        errorMessage = `서버 오류가 발생했습니다: ${error.message}`;
+      }
+      
+      showError(errorMessage);
+      
+      // 빈 결과 표시
+      renderChallenges([]);
+      document.getElementById('emptyResult').classList.remove('d-none');
+      
+    } finally {
+      showLoading(false);
+    }
+  }
+
+  function renderChallenges(challenges) {
+    const challengeList = document.getElementById('challengeList');
+    const emptyResult = document.getElementById('emptyResult');
+
+    if (challenges.length === 0) {
+      challengeList.innerHTML = '';
+      emptyResult.classList.remove('d-none');
+      return;
+    }
+
+    emptyResult.classList.add('d-none');
+    
+    challengeList.innerHTML = challenges.map(challenge => `
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <!-- 상태 배지 -->
+          <span class="position-absolute top-0 end-0 badge m-2 px-3 py-2 fs-6 ${getStatusBadgeClass(challenge.status)}">
+            ${getStatusDisplayName(challenge.status)}
+          </span>
+          
+          <!-- 참여자 수 표시 -->
+          <div class="position-absolute top-0 start-0 m-2">
+            <span class="badge bg-light text-dark">
+              <i class="bi bi-people-fill"></i>
+              ${challenge.currentParticipants || 0}명 참여
+            </span>
+          </div>
+          
+          <img src="/images/default-challenge.avif" class="card-img-top" alt="챌린지 이미지">
+          
+          <div class="card-body">
+            <div class="mb-2">
+              <span class="badge bg-secondary rounded-pill">${challenge.categoryDisplayName}</span>
+            </div>
+            <h5>${challenge.title}</h5>
+            <p class="text-muted small mb-2">${challenge.description}</p>
+            <p class="text-muted small mb-2">
+              <i class="bi bi-calendar-check"></i>
+              ${challenge.startDate} ~ ${challenge.endDate}
+            </p>
+            <p class="mb-0 text-muted small">
+              <i class="bi bi-people"></i> 
+              ${challenge.currentParticipants}/${challenge.maxParticipants}명
+            </p>
+          </div>
+          
+          <div class="card-footer text-end">
+            <a href="/challenges/${challenge.id}" class="btn btn-outline-primary btn-sm px-4">자세히 보기</a>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderInitialPagination(paginationData) {
+    renderPagination(paginationData);
+    
+    // 초기 페이징 클릭 이벤트는 일반 링크로 동작
+    const pagination = document.getElementById('pagination');
+    pagination.querySelectorAll('.page-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const page = parseInt(this.getAttribute('data-page'));
+        if (!isNaN(page)) {
+          // 서버 페이징으로 이동
+          window.location.href = `/challenges?page=${page}&size=12`;
+        }
+      });
+    });
+  }
+
+  function renderPagination(data) {
+    const pagination = document.getElementById('pagination');
+    const totalPages = data.totalPages;
+    const currentPage = data.currentPage;
+
+    if (totalPages <= 1) {
+      pagination.innerHTML = '';
+      return;
+    }
+
+    let paginationHTML = '<ul class="pagination justify-content-center">';
+    
+    // 이전 버튼
+    if (currentPage > 0) {
+      paginationHTML += `
+        <li class="page-item">
+          <a class="page-link" href="#" data-page="${currentPage - 1}">이전</a>
+        </li>
+      `;
+    }
+
+    // 페이지 번호들
+    const start = Math.max(0, currentPage - 2);
+    const end = Math.min(totalPages, currentPage + 3);
+
+    for (let i = start; i < end; i++) {
+      paginationHTML += `
+        <li class="page-item ${i === currentPage ? 'active' : ''}">
+          <a class="page-link" href="#" data-page="${i}">${i + 1}</a>
+        </li>
+      `;
+    }
+
+    // 다음 버튼
+    if (currentPage < totalPages - 1) {
+      paginationHTML += `
+        <li class="page-item">
+          <a class="page-link" href="#" data-page="${currentPage + 1}">다음</a>
+        </li>
+      `;
+    }
+
+    paginationHTML += '</ul>';
+    pagination.innerHTML = paginationHTML;
+    
+    // 페이지네이션 클릭 이벤트 등록
+    pagination.querySelectorAll('.page-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const page = parseInt(this.getAttribute('data-page'));
+        if (!isNaN(page)) {
+          performSearch(page);
+        }
+      });
+    });
+  }
+
+  function updateSearchStatus(keyword, category, status, totalCount) {
+    const searchStatus = document.getElementById('searchStatus');
+    const searchStatusText = document.getElementById('searchStatusText');
+
+    if (keyword || category || status) {
+      let statusText = `검색 결과 ${totalCount}개`;
+      if (keyword) statusText += ` (키워드: "${keyword}")`;
+      if (category) statusText += ` (카테고리: ${getCategoryDisplayName(category)})`;
+      if (status) statusText += ` (상태: ${getStatusDisplayName(status)})`;
+      
+      searchStatusText.textContent = statusText;
+      searchStatus.classList.remove('d-none');
+    } else {
+      searchStatus.classList.add('d-none');
+    }
+  }
+
+  function clearSearch() {
+    // 입력 필드 초기화
+    document.getElementById('searchKeyword').value = '';
+    document.getElementById('categoryFilter').value = '';
+    document.getElementById('statusFilter').value = '';  // 상태 필터 초기화 추가
+    document.getElementById('sortFilter').value = 'latest';
+    
+    // 페이지 새로고침으로 초기 상태로 복원
+    window.location.href = '/challenges';
+  }
+
+  function showLoading(show) {
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const challengeList = document.getElementById('challengeList');
+    
+    if (show) {
+      loadingSpinner.classList.remove('d-none');
+      challengeList.style.opacity = '0.5';
+    } else {
+      loadingSpinner.classList.add('d-none');
+      challengeList.style.opacity = '1';
+    }
+  }
+
+  function showError(message) {
+    alert(message); // 추후 Toast 메시지로 개선 가능
+  }
+
+  // 유틸리티 함수들
+  function getStatusBadgeClass(status) {
+    switch (status) {
+      case 'NOT_STARTED': return 'bg-primary';
+      case 'IN_PROGRESS': return 'bg-success';
+      case 'COMPLETED': return 'bg-secondary';
+      default: return 'bg-dark';
+    }
+  }
+
+  function getStatusDisplayName(status) {
+    switch (status) {
+      case 'NOT_STARTED': return '모집중';
+      case 'IN_PROGRESS': return '진행중';
+      case 'COMPLETED': return '완료';
+      default: return '알 수 없음';
+    }
+  }
+
+  function getCategoryDisplayName(category) {
+    const categoryMap = {
+      'ROUTINE': '규칙적인 생활',
+      'EXERCISE': '운동',
+      'MINDSET': '마음챙김',
+      'EATING_HABITS': '식습관',
+      'HOBBY': '취미',
+      'STUDY': '공부'
+    };
+    return categoryMap[category] || category;
+  }
 </script>
 </body>
 </html>
