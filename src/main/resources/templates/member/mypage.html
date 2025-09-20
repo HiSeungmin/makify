@@ -6,145 +6,263 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: #f8f9fa;
-      font-family: 'Inter', sans-serif;
-    }
-    .profile-card {
-      background-color: white;
-      border-radius: 1rem;
-      padding: 2rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    }
-    .tab-content {
-      margin-top: 2rem;
-    }
-    .card-section {
-      margin-bottom: 1.5rem;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+  <link rel="stylesheet" th:href="@{/css/footer.css}" />
+  <link rel="stylesheet" th:href="@{/css/mypage.css}" />
+  <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.png}">
 </head>
 <body>
-<!-- 네브바 자리 -->
 <div th:replace="fragments/navbar :: navbar"></div>
 
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-10">
-      <!-- 프로필 카드 -->
-      <div class="profile-card mb-4">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h4 class="fw-bold mb-1">닉네임: 슬기로운챌린지</h4>
-            <p class="mb-0 text-muted">이름: 홍길동 | 생일: 1995-01-01</p>
-          </div>
-          <button class="btn btn-outline-primary rounded-pill px-4">정보 수정</button>
-        </div>
-      </div>
+<div class="mypage-container">
+  <!-- 헤더 섹션 -->
+  <div class="header-section">
+    <h1 class="page-title">마이페이지</h1>
+    <p class="page-subtitle">나의 챌린지 여정을 확인해보세요</p>
+  </div>
 
-      <!-- 탭 메뉴 -->
-      <ul class="nav nav-tabs nav-justified" id="mypageTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="challenges-tab" data-bs-toggle="tab" data-bs-target="#challenges" type="button" role="tab">내 챌린지</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">내 후기</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="inquiries-tab" data-bs-toggle="tab" data-bs-target="#inquiries" type="button" role="tab">문의 내역</button>
-        </li>
-      </ul>
-
-      <div class="tab-content" id="mypageTabContent">
-        <!-- 내 챌린지 -->
-        <div class="tab-pane fade show active" id="challenges" role="tabpanel">
-          <div class="card-section">
-            <h5 class="fw-semibold">진행중인 챌린지</h5>
-            <div class="row row-cols-1 row-cols-md-2 g-3">
-              <div class="col">
-                <div class="card shadow-sm">
-                  <div class="card-body">
-                    <h6 class="card-title">매일 10분 스트레칭</h6>
-                    <p class="card-text text-muted">매일 스트레칭으로 유연성을 기르자!</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card shadow-sm">
-                  <div class="card-body">
-                    <h6 class="card-title">물 2L 마시기</h6>
-                    <p class="card-text text-muted">하루 수분 섭취량을 챌린지로!</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+  <!-- 프로필 카드 -->
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class="profile-info">
+        <h2>슬기로운챌린지</h2>
+        <div class="profile-details">
+          <div class="profile-detail-item">
+            <i class="bi bi-person"></i>
+            <span>홍길동</span>
           </div>
-          <div class="card-section">
-            <h5 class="fw-semibold">시작 예정 챌린지</h5>
-            <div class="row row-cols-1 row-cols-md-2 g-3">
-              <div class="col">
-                <div class="card shadow-sm">
-                  <div class="card-body">
-                    <h6 class="card-title">아침 7시 기상</h6>
-                    <p class="card-text text-muted">부지런한 하루의 시작을 응원해요.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="profile-detail-item">
+            <i class="bi bi-calendar"></i>
+            <span>1995-01-01</span>
           </div>
-          <div class="card-section">
-            <h5 class="fw-semibold">완료된 챌린지</h5>
-            <div class="row row-cols-1 row-cols-md-2 g-3">
-              <div class="col">
-                <div class="card shadow-sm">
-                  <div class="card-body">
-                    <h6 class="card-title">한 달 독서 챌린지</h6>
-                    <p class="card-text text-muted">매일 독서 30분 실천 완료!</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 내 후기 -->
-        <div class="tab-pane fade" id="reviews" role="tabpanel">
-          <div class="card-section">
-            <h5 class="fw-semibold">작성한 후기</h5>
-            <div class="list-group">
-              <div class="list-group-item">
-                <h6 class="mb-1">물 2L 마시기</h6>
-                <p class="mb-1 text-muted">이 챌린지를 통해 진짜 몸이 가벼워졌어요!</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 문의 내역 -->
-        <div class="tab-pane fade" id="inquiries" role="tabpanel">
-          <div class="card-section">
-            <h5 class="fw-semibold">문의 내역</h5>
-            <div class="list-group">
-              <div class="list-group-item">
-                <h6 class="mb-1">환급 관련 문의</h6>
-                <p class="mb-1 text-muted">답변 완료</p>
-              </div>
-              <div class="list-group-item">
-                <h6 class="mb-1">챌린지 오류 제보</h6>
-                <p class="mb-1 text-muted">처리 중</p>
-              </div>
-            </div>
+          <div class="profile-detail-item">
+            <i class="bi bi-envelope"></i>
+            <span>user@example.com</span>
           </div>
         </div>
       </div>
+      <button class="edit-profile-btn">
+        <i class="bi bi-pencil"></i> 정보 수정
+      </button>
+    </div>
+  </div>
 
+  <!-- 통계 카드 -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number">5</div>
+      <div class="stat-label">진행중인 챌린지</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">12</div>
+      <div class="stat-label">완료한 챌린지</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">85%</div>
+      <div class="stat-label">평균 달성률</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">127</div>
+      <div class="stat-label">연속 달성일</div>
+    </div>
+  </div>
+
+  <!-- 탭 네비게이션 -->
+  <div class="custom-tabs">
+    <button class="custom-tab active" onclick="showTab('challenges')">
+      <i class="bi bi-trophy"></i> 내 챌린지
+    </button>
+    <button class="custom-tab" onclick="showTab('reviews')">
+      <i class="bi bi-chat-square-text"></i> 내 후기
+    </button>
+    <button class="custom-tab" onclick="showTab('inquiries')">
+      <i class="bi bi-question-circle"></i> 문의 내역
+    </button>
+  </div>
+
+  <!-- 탭 콘텐츠 -->
+  <div id="challengesTab" class="tab-content-section">
+    <!-- 진행중인 챌린지 -->
+    <div class="section-title">
+      <i class="bi bi-play-circle"></i>
+      진행중인 챌린지
+    </div>
+    <div class="challenges-grid">
+      <div class="challenge-card">
+        <div class="challenge-status status-ongoing">진행중</div>
+        <h3 class="challenge-title">매일 10분 스트레칭</h3>
+        <p class="challenge-description">매일 스트레칭으로 유연성을 기르고 건강한 몸을 만들어보세요!</p>
+        <div class="challenge-meta">
+          <span><i class="bi bi-calendar"></i> 2025.01.01 ~ 2025.01.31</span>
+          <span><i class="bi bi-people"></i> 15/20명</span>
+        </div>
+        <div class="challenge-progress">
+          <div class="progress-label">
+            <span>진행률</span>
+            <span>75%</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" style="width: 75%"></div>
+          </div>
+        </div>
+        <div class="challenge-actions">
+          <a href="#" class="action-btn btn-primary">인증하기</a>
+          <a href="#" class="action-btn btn-secondary">상세보기</a>
+        </div>
+      </div>
+
+      <div class="challenge-card">
+        <div class="challenge-status status-ongoing">진행중</div>
+        <h3 class="challenge-title">물 2L 마시기</h3>
+        <p class="challenge-description">하루 수분 섭취량을 늘려 건강한 몸을 만들어보세요!</p>
+        <div class="challenge-meta">
+          <span><i class="bi bi-calendar"></i> 2025.01.05 ~ 2025.02.05</span>
+          <span><i class="bi bi-people"></i> 8/15명</span>
+        </div>
+        <div class="challenge-progress">
+          <div class="progress-label">
+            <span>진행률</span>
+            <span>60%</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" style="width: 60%"></div>
+          </div>
+        </div>
+        <div class="challenge-actions">
+          <a href="#" class="action-btn btn-primary">인증하기</a>
+          <a href="#" class="action-btn btn-secondary">상세보기</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 시작 예정 챌린지 -->
+    <div class="section-title">
+      <i class="bi bi-clock"></i>
+      시작 예정 챌린지
+    </div>
+    <div class="challenges-grid">
+      <div class="challenge-card">
+        <div class="challenge-status status-upcoming">시작예정</div>
+        <h3 class="challenge-title">아침 7시 기상</h3>
+        <p class="challenge-description">부지런한 하루의 시작을 함께 만들어가요!</p>
+        <div class="challenge-meta">
+          <span><i class="bi bi-calendar"></i> 2025.02.01 ~ 2025.02.28</span>
+          <span><i class="bi bi-people"></i> 12/25명</span>
+        </div>
+        <div class="challenge-actions">
+          <a href="#" class="action-btn btn-secondary">준비하기</a>
+          <a href="#" class="action-btn btn-secondary">상세보기</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 완료된 챌린지 -->
+    <div class="section-title">
+      <i class="bi bi-check-circle"></i>
+      완료된 챌린지
+    </div>
+    <div class="challenges-grid">
+      <div class="challenge-card">
+        <div class="challenge-status status-completed">완료</div>
+        <h3 class="challenge-title">한 달 독서 챌린지</h3>
+        <p class="challenge-description">매일 독서 30분 실천으로 지식을 쌓아보세요!</p>
+        <div class="challenge-meta">
+          <span><i class="bi bi-calendar"></i> 2024.12.01 ~ 2024.12.31</span>
+          <span><i class="bi bi-people"></i> 20/20명</span>
+        </div>
+        <div class="challenge-progress">
+          <div class="progress-label">
+            <span>최종 달성률</span>
+            <span>95%</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" style="width: 95%"></div>
+          </div>
+        </div>
+        <div class="challenge-actions">
+          <a href="#" class="action-btn btn-primary">후기 작성</a>
+          <a href="#" class="action-btn btn-secondary">상세보기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 내 후기 탭 -->
+  <div id="reviewsTab" class="tab-content-section" style="display: none;">
+    <div class="section-title">
+      <i class="bi bi-chat-square-text"></i>
+      작성한 후기
+    </div>
+    <div class="list-section">
+      <div class="list-item">
+        <div class="list-item-title">물 2L 마시기 후기</div>
+        <div class="list-item-content">이 챌린지를 통해 진짜 몸이 가벼워졌어요! 매일 물을 마시는 습관이 생기니까 피부도 좋아지고 전체적으로 컨디션이 많이 개선되었습니다.</div>
+        <div class="list-item-meta">
+          <span>2024.12.15</span>
+          <span class="status-badge status-completed">게시됨</span>
+        </div>
+      </div>
+      <div class="list-item">
+        <div class="list-item-title">한 달 독서 챌린지 후기</div>
+        <div class="list-item-content">처음에는 매일 30분 독서가 힘들었는데, 다른 분들과 함께 하니까 끝까지 할 수 있었어요. 총 5권의 책을 완독했습니다!</div>
+        <div class="list-item-meta">
+          <span>2025.01.02</span>
+          <span class="status-badge status-completed">게시됨</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 문의 내역 탭 -->
+  <div id="inquiriesTab" class="tab-content-section" style="display: none;">
+    <div class="section-title">
+      <i class="bi bi-question-circle"></i>
+      문의 내역
+    </div>
+    <div class="list-section">
+      <div class="list-item">
+        <div class="list-item-title">환급 관련 문의</div>
+        <div class="list-item-content">챌린지 완료 후 환급 절차에 대해 문의드립니다. 언제쯤 처리되는지 알고 싶습니다.</div>
+        <div class="list-item-meta">
+          <span>2024.12.20</span>
+          <span class="status-badge status-completed">답변 완료</span>
+        </div>
+      </div>
+      <div class="list-item">
+        <div class="list-item-title">챌린지 오류 제보</div>
+        <div class="list-item-content">인증 사진 업로드가 안 되는 문제가 있습니다. 확인 부탁드립니다.</div>
+        <div class="list-item-meta">
+          <span>2025.01.10</span>
+          <span class="status-badge status-pending">처리 중</span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
 <div th:replace="fragments/footer :: footer"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/navbar.js}"></script>
+<script>
+  function showTab(tabName) {
+    // 모든 탭 버튼에서 active 클래스 제거
+    document.querySelectorAll('.custom-tab').forEach(tab => {
+      tab.classList.remove('active');
+    });
+
+    // 모든 탭 콘텐츠 숨기기
+    document.querySelectorAll('.tab-content-section').forEach(content => {
+      content.style.display = 'none';
+    });
+
+    // 클릭된 탭 버튼에 active 클래스 추가
+    event.target.closest('.custom-tab').classList.add('active');
+
+    // 해당 탭 콘텐츠 보이기
+    document.getElementById(tabName + 'Tab').style.display = 'block';
+  }
+</script>
 </body>
 </html>

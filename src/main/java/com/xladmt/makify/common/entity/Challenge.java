@@ -52,6 +52,9 @@ public class Challenge extends BaseEntity {
     @Column(name = "max_Participants", nullable = false)
     private Integer maxParticipants; // 최대 모집 인원
 
+    @Column(name = "participant_count", columnDefinition = "int default 0")
+    private Integer participantCount = 0;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "category", length = 20)
     private Category category;
@@ -133,5 +136,16 @@ public class Challenge extends BaseEntity {
     // 삭제 메서드
     public void delete() {
         this.isVisible = YN.N;
+    }
+
+
+    // 참여자 수 증가
+    public void incrementParticipantCount() {
+        this.participantCount = (this.participantCount == null ? 0 : this.participantCount) + 1;
+    }
+
+    // 참여자 수 감소
+    public void decrementParticipantCount() {
+        this.participantCount = Math.max(0, (this.participantCount == null ? 0 : this.participantCount) - 1);
     }
 }

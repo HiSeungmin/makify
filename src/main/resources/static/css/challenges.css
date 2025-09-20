@@ -1,0 +1,385 @@
+/* Challenges Page Styles */
+* {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+  background-color: #f8fafb;
+  margin: 0;
+  padding: 0;
+}
+
+.challenges-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.page-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 12px;
+}
+
+.page-subtitle {
+  font-size: 18px;
+  color: #6b7280;
+  margin-bottom: 40px;
+}
+
+/* 검색 및 필터 섹션 */
+.search-filter-section {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  margin-bottom: 40px;
+}
+
+.search-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  flex: 2;
+  min-width: 300px;
+  padding: 14px 20px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+  background: #f9fafb;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #10b981;
+  background: white;
+}
+
+.search-btn {
+  padding: 14px 24px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.search-btn:hover {
+  background: #059669;
+}
+
+.filter-select {
+  padding: 14px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  min-width: 140px;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #10b981;
+}
+
+/* 검색 상태 표시 */
+.search-status {
+  background: #dbeafe;
+  border: 1px solid #93c5fd;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.clear-search-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* 챌린지 카드 그리드 */
+.challenges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.challenge-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.challenge-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  position: relative;
+}
+
+.card-badges {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.category-badge {
+  background: rgba(255, 255, 255, 0.95);
+  color: #374151;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+}
+
+.status-badge.모집중 { background: #10b981; }
+.status-badge.진행중 { background: #f59e0b; }
+.status-badge.완료 { background: #6b7280; }
+
+.card-content {
+  padding: 24px;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.card-description {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.card-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.progress-section {
+  margin-bottom: 20px;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.progress-text {
+  color: #6b7280;
+}
+
+.progress-percent {
+  color: #111827;
+  font-weight: 600;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #f3f4f6;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #10b981;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.participants-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.join-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.join-btn:hover {
+  background: #059669;
+  color: white;
+  text-decoration: none;
+}
+
+/* 로딩 및 빈 결과 */
+.loading-spinner {
+  text-align: center;
+  padding: 60px 0;
+}
+
+.empty-result {
+  text-align: center;
+  padding: 60px 0;
+  color: #6b7280;
+}
+
+.empty-result i {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+/* 페이지네이션 */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.pagination {
+  display: flex;
+  gap: 8px;
+}
+
+.page-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.page-btn:hover {
+  background: #f3f4f6;
+  color: #374151;
+  text-decoration: none;
+}
+
+.page-btn.active {
+  background: #10b981;
+  color: white;
+  border-color: #10b981;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .challenges-container {
+    padding: 20px 16px;
+  }
+
+  .page-title {
+    font-size: 28px;
+  }
+
+  .search-filter-section {
+    padding: 24px;
+  }
+
+  .filters-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .filter-group {
+    min-width: 100%;
+  }
+
+  .challenges-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .search-bar {
+    flex-direction: column;
+  }
+}

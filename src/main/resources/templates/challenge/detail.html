@@ -3,132 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${challenge.title}">챌린지 상세</title>
+    <title th:text="'HabitChallenge - ' + ${challenge.title}">챌린지 상세</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/detail.css}" />
     <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.png}">
-    <style>
-        body {
-            background-color: #fff;
-            font-size: 0.95rem;
-        }
-
-        .challenge-wrapper {
-            padding-top: 120px;
-            padding-bottom: 70px;
-        }
-
-        .challenge-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-        }
-
-        .challenge-image-slider {
-            flex: 1 1 50%;
-            min-width: 300px;
-            position: relative;
-        }
-
-        .challenge-image-slider img {
-            width: 100%;
-            border-radius: 0.75rem;
-            object-fit: cover;
-        }
-
-        .category-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: #2c3e50;
-            color: #fff;
-            padding: 0.4rem 0.8rem;
-            border-radius: 1rem;
-            font-size: 0.85rem;
-            font-weight: 500;
-            z-index: 1;
-        }
-
-        .top-right-buttons {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .challenge-info {
-            flex: 1 1 45%;
-            min-width: 300px;
-        }
-
-        .section-title {
-            font-weight: 600;
-            font-size: 1.05rem;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            border-bottom: 1px solid #dee2e6;
-            padding-bottom: 0.4rem;
-        }
-
-        .fixed-bottom-btn {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 1rem;
-            background-color: #fff;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-            z-index: 999;
-        }
-
-        .fixed-bottom-btn .btn {
-            width: 100%;
-            height: 55px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 0.6rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            line-height: 1;
-        }
-
-        @media (max-width: 768px) {
-            .challenge-container {
-                flex-direction: column;
-            }
-        }
-
-        .policy-box {
-            border: 1px solid #e9ecef;
-            background-color: #fdfdfd;
-            transition: all 0.2s ease;
-        }
-        .policy-box:hover {
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.06);
-        }
-    </style>
 </head>
 <body>
-<div th:replace="fragments/navbar :: navbar"></div>
+    <div th:replace="fragments/navbar :: navbar"></div>
 
-<div class="challenge-wrapper">
-    <div class="container px-3 px-md-4">
-        <div class="challenge-container">
-            <div class="challenge-image-slider">
-                <div class="category-badge" th:text="'#' +${challenge.category}">건강</div>
-                <div class="top-right-buttons d-flex gap-2">
+    <div class="detail-container">
+        <!-- 뒤로가기 버튼 -->
+        <a href="/challenges" class="back-button">
+            <i class="bi bi-arrow-left"></i>
+            챌린지 목록으로
+        </a>
+
+        <div class="challenge-layout">
+            <!-- 왼쪽: 이미지 및 통계 -->
+            <div class="challenge-image-section">
+                <div class="position-relative">
+                    <img th:src="@{/images/default-challenge.avif}" alt="챌린지 이미지" class="challenge-hero-image">
+                    <div class="category-badge" th:text="'#' + ${challenge.category}">운동</div>
+                    
                     <!-- 수정 버튼: 로그인한 사용자와 개설자가 같을 때만 보임 -->
-                    <div th:if="${loginMemberId != null and loginMemberId == challenge.creatorLoginId}">
-                        <a th:href="@{'/challenges/edit/' + ${challenge.id}}" class="btn btn-sm btn-outline-secondary">✏️</a>
+                    <div th:if="${loginMemberId != null and loginMemberId == challenge.creatorLoginId}" class="position-absolute" style="top: 20px; right: 60px;">
+                        <a th:href="@{'/challenges/edit/' + ${challenge.id}}" class="btn btn-sm btn-outline-light">✏️</a>
                     </div>
 
                     <!-- 설정 드롭다운: 신고하기 -->
-                    <div class="dropdown">
-                        <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="dropdown position-absolute" style="top: 20px; right: 20px;">
+                        <button class="btn btn-sm btn-outline-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-three-dots-vertical"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -136,46 +44,123 @@
                         </ul>
                     </div>
                 </div>
-                <img th:src="@{/images/default-challenge.avif}" alt="챌린지 이미지" />
+
+                <!-- 통계 -->
+                <div class="challenge-stats">
+                    <div class="stat-box">
+                        <div class="stat-icon">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <div class="stat-number" th:text="${challenge.currentParticipants ?: 0}">0</div>
+                        <div class="stat-label">참여자</div>
+                    </div>
+
+                    <div class="stat-box">
+                        <div class="stat-icon">
+                            <i class="bi bi-calendar"></i>
+                        </div>
+                        <div class="stat-number">30일</div>
+                        <div class="stat-label">챌린지 기간</div>
+                    </div>
+
+                    <div class="stat-box">
+                        <div class="stat-icon">
+                            <i class="bi bi-star"></i>
+                        </div>
+                        <div class="stat-number">4.8</div>
+                        <div class="stat-label">평점</div>
+                    </div>
+
+                    <div class="stat-box">
+                        <div class="stat-icon">
+                            <i class="bi bi-chat"></i>
+                        </div>
+                        <div class="stat-number">2340</div>
+                        <div class="stat-label">리뷰</div>
+                    </div>
+                </div>
             </div>
 
-            <div class="challenge-info">
-                <h3 class="fw-bold d-flex align-items-center gap-2">
-                    <span th:text="${challenge.title}">챌린지 제목</span>
-                    <span class="badge px-3 py-2 fs-6 text-white"
-                          th:classappend="
-                          ${challenge.status.name()} == 'NOT_STARTED' ? 'bg-primary' :
-                          (${challenge.status.name()} == 'IN_PROGRESS' ? 'bg-success' :
-                          (${challenge.status.name()} == 'COMPLETED' ? 'bg-secondary' : 'bg-dark'))"
-                          th:text="${challenge.status.description}">
-                    상태
-                  </span>
-                </h3>
-                <p><i class="bi bi-calendar-event"></i> <span th:text="${challenge.startDate}"></span> ~ <span th:text="${challenge.endDate}"></span></p>
-                <p><i class="bi bi-people"></i> 최대 <span th:text="${challenge.maxParticipants}"></span>명 |
-                    <i class="bi bi-cash-coin"></i> <span th:text="${challenge.maxDeposit} + '원'">50000원</span></p>
+            <!-- 오른쪽: 챌린지 정보 -->
+            <div class="challenge-info-section">
+                <h1 class="challenge-title" th:text="${challenge.title}">챌린지 제목</h1>
+                <p class="challenge-description" th:text="${challenge.description}">챌린지 설명입니다.</p>
 
-                <div class="section-title"><i class="bi bi-info-circle"></i> 챌린지 설명</div>
-                <p th:text="${challenge.description}">챌린지 설명입니다.</p>
+                <!-- 진행률 (임시 데이터) -->
+                <div class="progress-section">
+                    <div class="progress-label d-flex justify-content-between align-items-center">
+                        <span class="progress-text">전체 참여자 평균 진행률</span>
+                        <span class="progress-percent">65%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" style="width: 65%"></div>
+                    </div>
+                </div>
 
-                <div class="section-title"><i class="bi bi-person-circle"></i> 개설자 정보</div>
-                <p>닉네임: <span th:text="${challenge.creatorLoginId}">user1</span></p>
+                <!-- 기본 정보 표시 -->
+                <div class="mb-3">
+                    <p><i class="bi bi-calendar-event"></i> <span th:text="${challenge.startDate}"></span> ~ <span th:text="${challenge.endDate}"></span></p>
+                    <p><i class="bi bi-people"></i> 최대 <span th:text="${challenge.maxParticipants}"></span>명 |
+                        <i class="bi bi-cash-coin"></i> <span th:text="${challenge.maxDeposit} + '원'">50000원</span></p>
+                </div>
 
-                <div class="section-title"><i class="bi bi-check-circle"></i> 인증 방법</div>
-                <ul>
-                    <li>주기: <span th:text="${challenge.frequencyLabel}">매일</span></li>
-                    <li>시간: <span th:text="${challenge.startTime}">06:00</span> ~ <span th:text="${challenge.endTime}">22:00</span></li>
-                    <li>하루 인증 횟수: <span th:text="${challenge.minDailyCount}">1</span>회</li>
-                    <li>수단: <span th:text="${challenge.verificationType}">카메라</span></li>
-                </ul>
+                <!-- 참여 버튼 -->
+                <div th:if="${challenge.status.name() != 'IN_PROGRESS' and challenge.status.name() != 'COMPLETED'}">
+                    <!-- 내가 만든 챌린지 -->
+                    <button class="join-button" 
+                            th:if="${loginMemberId != null and loginMemberId == challenge.creatorLoginId}"
+                            disabled>
+                        <i class="bi bi-clock"></i>
+                        참가 인원 모집 중
+                    </button>
 
-                <div class="section-title"><i class="bi bi-chat-dots"></i> 리뷰</div>
-                <div class="border rounded p-3 bg-light mb-2">아직 작성된 리뷰가 없습니다.</div>
+                    <!-- 이미 참가 신청한 챌린지 -->
+                    <button class="join-button" 
+                            th:if="${challenge.alreadyJoined}"
+                            disabled
+                            th:data-start="${challenge.startDate}">
+                        <i class="bi bi-hourglass-split"></i>
+                        <span id="countdown" class="mx-1"></span>후 시작
+                    </button>
+
+                    <!-- 인원 마감 -->
+                    <button class="join-button" 
+                            th:if="${challenge.currentParticipants >= challenge.maxParticipants}"
+                            disabled>
+                        <i class="bi bi-x-circle"></i>
+                        모집 마감 (<span th:text="${challenge.currentParticipants}"></span> / <span th:text="${challenge.maxParticipants}"></span>)
+                    </button>
+
+                    <!-- 참가 가능 -->
+                    <a th:href="@{'/challenges/' + ${challenge.id} + '/join'}"
+                       class="join-button"
+                       th:if="${loginMemberId != challenge.creatorLoginId and !challenge.alreadyJoined and challenge.currentParticipants < challenge.maxParticipants}">
+                        <i class="bi bi-trophy"></i>
+                        지금 챌린지 시작하기
+                    </a>
+                </div>
             </div>
         </div>
 
+        <!-- 챌린지 상세 정보 -->
+        <div class="challenge-details-section">
+            <div class="section-title"><i class="bi bi-person-circle"></i> 개설자 정보</div>
+            <p>닉네임: <span th:text="${challenge.creatorLoginId}">user1</span></p>
+
+            <div class="section-title"><i class="bi bi-check-circle"></i> 인증 방법</div>
+            <ul>
+                <li>주기: <span th:text="${challenge.frequencyLabel}">매일</span></li>
+                <li>시간: <span th:text="${challenge.startTime}">06:00</span> ~ <span th:text="${challenge.endTime}">22:00</span></li>
+                <li>하루 인증 횟수: <span th:text="${challenge.minDailyCount}">1</span>회</li>
+                <li>수단: <span th:text="${challenge.verificationType}">카메라</span></li>
+            </ul>
+
+            <div class="section-title"><i class="bi bi-chat-dots"></i> 리뷰</div>
+            <div class="border rounded p-3 bg-light mb-2">아직 작성된 리뷰가 없습니다.</div>
+        </div>
+
         <div class="mt-5">
-            <div class="policy-box shadow-sm rounded p-4 mb-4 bg-white">
+            <div class="policy-box">
                 <h5 class="mb-3"><i class="bi bi-shield-check text-primary"></i> 챌린지 정책</h5>
                 <ul class="list-unstyled mb-0">
                     <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> 챌린지는 시작일 이후 취소가 불가합니다.</li>
@@ -184,7 +169,7 @@
                 </ul>
             </div>
 
-            <div class="policy-box shadow-sm rounded p-4 bg-white">
+            <div class="policy-box">
                 <h5 class="mb-3"><i class="bi bi-patch-check text-warning"></i> 인증 정책</h5>
                 <ul class="list-unstyled mb-0">
                     <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> 인증은 지정된 시간 내에만 가능해요.</li>
@@ -194,77 +179,70 @@
                 </ul>
             </div>
         </div>
-        <div th:replace="fragments/footer :: footer"></div>
     </div>
-</div>
 
+    <!-- 하단 고정 버튼 (모바일용) -->
+    <div th:if="${challenge.status.name() != 'IN_PROGRESS' and challenge.status.name() != 'COMPLETED'}">
+        <div class="fixed-bottom-btn">
+            <!-- 내가 만든 챌린지 -->
+            <button class="btn btn-secondary"
+                    th:if="${loginMemberId != null and loginMemberId == challenge.creatorLoginId}"
+                    disabled>
+                참가 인원 모집 중
+            </button>
 
-<div th:if="${challenge.status.name() != 'IN_PROGRESS' and challenge.status.name() != 'COMPLETED'}">
-    <div class="fixed-bottom-btn">
+            <!-- 이미 참가 신청한 챌린지 -->
+            <button class="btn btn-secondary"
+                    th:if="${challenge.alreadyJoined}"
+                    disabled
+                    th:data-start="${challenge.startDate}">
+                <span id="countdown" class="mx-1"></span>후 시작
+            </button>
 
-        <!-- 내가 만든 챌린지 -->
-        <button class="btn btn-secondary"
-                th:if="${loginMemberId != null and loginMemberId == challenge.creatorLoginId}"
-                disabled>
-            참가 인원 모집 중
-        </button>
+            <!-- 인원 마감 -->
+            <button class="btn btn-secondary"
+                    th:if="${challenge.currentParticipants >= challenge.maxParticipants}"
+                    disabled>
+                모집 마감 (<span th:text="${challenge.currentParticipants}"></span> / <span th:text="${challenge.maxParticipants}"></span>)
+            </button>
 
-        <!-- 이미 참가 신청한 챌린지 -->
-        <button class="btn btn-secondary"
-                th:if="${challenge.alreadyJoined}"
-                disabled
-                th:data-start="${challenge.startDate}">
-            <span id="countdown" class="mx-1"></span>후 시작
-        </button>
-
-        <!-- 인원 마감 -->
-        <button class="btn btn-secondary"
-                th:if="${challenge.currentParticipants >= challenge.maxParticipants}"
-                disabled>
-            모집 마감 (<span th:text="${challenge.currentParticipants}"></span> / <span th:text="${challenge.maxParticipants}"></span>)
-        </button>
-
-        <!-- 참가 가능 -->
-        <a th:href="@{'/challenges/' + ${challenge.id} + '/join'}"
-           class="btn btn-primary"
-           th:if="${loginMemberId != challenge.creatorLoginId and !challenge.alreadyJoined and challenge.currentParticipants < challenge.maxParticipants}">
-            🚀 챌린지 참여하기
-        </a>
+        </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script th:src="@{/js/navbar.js}"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const countdownSpan = document.getElementById("countdown");
-      const button = document.querySelector("button[data-start]");
-      if (!button || !countdownSpan) return;
+    <div th:replace="fragments/footer :: footer"></div>
 
-      const startDateTimeStr = button.getAttribute("data-start");
-      const targetDate = new Date(startDateTimeStr);
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/navbar.js}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const countdownSpan = document.getElementById("countdown");
+            const button = document.querySelector("button[data-start]");
+            if (!button || !countdownSpan) return;
 
-      function updateCountdown() {
-        const now = new Date();
-        const diff = targetDate - now;
+            const startDateTimeStr = button.getAttribute("data-start");
+            const targetDate = new Date(startDateTimeStr);
 
-        if (diff <= 0) {
-          countdownSpan.textContent = "시작됨";
-          clearInterval(timer);
-          return;
-        }
+            function updateCountdown() {
+                const now = new Date();
+                const diff = targetDate - now;
 
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                if (diff <= 0) {
+                    countdownSpan.textContent = "시작됨";
+                    clearInterval(timer);
+                    return;
+                }
 
-        countdownSpan.textContent = `${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
-      }
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-      updateCountdown(); // 초기 실행
-      const timer = setInterval(updateCountdown, 1000);
-    });
-</script>
+                countdownSpan.textContent = `${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
+            }
+
+            updateCountdown();
+            const timer = setInterval(updateCountdown, 1000);
+        });
+    </script>
 </body>
 </html>

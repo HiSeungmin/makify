@@ -158,6 +158,11 @@ public class ChallengeServiceImpl implements ChallengeService {
         
         // 상태를 JOINED로 변경
         userChallenge.markAsJoined();
+
+        // 참여자 수 증가
+        Challenge challenge = challengeRepository.findById(userChallenge.getChallenge().getId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
+        challenge.incrementParticipantCount();
     }
 
     @Override
