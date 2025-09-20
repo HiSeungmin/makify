@@ -1,4 +1,4 @@
-/* HabitChallenge Navbar - 개선된 반응형 */
+/* HabitChallenge Navbar - 깔끔한 반응형 */
 .habit-header {
   display: flex;
   justify-content: space-between;
@@ -50,6 +50,7 @@
   margin-left: 8px;
 }
 
+/* 데스크탑 네비게이션 메뉴 */
 .habit-nav-menu {
   display: flex;
   gap: 32px;
@@ -78,6 +79,12 @@
   font-weight: 600;
 }
 
+/* 데스크탑에서는 nav-auth-item 숨기기 */
+.nav-auth-item {
+  display: none;
+}
+
+/* 데스크탑 로그인 버튼 */
 .habit-nav-actions {
   display: flex;
   gap: 16px;
@@ -107,25 +114,6 @@
   text-decoration: none;
 }
 
-.habit-btn-signup {
-  background: #10b981;
-  color: white;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background-color 0.2s;
-  white-space: nowrap;
-}
-
-.habit-btn-signup:hover {
-  background: #059669;
-  color: white;
-  text-decoration: none;
-}
-
 /* Mobile Menu Toggle */
 .habit-mobile-toggle {
   display: none;
@@ -138,7 +126,6 @@
   border: none;
   background: none;
   z-index: 1002;
-  position: relative;
 }
 
 .habit-mobile-toggle span {
@@ -162,18 +149,7 @@
   transform: rotate(-45deg) translate(3px, -3px);
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
-  .habit-header {
-    padding: 16px 24px;
-  }
-
-  .habit-nav-menu {
-    gap: 24px;
-  }
-}
-
-/* Mobile */
+/* Mobile Responsive */
 @media (max-width: 768px) {
   .habit-header {
     padding: 14px 20px;
@@ -194,18 +170,23 @@
     padding: 2px 6px;
   }
 
+  /* 햄버거 버튼 표시 */
   .habit-mobile-toggle {
     display: flex;
   }
 
-  /* 기본 데스크탑 네비와 버튼들 모두 숨기기 */
-  .habit-header nav .habit-nav-menu,
-  .habit-header .habit-nav-actions {
-    display: none !important;
+  /* 데스크탑 네비게이션 숨기기 */
+  nav .habit-nav-menu {
+    display: none;
   }
 
-  /* 모바일 햄버거 메뉴 (네비게이션 + 버튼들 모두 포함) */
-  .habit-header .habit-nav-menu.active {
+  /* 데스크탑 액션 버튼들 숨기기 */
+  .habit-nav-actions {
+    display: none;
+  }
+
+  /* 모바일 드롭다운 메뉴 */
+  .habit-nav-menu.active {
     display: flex !important;
     position: fixed;
     top: 70px;
@@ -217,7 +198,13 @@
     gap: 0;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     border-bottom: 1px solid #e5e7eb;
+    transform: translateY(0);
     z-index: 999;
+  }
+
+  /* 모바일에서는 nav-auth-item 보이기 */
+  .habit-nav-menu.active .nav-auth-item {
+    display: list-item;
   }
 
   .habit-nav-menu.active li {
@@ -225,7 +212,8 @@
     margin: 0;
   }
 
-  .habit-nav-menu.active a {
+  .habit-nav-menu.active a,
+  .habit-nav-menu.active button {
     display: block;
     padding: 16px 20px;
     font-size: 18px;
@@ -234,35 +222,24 @@
     width: 100%;
     margin: 0;
     border-radius: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    color: #374151;
+    font-weight: 500;
+    text-decoration: none;
   }
 
-  .habit-nav-menu.active a:last-child {
+  .habit-nav-menu.active li:last-child a,
+  .habit-nav-menu.active li:last-child button {
     border-bottom: none;
   }
 
-  /* 햄버거 메뉴 열릴 때 로그인 버튼들도 함께 표시 */
-  .habit-nav-menu.active + .habit-nav-actions {
-    display: flex !important;
-    position: fixed;
-    top: calc(70px + 224px); /* 네비 메뉴 높이만큼 아래에 */
-    left: 0;
-    right: 0;
-    background: white;
-    flex-direction: column;
-    padding: 20px;
-    gap: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    border-top: 1px solid #f3f4f6;
-    z-index: 998;
-  }
-
-  .habit-nav-menu.active + .habit-nav-actions .habit-btn-login,
-  .habit-nav-menu.active + .habit-nav-actions .habit-btn-signup {
-    width: 100%;
-    justify-content: center;
-    padding: 14px;
-    font-size: 16px;
-    text-align: center;
+  .habit-nav-menu.active a:hover,
+  .habit-nav-menu.active button:hover {
+    background: #f0fdf4;
+    color: #10b981;
   }
 }
 
@@ -276,7 +253,8 @@
     font-size: 18px;
   }
 
-  .habit-nav-menu a {
+  .habit-nav-menu.active a,
+  .habit-nav-menu.active button {
     font-size: 16px;
     padding: 14px 16px;
   }

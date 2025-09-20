@@ -3,7 +3,9 @@
 document.addEventListener('DOMContentLoaded', function() {
   initializeNavbar();
   setActiveMenu();
-  checkAuthenticationStatus();
+  // 페이지 로드시 한 번만 체크
+  const accessToken = getCookie("access-token");
+  updateAuthUI(!!accessToken);
 });
 
 function initializeNavbar() {
@@ -38,7 +40,6 @@ function initializeNavbar() {
 function toggleMobileMenu() {
   const menu = document.getElementById('habitNavMenu');
   const toggle = document.querySelector('.habit-mobile-toggle');
-  const actions = document.querySelector('.habit-nav-actions');
   
   if (menu && toggle) {
     const isActive = menu.classList.contains('active');
@@ -47,13 +48,11 @@ function toggleMobileMenu() {
       // 메뉴 닫기
       menu.classList.remove('active');
       toggle.classList.remove('active');
-      if (actions) actions.style.display = 'none';
       document.body.style.overflow = '';
     } else {
       // 메뉴 열기
       menu.classList.add('active');
       toggle.classList.add('active');
-      if (actions) actions.style.display = 'flex';
       document.body.style.overflow = 'hidden';
     }
   }
@@ -62,12 +61,10 @@ function toggleMobileMenu() {
 function closeMobileMenu() {
   const menu = document.getElementById('habitNavMenu');
   const toggle = document.querySelector('.habit-mobile-toggle');
-  const actions = document.querySelector('.habit-nav-actions');
   
   if (menu && toggle) {
     menu.classList.remove('active');
     toggle.classList.remove('active');
-    if (actions) actions.style.display = 'none';
     document.body.style.overflow = '';
   }
 }
@@ -78,23 +75,14 @@ function setActiveMenu() {
   
   menuLinks.forEach(link => {
     const href = link.getAttribute('href');
-    
-    // Remove any existing active class
     link.classList.remove('active');
     
-    // Add active class based on current path
     if (currentPath === '/' && href === '/') {
       link.classList.add('active');
     } else if (currentPath !== '/' && href !== '/' && currentPath.startsWith(href)) {
       link.classList.add('active');
     }
   });
-}
-
-function checkAuthenticationStatus() {
-  // 쿠키에서 토큰 확인
-  const accessToken = getCookie("access-token");
-  updateAuthUI(!!accessToken);
 }
 
 function getCookie(name) {
@@ -107,32 +95,61 @@ function getCookie(name) {
 }
 
 function updateAuthUI(isAuthenticated) {
-  const navActions = document.querySelector('.habit-nav-actions');
-  if (!navActions) return;
-
+  const desktopActions = document.querySelector('.habit-nav-actions');
+  const menu = document.getElementById('habitNavMenu');
+  
   if (isAuthenticated) {
-    // 로그인된 상태
-    navActions.innerHTML = `
-      <a href="/notifications" class="habit-btn-login">
-        <i class="bi bi-bell"></i> 알림
-      </a>
-      <a href="/profile" class="habit-btn-login">
-        <i class="bi bi-person"></i> 프로필
-      </a>
-      <button onclick="logout()" class="habit-btn-login">
-        <i class="bi bi-box-arrow-right"></i> 로그아웃
-      </button>
-    `;
+    // 데스크탑: 알림, 마이페이지, 로그아웃 버튼들
+    if (desktopActions) {
+      desktopActions.innerHTML = `
+        <a href="/notifications" class="habit-btn-login">
+          <i class="bi bi-bell"></i> 알림
+        </a>
+        <a href="/mypage" class="habit-btn-login">
+          <i class="bi bi-person"></i> 마이페이지
+        </a>
+        <button onclick="logout()" class="habit-btn-login">
+          <i class="bi bi-box-arrow-right"></i> 로그아웃
+        </button>
+      `;
+    }
+
+    // 모바일: 마이페이지와 로그아웃
+    if (menu) {
+      const existingAuthItems = menu.querySelectorAll('.nav-auth-item');
+      existingAuthItems.forEach(item => item.remove());
+      
+      const profileItem = document.createElement('li');
+      profileItem.className = 'nav-auth-item';
+      profileItem.innerHTML = '<a href="/profile" class="habit-btn-login"><i class="bi bi-person"></i> 마이페이지</a>';
+      menu.appendChild(profileItem);
+      
+      const logoutItem = document.createElement('li');
+      logoutItem.className = 'nav-auth-item';
+      logoutItem.innerHTML = '<button onclick="logout()" class="habit-btn-login"><i class="bi bi-box-arrow-right"></i> 로그아웃</button>';
+      menu.appendChild(logoutItem);
+    }
   } else {
-    // 로그아웃된 상태
-    navActions.innerHTML = `
-      <a href="/login" class="habit-btn-login">로그인</a>
-      <a href="/register" class="habit-btn-signup">회원가입</a>
-    `;
+    // 로그아웃 상태: 로그인만
+    if (desktopActions) {
+      desktopActions.innerHTML = `
+        <a href="/login" class="habit-btn-login">로그인</a>
+      `;
+    }
+
+    // 모바일: 로그인만
+    if (menu) {
+      const existingAuthItems = menu.querySelectorAll('.nav-auth-item');
+      existingAuthItems.forEach(item => item.remove());
+      
+      const loginItem = document.createElement('li');
+      loginItem.className = 'nav-auth-item';
+      loginItem.innerHTML = '<a href="/login" class="habit-btn-login">로그인</a>';
+      menu.appendChild(loginItem);
+    }
   }
 }
 
-// 로그아웃 함수 (기존 기능 유지)
 function logout() {
   fetch("/logout", {
     method: "POST",
@@ -143,10 +160,7 @@ function logout() {
       document.cookie = "access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
       document.cookie = "refresh-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
       
-      // UI 업데이트
-      updateAuthUI(false);
-      
-      // 홈페이지로 이동
+      // 홈페이지로 이동 (페이지 새로고침으로 UI 자동 업데이트)
       window.location.href = "/";
     } else {
       alert("로그아웃 실패");
@@ -157,10 +171,6 @@ function logout() {
   });
 }
 
-// 페이지 로드 시와 주기적으로 인증 상태 체크
-setInterval(checkAuthenticationStatus, 5000); // 5초마다 체크
-
-// 전역 함수로 노출 (필요시 HTML에서 직접 호출 가능)
+// 전역 함수로 노출
 window.toggleMobileMenu = toggleMobileMenu;
 window.logout = logout;
-window.updateAuthUI = updateAuthUI;
