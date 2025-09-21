@@ -134,9 +134,9 @@ public class ChallengeServiceImpl implements ChallengeService {
         
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
-        
-        // 결제 금액 계산
-        Long paymentAmount = 100L; // TODO: 실제 로직으로 변경
+
+        // TODO: 실제 로직으로 변경
+        Long paymentAmount = 100L;
         
         // PENDING 상태로 Payment 생성
         Payment payment = Payment.create(paymentAmount, PaidStatus.PENDING);

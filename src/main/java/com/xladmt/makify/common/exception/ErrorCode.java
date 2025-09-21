@@ -41,11 +41,12 @@ public enum ErrorCode {
     PAYMENT_NOT_FAIL(4003, HttpStatus.BAD_REQUEST,"결제 실패 처리에 실패했습니다"),
 
     PAYMENT_NOT_FOUND(4004, HttpStatus.NOT_FOUND, "결제 정보를 찾을 수 없습니다."),
-    PAYMENT_NOT_COMPLETED(4005, HttpStatus.BAD_REQUEST, "결제가 완료되지 않았습니다."),
+    PAYMENT_NOT_COMPLETED(4005, HttpStatus.BAD_REQUEST, "외부 결제가 완료되지 않았습니다."),
     PAYMENT_AMOUNT_MISMATCH(4006, HttpStatus.BAD_REQUEST, "결제 금액이 일치하지 않습니다."),
-    PAYMENT_ALREADY_PROCESSED(4007, HttpStatus.BAD_REQUEST, "이미 처리된 결제입니다.")
+    PAYMENT_ALREADY_PROCESSED(4007, HttpStatus.BAD_REQUEST, "이미 처리된 결제입니다."),
 
-
+    IAMPORT_API_ERROR(4008, HttpStatus.BAD_GATEWAY, "아임포트 API 호출 중 오류가 발생했습니다."),
+    IAMPORT_RESPONSE_ERROR(4009, HttpStatus.BAD_GATEWAY, "아임포트 응답 처리 중 오류가 발생했습니다.")
 
 
     ;

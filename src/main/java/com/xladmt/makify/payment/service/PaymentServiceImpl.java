@@ -8,6 +8,8 @@ import com.siot.IamportRestClient.response.Payment;
 import com.xladmt.makify.challenge.repository.UserChallengeRepository;
 import com.xladmt.makify.common.constant.PaidStatus;
 import com.xladmt.makify.common.entity.UserChallenge;
+import com.xladmt.makify.common.exception.BusinessException;
+import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.payment.repository.PaymentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +34,13 @@ public class PaymentServiceImpl implements PaymentService {
             
             // 결제 완료 상태 확인
             if (!iamportResponse.getResponse().getStatus().equals("paid")) {
-                throw new RuntimeException("결제가 완료되지 않았습니다.");
+                throw new BusinessException(ErrorCode.PAYMENT_NOT_COMPLETED);
             }
             
             return iamportResponse;
             
         } catch (IamportResponseException | IOException e) {
-            throw new RuntimeException("외부 결제 검증 실패: " + e.getMessage(), e);
+            throw new BusinessException(ErrorCode.IAMPORT_RESPONSE_ERROR);
         }
     }
 
@@ -66,9 +68,15 @@ public class PaymentServiceImpl implements PaymentService {
             // 외부 결제 취소 요청
             CancelData cancelData = new CancelData(paymentUid, true);
             iamportClient.cancelPaymentByImpUid(cancelData);
+
+            IamportResponse<Payment> paymentStatus = iamportClient.paymentByImpUid(paymentUid);
+
+            if (!paymentStatus.getResponse().getStatus().equals("cancelled")) {
+                throw new BusinessException(ErrorCode.PAYMENT_NOT_FAIL);
+            }
             
         } catch (IamportResponseException | IOException e) {
-            throw new RuntimeException("외부 결제 취소 실패: " + e.getMessage(), e);
+            throw new BusinessException(ErrorCode.IAMPORT_RESPONSE_ERROR);
         }
     }
 }

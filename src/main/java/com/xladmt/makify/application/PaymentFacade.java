@@ -31,6 +31,13 @@ public class PaymentFacade {
     @Transactional
     public String initializePayment(PaymentInitRequest request) {
 
+        if (request == null) {
+            throw new BusinessException(ErrorCode.INVALID_REQUEST);
+        }
+        if (request.getChallengeId() == null || request.getUserId() == null) {
+            throw new BusinessException(ErrorCode.INVALID_REQUEST);
+        }
+
         // 1. 챌린지 참여 가능 여부 검증
         challengeValidator.validateJoinable(request.getChallengeId(), request.getUserId());
 
@@ -59,9 +66,9 @@ public class PaymentFacade {
 
             return iamportResponse;
             
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             cleanupFailedPayment(request.getUuid(), request.getPaymentUid());
-            throw new BusinessException(ErrorCode.PAYMENT_PROCESSING_FAIL);
+            throw e;
         }
     }
 
@@ -70,15 +77,16 @@ public class PaymentFacade {
      */
     private void cleanupFailedPayment(String uuid, String paymentUid) {
 
+        if (paymentUid == null || paymentUid.isEmpty()) {
+            throw new BusinessException(ErrorCode.INVALID_REQUEST);
+        }
+
         // 1. DB에서 PENDING -> CANCEL
         challengeService.failUserChallenge(uuid);
         paymentService.failPayment(uuid, paymentUid);
 
         // 2. 외부 결제 취소
-        if (paymentUid != null && !paymentUid.isEmpty()) {
-            paymentService.cancelExternalPayment(paymentUid);
-        }
+        paymentService.cancelExternalPayment(paymentUid);
     }
 
-    // TODO: 결제 취소(환불) 처리
 }
