@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.cglib.core.Local;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,7 +23,7 @@ public class Payout extends BaseEntity {
     @JoinColumn(name = "payment_id", nullable = false)
     private Payment paymentId;
 
-    private Integer amount; // 환급 금액
+    private BigDecimal amount; // 환급 금액
 
     @Enumerated(EnumType.STRING)
     private PayoutStatus status; // 환급 상태

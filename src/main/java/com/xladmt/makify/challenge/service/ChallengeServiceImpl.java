@@ -18,6 +18,8 @@ import com.xladmt.makify.payment.repository.PaymentRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -136,7 +138,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
         // TODO: 실제 로직으로 변경
-        Long paymentAmount = 100L;
+        BigDecimal paymentAmount = BigDecimal.valueOf(100);
         
         // PENDING 상태로 Payment 생성
         Payment payment = Payment.create(paymentAmount, PaidStatus.PENDING);

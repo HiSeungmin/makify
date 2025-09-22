@@ -19,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
@@ -55,7 +56,7 @@ class ChallengeValidatorTest {
 
         verificationMethod = VerificationMethod.create(Frequency.DAILY, LocalTime.MIN,LocalTime.MAX,1, VerificationType.CAMERA);
 
-        challenge = Challenge.create(member,"독서 챌린지", "매일 5쪽 읽기", LocalDate.now().minusDays(1), LocalDate.MAX, YN.Y, YN.N, 1000,
+        challenge = Challenge.create(member,"독서 챌린지", "매일 5쪽 읽기", LocalDate.now().minusDays(1), LocalDate.MAX, YN.Y, YN.N, BigDecimal.valueOf(1000),
                 verificationMethod, null, 10, Category.MINDSET);
 
         challengeValidator = new ChallengeValidator(challengeRepository, memberRepository, userChallengeRepository);

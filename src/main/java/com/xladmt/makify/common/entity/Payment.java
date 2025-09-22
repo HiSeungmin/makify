@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,18 +18,10 @@ public class Payment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "challenge_id")
-//    private Challenge challenge;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private Member user;
-
     private String stripePaymentId; // 네이버페이, 카카오페이 결제 ID (결제고유번호)
 
-    private Long amount; // 결제 금액
-    private Long depositAmt; // 예치금 사용 금액
+    private BigDecimal amount; // 결제 금액
+    private BigDecimal depositAmt; // 예치금 사용 금액
 
     @Enumerated(EnumType.STRING)
     private PaidStatus status; // 결제 상태
@@ -37,7 +30,7 @@ public class Payment extends BaseEntity {
 
 
     // 생성 메서드
-    public static Payment create(Long amount, PaidStatus status) {
+    public static Payment create(BigDecimal amount, PaidStatus status) {
         Payment payment = new Payment();
         payment.amount = amount;
         payment.status = status;

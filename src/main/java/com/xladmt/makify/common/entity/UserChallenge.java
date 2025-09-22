@@ -6,6 +6,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -44,7 +46,7 @@ public class UserChallenge extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserChallengeStatus status;
 
-    private Integer deAmt; // 예치금
+    private BigDecimal deAmt; // 예치금
 
 
     public static UserChallenge createUserChallenge(

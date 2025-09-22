@@ -9,6 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.Validator;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Map;
@@ -60,14 +61,28 @@ public class ChallengeCreateRequestValidator implements Validator {
         if (request.getIsFixedDeposit() == YN.Y) {
             if (request.getFixedDeposit() == null) {
                 errors.rejectValue("fixedDeposit", "Required", "고정 예치금이 필요합니다.");
-            } else if (request.getFixedDeposit() < 1000 || request.getFixedDeposit() > 200000) {
-                errors.rejectValue("fixedDeposit", "InvalidValue", "고정 예치금은 1,000원 이상 200,000원 이하이어야 합니다.");
+            } else {
+                BigDecimal fixedDeposit = request.getFixedDeposit();
+                BigDecimal min = BigDecimal.valueOf(1000);
+                BigDecimal max = BigDecimal.valueOf(200000);
+
+                if (fixedDeposit.compareTo(min) < 0 || fixedDeposit.compareTo(max) > 0) {
+                    errors.rejectValue("fixedDeposit", "InvalidValue",
+                            "고정 예치금은 1,000원 이상 200,000원 이하이어야 합니다.");
+                }
             }
         } else if (request.getIsFixedDeposit() == YN.N) {
             if (request.getMaxDeposit() == null) {
                 errors.rejectValue("maxDeposit", "Required", "최대 예치금이 필요합니다.");
-            } else if (request.getMaxDeposit() < 1000 || request.getMaxDeposit() > 200000) {
-                errors.rejectValue("maxDeposit", "InvalidValue", "최대 예치금은 1,000원 이상 200,000원 이하이어야 합니다.");
+            } else {
+                BigDecimal maxDeposit = request.getMaxDeposit();
+                BigDecimal min = BigDecimal.valueOf(1000);
+                BigDecimal max = BigDecimal.valueOf(200000);
+
+                if (maxDeposit.compareTo(min) < 0 || maxDeposit.compareTo(max) > 0) {
+                    errors.rejectValue("maxDeposit", "InvalidValue",
+                            "최대 예치금은 1,000원 이상 200,000원 이하이어야 합니다.");
+                }
             }
         }
 

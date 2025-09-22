@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.cglib.core.Local;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -41,7 +42,7 @@ public class Challenge extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private YN isFixedDeposit; // 고정 예치금 유무
 
-    private Integer maxDeposit;  // 예치금
+    private BigDecimal maxDeposit;  // 예치금
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "verification_id", nullable = false)
@@ -85,7 +86,7 @@ public class Challenge extends BaseEntity {
                                    LocalDate endDate,
                                    YN isPublic,
                                    YN isFixedDeposit,
-                                   Integer maxDeposit,
+                                   BigDecimal maxDeposit,
                                    VerificationMethod verificationMethod,
                                    String privateCode,
                                    Integer maxParticipants,
@@ -115,7 +116,7 @@ public class Challenge extends BaseEntity {
                        LocalDate endDate,
                        YN isPublic,
                        YN isFixedDeposit,
-                       Integer maxDeposit,
+                       BigDecimal maxDeposit,
                        VerificationMethod verificationMethod,
                        String privateCode,
                        Integer maxParticipants,

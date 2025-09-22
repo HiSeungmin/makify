@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -24,7 +25,7 @@ public class ChallengeDetailResponse {
     private LocalDate endDate;
     private Integer maxParticipants;
     private YN isFixedDeposit;
-    private Integer maxDeposit;
+    private BigDecimal maxDeposit;
     private ChallengeStatus status;
 
     // 개설자

@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,7 +22,7 @@ public class Refund extends BaseEntity {
     @JoinColumn(name = "payment_id", nullable = false)
     private Payment payment;
 
-    private Integer amount; // 환불 금액
+    private BigDecimal amount; // 환불 금액
 
     private String reason; // 환불 사유
 

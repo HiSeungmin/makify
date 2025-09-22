@@ -8,6 +8,8 @@ import com.xladmt.makify.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 @RequiredArgsConstructor
 public class PaymentValidator {
@@ -18,8 +20,8 @@ public class PaymentValidator {
         UserChallenge userChallenge = userChallengeRepository.findByUuid(uuid)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_CHALLENGE_NOT_FOUND));
 
-        Long expectedAmount = userChallenge.getPayment().getAmount();
-        Long actualAmount = externalPayment.getAmount().longValue();
+        BigDecimal expectedAmount = userChallenge.getPayment().getAmount();
+        BigDecimal actualAmount = externalPayment.getAmount();
 
         if (!expectedAmount.equals(actualAmount)) {
             throw new BusinessException(ErrorCode.PAYMENT_AMOUNT_MISMATCH);
