@@ -27,19 +27,22 @@ public class AuthController {
             return ResponseEntity.status(401).body("Refresh token이 유효하지 않음");
         }
 
-        String userId = jwtUtil.getUserIdFromToken(refreshToken);
-        String redisToken = redisTemplate.opsForValue().get("auth:refresh:" + userId);
+        String loginId = jwtUtil.getUserIdFromToken(refreshToken);
+        String redisToken = redisTemplate.opsForValue().get("auth:token:refresh:" + loginId);
 
         if (redisToken == null || !redisToken.equals(refreshToken)) {
             return ResponseEntity.status(401).body("이미 만료된 리프레시 토큰");
         }
 
-        String newAccessToken = jwtUtil.createAccessToken(userId);
+        String newAccessToken = jwtUtil.createAccessToken(loginId);
+        
+        // 새 액세스 토큰을 Redis에 저장
+        redisTemplate.opsForValue().set("auth:token:access:" + loginId, newAccessToken, 15, java.util.concurrent.TimeUnit.MINUTES);
 
         Cookie accessCookie = new Cookie("access-token", newAccessToken);
         accessCookie.setHttpOnly(false);
         accessCookie.setPath("/");
-        accessCookie.setMaxAge(60 * 15); // 15분
+        accessCookie.setMaxAge(60 * 15);
 
         response.addCookie(accessCookie);
 

@@ -73,8 +73,11 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         String accessToken = jwtUtil.createAccessToken(loginId);
         String refreshToken = jwtUtil.createRefreshToken();
 
-        // Redis에 refresh-token 저장
-        redisTemplate.opsForValue().set("auth:refresh:" + loginId, refreshToken, 30, TimeUnit.DAYS);
+        // Redis에 토큰 저장 (개선된 네이밍)
+        redisTemplate.opsForValue().set("auth:token:access:" + loginId, accessToken, 15, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set("auth:token:refresh:" + loginId, refreshToken, 30, TimeUnit.DAYS);
+
+        log.info("토큰 발급: loginId={}", loginId);
 
         // 쿠키 생성
         Cookie accessCookie = new Cookie("access-token", accessToken);
@@ -90,7 +93,6 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
 
-        // 200 OK 설정
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
