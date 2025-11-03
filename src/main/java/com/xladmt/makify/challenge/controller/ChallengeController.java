@@ -73,12 +73,15 @@ public class ChallengeController {
         return "challenge/challenges";
     }
 
-    // 챌린지 상세 패이지
+    // 챌린지 상세 페이지
     @GetMapping("/challenges/{id}")
     public String getChallengeDetail(@PathVariable Long id, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
-        String loginId = memberDetails.getMember().getLoginId();
+        String loginId = null;
+        if (memberDetails != null) {
+            loginId = memberDetails.getMember().getLoginId();
+        }
+        
         ChallengeDetailResponse challenge = challengeService.getChallenge(loginId, id);
-
         model.addAttribute("loginMemberId", loginId);
         model.addAttribute("challenge", challenge);
 
@@ -270,7 +273,7 @@ public class ChallengeController {
         }
     }
 
-    // 상태 표시명 헬퍼 메서드
+    // 상태 표시명 메서드
     private String getStatusDisplayName(String status) {
         switch (status) {
             case "NOT_STARTED": return "모집중";

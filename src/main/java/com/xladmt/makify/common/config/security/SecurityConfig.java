@@ -50,9 +50,12 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/auth/login", "/signup", "/css/**", "/js/**", "/images/**", "/videos/**", "/challenges").permitAll()
+                        .requestMatchers("/", "/login", "/auth/login", "/signup", "/css/**", "/js/**", "/images/**", "/videos/**").permitAll()
                         .requestMatchers("POST", "/signup").permitAll()
                         .requestMatchers("/auth/reissue").permitAll()
+                        .requestMatchers("GET", "/challenges").permitAll()  // 챌린지 목록 페이지
+                        .requestMatchers("GET", "/challenges/**").permitAll()  // 챌린지 상세 페이지
+                        .requestMatchers("GET", "/api/challenges/**").permitAll()  // 챌린지 API 검색 및 상세
                         .anyRequest().authenticated()
                 )
                 .addFilterAt(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)

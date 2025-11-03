@@ -948,3 +948,27 @@ java.lang.IllegalArgumentException: 이미 존재하는 아이디입니다.
 2025-11-03 14:52:45.400 [http-nio-8001-exec-1] ERROR c.x.m.c.aop.ControllerLoggingAspect -   Request: POST /signup
 2025-11-03 14:52:45.400 [http-nio-8001-exec-1] ERROR c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
 2025-11-03 14:52:45.400 [http-nio-8001-exec-1] ERROR c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 15:20:45.428 [http-nio-8001-exec-7] ERROR c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 15:20:45.428 [http-nio-8001-exec-7] ERROR c.x.m.c.aop.ControllerLoggingAspect - [ERROR] NullPointerException | Time: 1ms
+2025-11-03 15:20:45.428 [http-nio-8001-exec-7] ERROR c.x.m.c.aop.ControllerLoggingAspect -   Exception Message: Cannot invoke "com.xladmt.makify.common.config.security.MemberDetails.getMember()" because "memberDetails" is null
+2025-11-03 15:20:45.428 [http-nio-8001-exec-7] ERROR c.x.m.c.aop.ControllerLoggingAspect -   Request: GET /challenges/1
+2025-11-03 15:20:45.428 [http-nio-8001-exec-7] ERROR c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 15:20:45.428 [http-nio-8001-exec-7] ERROR c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 15:21:15.592 [http-nio-8001-exec-9] ERROR c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 15:21:15.592 [http-nio-8001-exec-9] ERROR c.x.m.c.aop.ControllerLoggingAspect - [ERROR] NullPointerException | Time: 0ms
+2025-11-03 15:21:15.592 [http-nio-8001-exec-9] ERROR c.x.m.c.aop.ControllerLoggingAspect -   Exception Message: Cannot invoke "com.xladmt.makify.common.config.security.MemberDetails.getMember()" because "memberDetails" is null
+2025-11-03 15:21:15.592 [http-nio-8001-exec-9] ERROR c.x.m.c.aop.ControllerLoggingAspect -   Request: GET /challenges/1
+2025-11-03 15:21:15.593 [http-nio-8001-exec-9] ERROR c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 15:21:15.593 [http-nio-8001-exec-9] ERROR c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 15:23:34.055 [http-nio-8001-exec-1] ERROR c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 15:23:34.055 [http-nio-8001-exec-1] ERROR c.x.m.c.aop.ControllerLoggingAspect - [ERROR] NullPointerException | Time: 1ms
+2025-11-03 15:23:34.055 [http-nio-8001-exec-1] ERROR c.x.m.c.aop.ControllerLoggingAspect -   Exception Message: Cannot invoke "com.xladmt.makify.common.config.security.MemberDetails.getMember()" because "memberDetails" is null
+2025-11-03 15:23:34.055 [http-nio-8001-exec-1] ERROR c.x.m.c.aop.ControllerLoggingAspect -   Request: GET /challenges/1
+2025-11-03 15:23:34.055 [http-nio-8001-exec-1] ERROR c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 15:23:34.055 [http-nio-8001-exec-1] ERROR c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 15:23:49.032 [http-nio-8001-exec-8] ERROR c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 15:23:49.032 [http-nio-8001-exec-8] ERROR c.x.m.c.aop.ControllerLoggingAspect - [ERROR] NullPointerException | Time: 1ms
+2025-11-03 15:23:49.032 [http-nio-8001-exec-8] ERROR c.x.m.c.aop.ControllerLoggingAspect -   Exception Message: Cannot invoke "com.xladmt.makify.common.config.security.MemberDetails.getMember()" because "memberDetails" is null
+2025-11-03 15:23:49.032 [http-nio-8001-exec-8] ERROR c.x.m.c.aop.ControllerLoggingAspect -   Request: GET /challenges/2
+2025-11-03 15:23:49.032 [http-nio-8001-exec-8] ERROR c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 15:23:49.032 [http-nio-8001-exec-8] ERROR c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════

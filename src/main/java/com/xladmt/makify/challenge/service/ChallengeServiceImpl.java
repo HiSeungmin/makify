@@ -87,12 +87,17 @@ public class ChallengeServiceImpl implements ChallengeService {
         Challenge challenge = challengeRepository.findByIdWithMember(challengeId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
 
-        Long memberId = memberRepository.findByLoginId(loginId).get().getId();
+        Long memberId = null;
+        boolean alreadyJoined = false;
+
+        if(loginId!=null){
+            memberId = memberRepository.findByLoginId(loginId).get().getId();
+            alreadyJoined = hasJoinedChallenge(challenge.getId(), memberId);
+        }
 
         VerificationMethod verificationMethod = verificationMethodRepository.findById(challenge.getVerificationMethod().getId())
                 .orElseThrow(()-> new BusinessException(ErrorCode.VERIFICATION_METHOD_NOT_FOUND));
 
-        boolean alreadyJoined = hasJoinedChallenge(challenge.getId(), memberId);
         Long currentParticipants = getParticipantCount(challenge.getId());
 
         return ChallengeDetailResponse.builder()

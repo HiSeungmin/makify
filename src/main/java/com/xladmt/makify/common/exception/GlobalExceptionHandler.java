@@ -3,7 +3,7 @@ package com.xladmt.makify.common.exception;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,6 +28,25 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(errorCode.getHttpStatus())
                 .body(errorResponse);
+    }
+
+    /**
+     * AccessDeniedException (403 Forbidden) 처리
+     * - JSON 요청이면 JSON 응답
+     * - HTML 요청이면 로그인 페이지로 리다이렉트
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException ex, HttpServletResponse response) {
+        ex.printStackTrace();
+        
+        // 로그인 페이지로 리다이렉트
+        try {
+            response.sendRedirect("/login");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     /**
