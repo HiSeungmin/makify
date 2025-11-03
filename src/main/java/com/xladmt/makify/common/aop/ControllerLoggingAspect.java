@@ -41,7 +41,7 @@ public class ControllerLoggingAspect {
     public Object logControllerExecution(ProceedingJoinPoint joinPoint) throws Throwable {
         HttpServletRequest request = getRequest();
 
-        // 1️⃣ 요청 정보 수집
+        // 1. 요청 정보 수집
         String method = request.getMethod();
         String requestUri = request.getRequestURI();
         String queryString = request.getQueryString();
@@ -50,7 +50,7 @@ public class ControllerLoggingAspect {
         String requestBody = extractRequestBody(request);
         String authHeader = extractAuthorizationHeader(request);
 
-        // 2️⃣ 요청 로그 출력
+        // 2. 요청 로그 출력
         log.info("═══════════════════════════════════════════════════════════════");
         log.info("[REQUEST] {}", getCurrentTimestamp());
         log.info("  Method: {} | URI: {}", method, requestUri);
@@ -66,12 +66,12 @@ public class ControllerLoggingAspect {
             log.info("  Request Body: {}", maskedBody);
         }
 
-        // 3️⃣ 메서드 실행
+        // 3. 메서드 실행
         long startTime = System.currentTimeMillis();
         try {
             Object result = joinPoint.proceed();
 
-            // 4️⃣ 응답 로그 출력 (성공)
+            // 4. 응답 로그 출력 (성공)
             long executionTime = System.currentTimeMillis() - startTime;
             log.info("[RESPONSE] Status: 200 | Time: {}ms", executionTime);
             if (result != null) {
@@ -83,7 +83,7 @@ public class ControllerLoggingAspect {
             return result;
 
         } catch (Throwable e) {
-            // 5️⃣ 예외 로그 출력
+            // 5. 예외 로그 출력
             long executionTime = System.currentTimeMillis() - startTime;
             log.error("═══════════════════════════════════════════════════════════════");
             log.error("[ERROR] {} | Time: {}ms", e.getClass().getSimpleName(), executionTime);

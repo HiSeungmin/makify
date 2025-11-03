@@ -11,6 +11,17 @@ public enum ErrorCode {
     // 회원 관련 에러
     MEMBER_NOT_FOUND(1001, HttpStatus.NOT_FOUND, "회원 정보를 찾을 수 없습니다."),
     INVALID_REQUEST(1002, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
+    DUPLICATE_LOGIN_ID(1003, HttpStatus.BAD_REQUEST, "이미 존재하는 아이디입니다."),
+    LOGIN_ID_REQUIRED(1004, HttpStatus.BAD_REQUEST, "아이디를 입력해주세요."),
+    LOGIN_ID_INVALID_LENGTH(1005, HttpStatus.BAD_REQUEST, "아이디는 3자 이상 20자 이하여야 합니다."),
+    PASSWORD_REQUIRED(1006, HttpStatus.BAD_REQUEST, "비밀번호를 입력해주세요."),
+    PASSWORD_INVALID_LENGTH(1007, HttpStatus.BAD_REQUEST, "비밀번호는 6자 이상이어야 합니다."),
+    NAME_REQUIRED(1008, HttpStatus.BAD_REQUEST, "이름을 입력해주세요."),
+    NICKNAME_REQUIRED(1009, HttpStatus.BAD_REQUEST, "닉네임을 입력해주세요."),
+    EMAIL_REQUIRED(1010, HttpStatus.BAD_REQUEST, "이메일을 입력해주세요."),
+    EMAIL_INVALID_FORMAT(1011, HttpStatus.BAD_REQUEST, "유효한 이메일을 입력해주세요."),
+    PHONE_REQUIRED(1012, HttpStatus.BAD_REQUEST, "전화번호를 입력해주세요."),
+    PHONE_INVALID_FORMAT(1013, HttpStatus.BAD_REQUEST, "유효한 전화번호를 입력해주세요. (예: 010-1234-5678, 02-123-4567)"),
 
     // 챌린지 관련 에러
     CHALLENGE_TITLE_REQUIRED(2001, HttpStatus.BAD_REQUEST, "챌린지 제목은 필수입니다."),

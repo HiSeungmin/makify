@@ -82,7 +82,7 @@
 
             <div class="form-group">
                 <label class="form-label">전화번호</label>
-                <input type="tel" class="form-input" id="signupPhone" name="phone" placeholder="전화번호를 입력하세요" required>
+                <input type="tel" class="form-input" id="signupPhone" name="phone" placeholder="010-1234-5678" required>
             </div>
 
             <button type="submit" class="auth-button">회원가입</button>
@@ -166,8 +166,10 @@
             phone: document.getElementById('signupPhone').value
         };
 
+        console.log('회원가입 요청:', formData);
+
         try {
-            const response = await fetch('/auth/signup', {
+            const response = await fetch('/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -175,15 +177,30 @@
                 body: JSON.stringify(formData)
             });
 
+            console.log('응답 상태:', response.status);
+            console.log('응답 OK:', response.ok);
+
+            const responseData = await response.json();
+            console.log('응답 데이터:', responseData);
+
             if (response.ok) {
                 showSignupSuccess();
-                // 3초 후 로그인 탭으로 전환
+                // 입력 필드 초기화
+                document.getElementById('signupName').value = '';
+                document.getElementById('signupNickname').value = '';
+                document.getElementById('signupEmail').value = '';
+                document.getElementById('signupLoginId').value = '';
+                document.getElementById('signupPassword').value = '';
+                document.getElementById('signupPhone').value = '';
+                
+                // 2초 후 로그인 탭으로 전환
                 setTimeout(() => {
                     document.querySelector('.auth-tab').click();
                 }, 2000);
             } else {
-                const errorData = await response.json();
-                showSignupError(errorData.message || '회원가입 중 오류가 발생했습니다.');
+                // 서버에서 반환한 메시지 사용
+                const errorMessage = responseData.message || '회원가입 중 오류가 발생했습니다.';
+                showSignupError(errorMessage);
             }
         } catch (error) {
             console.error('회원가입 오류:', error);
@@ -229,6 +246,42 @@
                     submitButton.click();
                 }
             }
+        }
+    });
+
+    /**
+     * 전화번호 자동 포맷팅
+     * 휴대폰 번호만 지원: 010-1234-5678 형식
+     * 최대 11자리 제한
+     */
+    function formatPhoneNumber(input) {
+        let value = input.value.replace(/\D/g, ''); // 숫자만 추출
+        
+        // 최대 11자리 제한
+        if (value.length > 11) {
+            value = value.slice(0, 11);
+        }
+
+        let formatted = '';
+
+        if (value.length <= 3) {
+            formatted = value;
+        } else if (value.length <= 7) {
+            formatted = value.slice(0, 3) + '-' + value.slice(3);
+        } else {
+            formatted = value.slice(0, 3) + '-' + value.slice(3, 7) + '-' + value.slice(7, 11);
+        }
+
+        input.value = formatted;
+    }
+
+    // 페이지 로드 시 전화번호 입력 필드에 이벤트 리스너 추가
+    document.addEventListener('DOMContentLoaded', function() {
+        const phoneInput = document.getElementById('signupPhone');
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function(e) {
+                formatPhoneNumber(this);
+            });
         }
     });
 </script>

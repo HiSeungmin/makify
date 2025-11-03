@@ -50,9 +50,8 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/", "/login","/auth/login", "/signup", "/css/**", "/js/**", "/images/**", "/videos/**", "/challenges"
-                        ).permitAll()
+                        .requestMatchers("/", "/login", "/auth/login", "/signup", "/css/**", "/js/**", "/images/**", "/videos/**", "/challenges").permitAll()
+                        .requestMatchers("POST", "/signup").permitAll()
                         .requestMatchers("/auth/reissue").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -83,8 +82,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        //return new BCryptPasswordEncoder();
-        return NoOpPasswordEncoder.getInstance(); // 암호화 없이 그대로
+        return new BCryptPasswordEncoder();
     }
 
     @Bean

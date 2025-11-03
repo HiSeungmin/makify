@@ -26,7 +26,7 @@ public class Member extends BaseEntity {
     @Column(name = "login_id", nullable = false, unique = true)
     private String loginId;
 
-    @Column(name = "password", nullable = false, length = 30)
+    @Column(name = "password", nullable = false, length = 255)
     private String password;
 
     @Column(name = "phone_number", nullable = false, length = 20)
@@ -67,6 +67,7 @@ public class Member extends BaseEntity {
         member.password     = password;
         member.birthDate    = birthDate;
         member.phoneNumber  = phoneNumber;
+        member.joinDate     = LocalDateTime.now();
         return member;
     }
 
