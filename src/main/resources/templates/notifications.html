@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>알림 - Makify</title>
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/notifications.css">
+</head>
+<body>
+    <div th:insert="fragments/navbar :: navbar"></div>
+
+    <main class="notifications-container">
+        <div class="notifications-content">
+            <div class="notifications-header">
+                <h1 class="notifications-title">알림</h1>
+                <button class="notifications-mark-all" id="markAllAsRead">모두 읽음으로 표시</button>
+            </div>
+
+            <!-- 알림 필터 탭 -->
+            <div class="notifications-filters">
+                <button class="filter-tab active" data-filter="all">
+                    <span>전체</span>
+                </button>
+                <button class="filter-tab" data-filter="challenge">
+                    <i class="bi bi-target"></i>
+                    <span>챌린지</span>
+                </button>
+                <button class="filter-tab" data-filter="payment">
+                    <i class="bi bi-credit-card"></i>
+                    <span>결제</span>
+                </button>
+                <button class="filter-tab" data-filter="community">
+                    <i class="bi bi-chat-dots"></i>
+                    <span>커뮤니티</span>
+                </button>
+                <button class="filter-tab" data-filter="system">
+                    <i class="bi bi-gear"></i>
+                    <span>시스템</span>
+                </button>
+            </div>
+
+            <!-- 알림 목록 -->
+            <div class="notifications-list" id="notificationsList">
+                <!-- 예시 알림 1 - 미읽음 챌린지 알림 -->
+                <div class="notification-item unread" data-category="challenge">
+                    <div class="notification-icon challenge-icon">
+                        <i class="bi bi-target"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-header-text">
+                            <p class="notification-title">챌린지 시작!</p>
+                            <span class="notification-time">5분 전</span>
+                        </div>
+                        <p class="notification-description">당신이 참여한 '30일 운동 챌린지'가 시작되었습니다.</p>
+                    </div>
+                    <button class="notification-delete" aria-label="삭제">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+
+                <!-- 예시 알림 2 - 미읽음 챌린지 알림 -->
+                <div class="notification-item unread" data-category="challenge">
+                    <div class="notification-icon challenge-icon">
+                        <i class="bi bi-target"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-header-text">
+                            <p class="notification-title">인증 완료 인정!</p>
+                            <span class="notification-time">1시간 전</span>
+                        </div>
+                        <p class="notification-description">오늘의 인증이 승인되었습니다. 좋은 일 계속하세요!</p>
+                    </div>
+                    <button class="notification-delete" aria-label="삭제">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+
+                <!-- 예시 알림 3 - 미읽음 결제 알림 -->
+                <div class="notification-item unread" data-category="payment">
+                    <div class="notification-icon payment-icon">
+                        <i class="bi bi-credit-card"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-header-text">
+                            <p class="notification-title">결제 완료</p>
+                            <span class="notification-time">3시간 전</span>
+                        </div>
+                        <p class="notification-description">프리미엄 구독 결제가 완료되었습니다. (₩4,900)</p>
+                    </div>
+                    <button class="notification-delete" aria-label="삭제">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+
+                <!-- 예시 알림 4 - 읽음 커뮤니티 알림 -->
+                <div class="notification-item read" data-category="community">
+                    <div class="notification-icon community-icon">
+                        <i class="bi bi-chat-dots"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-header-text">
+                            <p class="notification-title">댓글 알림</p>
+                            <span class="notification-time">1일 전</span>
+                        </div>
+                        <p class="notification-description">당신의 포스트에 새로운 댓글이 달렸습니다.</p>
+                    </div>
+                    <button class="notification-delete" aria-label="삭제">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+
+                <!-- 예시 알림 5 - 읽음 시스템 알림 -->
+                <div class="notification-item read" data-category="system">
+                    <div class="notification-icon system-icon">
+                        <i class="bi bi-gear"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-header-text">
+                            <p class="notification-title">계정 보안 알림</p>
+                            <span class="notification-time">2일 전</span>
+                        </div>
+                        <p class="notification-description">새로운 기기에서 로그인되었습니다. (아이폰 12 Pro)</p>
+                    </div>
+                    <button class="notification-delete" aria-label="삭제">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+
+                <!-- 예시 알림 6 - 읽음 챌린지 알림 -->
+                <div class="notification-item read" data-category="challenge">
+                    <div class="notification-icon challenge-icon">
+                        <i class="bi bi-target"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-header-text">
+                            <p class="notification-title">챌린지 종료</p>
+                            <span class="notification-time">3일 전</span>
+                        </div>
+                        <p class="notification-description">'30일 독서 챌린지'가 종료되었습니다. 최종 성공률 85%</p>
+                    </div>
+                    <button class="notification-delete" aria-label="삭제">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 빈 상태 (옵션) -->
+            <div class="notifications-empty" style="display: none;">
+                <div class="empty-icon">
+                    <i class="bi bi-inbox"></i>
+                </div>
+                <h3>알림이 없습니다</h3>
+                <p>새로운 알림이 도착하면 여기에 표시됩니다.</p>
+            </div>
+        </div>
+    </main>
+
+    <div th:insert="fragments/footer :: footer"></div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/notifications.js"></script>
+</body>
+</html>

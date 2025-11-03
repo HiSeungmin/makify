@@ -1801,3 +1801,798 @@ org.springframework.security.core.userdetails.UsernameNotFoundException: 회원�
 2025-10-30 16:09:37.506 [http-nio-8001-exec-4] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: {"headers":{},"body":{"success":true,"totalPages":1,"hasPrevious":false,"hasNext":false,"currentPage":0,"content":[{"endDate":"2025-09-15","statusDisplayName":"완료","categoryDisplayName":"마음챙김","currentParticipants":0,"description":"하루 30분 책 읽고 사진 인증","id":2,"title":"독서 인증 챌린지","category":"MINDSET","startDate":"2025-08-25","maxParticipants":20,"status":"COMPLETED"}],"totalElements":1},"statusCodeValue":200,"statusCode":"OK"}
 2025-10-30 16:09:37.506 [http-nio-8001-exec-4] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
 2025-10-30 16:09:37.516 [http-nio-8001-exec-5] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:11:53.630 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - Starting MakifyApplication using Java 17.0.14 with PID 56834 (/Users/oseungmin/Documents/workspace/makify/build/classes/java/main started by oseungmin in /Users/oseungmin/Documents/workspace/makify)
+2025-11-03 11:11:53.631 [restartedMain] DEBUG com.xladmt.makify.MakifyApplication - Running with Spring Boot v3.4.1, Spring v6.2.1
+2025-11-03 11:11:53.631 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 11:11:53.644 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-11-03 11:11:53.644 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-11-03 11:11:53.986 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-03 11:11:53.986 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 11:11:54.056 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 65 ms. Found 5 JPA repository interfaces.
+2025-11-03 11:11:54.063 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-03 11:11:54.063 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-11-03 11:11:54.070 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.ChallengeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:11:54.070 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.UserChallengeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:11:54.070 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.VerificationMethodRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:11:54.070 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.member.repository.MemberRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:11:54.070 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.payment.repository.PaymentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:11:54.070 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 3 ms. Found 0 Redis repository interfaces.
+2025-11-03 11:11:54.353 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8001 (http)
+2025-11-03 11:11:54.358 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:11:54.359 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-03 11:11:54.359 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2025-11-03 11:11:54.376 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-11-03 11:11:54.376 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 732 ms
+2025-11-03 11:11:54.547 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 11:11:54.571 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.4.Final
+2025-11-03 11:11:54.585 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-11-03 11:11:54.690 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 11:11:54.700 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-11-03 11:11:54.796 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6c6a112
+2025-11-03 11:11:54.796 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-11-03 11:11:54.814 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 11:11:54.815 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 11:11:54.820 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 11:11:55.198 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 11:11:55.283 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 11:11:55.455 [restartedMain] DEBUG c.x.m.c.jwt.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 11:11:55.475 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 11:11:56.163 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-03 11:11:56.177 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name memberDetailsService
+2025-11-03 11:11:56.325 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/css/**'], Ant [pattern='/css/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:11:56.325 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/js/**'], Ant [pattern='/js/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:11:56.325 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/images/**'], Ant [pattern='/images/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:11:56.325 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/videos/**'], Ant [pattern='/videos/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:11:56.325 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/favicon.ico'], Ant [pattern='/favicon.ico']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:11:56.325 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/webjars/**'], Ant [pattern='/webjars/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:11:56.325 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/static/**'], Ant [pattern='/static/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:11:56.342 [restartedMain] INFO  o.s.v.b.OptionalValidatorFactoryBean - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-11-03 11:11:56.564 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-11-03 11:11:56.575 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:11:56.583 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8001 (http) with context path '/'
+2025-11-03 11:11:56.588 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - Started MakifyApplication in 3.127 seconds (process running for 3.33)
+2025-11-03 11:12:07.087 [http-nio-8001-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 11:12:07.087 [http-nio-8001-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-11-03 11:12:07.088 [http-nio-8001-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-11-03 11:12:07.108 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:12:07.109 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:12:07.109
+2025-11-03 11:12:07.109 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /
+2025-11-03 11:12:07.109 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:12:07.109 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:12:07.118 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "home"
+2025-11-03 11:12:07.118 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:12:07.204 [http-nio-8001-exec-1] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-1][home] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template home, line 18, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:12:07.217 [http-nio-8001-exec-1] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-1][home] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template home, line 222, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:12:14.341 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:12:14.341 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:12:14.341
+2025-11-03 11:12:14.341 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /login
+2025-11-03 11:12:14.341 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:12:14.341 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:12:14.342 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "member/login"
+2025-11-03 11:12:14.342 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:13:05.341 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-11-03 11:13:05.351 [Thread-5] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 11:13:05.352 [tomcat-shutdown] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:13:05.361 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-11-03 11:13:05.361 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:13:05.371 [Thread-5] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 11:13:05.373 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-11-03 11:13:05.381 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-11-03 11:13:05.430 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - Starting MakifyApplication using Java 17.0.14 with PID 56834 (/Users/oseungmin/Documents/workspace/makify/build/classes/java/main started by oseungmin in /Users/oseungmin/Documents/workspace/makify)
+2025-11-03 11:13:05.430 [restartedMain] DEBUG com.xladmt.makify.MakifyApplication - Running with Spring Boot v3.4.1, Spring v6.2.1
+2025-11-03 11:13:05.430 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 11:13:05.510 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-03 11:13:05.510 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 11:13:05.517 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 6 ms. Found 5 JPA repository interfaces.
+2025-11-03 11:13:05.518 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-03 11:13:05.518 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-11-03 11:13:05.519 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.ChallengeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:13:05.519 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.UserChallengeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:13:05.519 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.VerificationMethodRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:13:05.520 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.member.repository.MemberRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:13:05.520 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.payment.repository.PaymentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:13:05.520 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 1 ms. Found 0 Redis repository interfaces.
+2025-11-03 11:13:05.579 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8001 (http)
+2025-11-03 11:13:05.580 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:13:05.580 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-03 11:13:05.580 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2025-11-03 11:13:05.584 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-11-03 11:13:05.584 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 153 ms
+2025-11-03 11:13:05.632 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 11:13:05.633 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-11-03 11:13:05.637 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 11:13:05.637 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2025-11-03 11:13:05.645 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c764c25
+2025-11-03 11:13:05.646 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2025-11-03 11:13:05.646 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 11:13:05.646 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 11:13:05.646 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-2)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 11:13:05.710 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 11:13:05.777 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 11:13:05.847 [restartedMain] DEBUG c.x.m.c.jwt.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 11:13:05.951 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-03 11:13:05.959 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name memberDetailsService
+2025-11-03 11:13:06.039 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/css/**'], Ant [pattern='/css/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:13:06.039 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/js/**'], Ant [pattern='/js/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:13:06.039 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/images/**'], Ant [pattern='/images/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:13:06.039 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/videos/**'], Ant [pattern='/videos/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:13:06.039 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/favicon.ico'], Ant [pattern='/favicon.ico']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:13:06.039 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/webjars/**'], Ant [pattern='/webjars/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:13:06.039 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/static/**'], Ant [pattern='/static/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:13:06.048 [restartedMain] INFO  o.s.v.b.OptionalValidatorFactoryBean - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-11-03 11:13:06.158 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-11-03 11:13:06.167 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:13:06.168 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8001 (http) with context path '/'
+2025-11-03 11:13:06.170 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - Started MakifyApplication in 0.752 seconds (process running for 72.913)
+2025-11-03 11:13:06.171 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-11-03 11:13:17.773 [http-nio-8001-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 11:13:17.774 [http-nio-8001-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-11-03 11:13:17.776 [http-nio-8001-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2025-11-03 11:13:17.780 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:13:17.781 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:13:17.780
+2025-11-03 11:13:17.781 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /
+2025-11-03 11:13:17.781 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:13:17.782 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:13:17.783 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "home"
+2025-11-03 11:13:17.784 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:13:17.811 [http-nio-8001-exec-1] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-1][home] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template home, line 18, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:13:17.816 [http-nio-8001-exec-1] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-1][home] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template home, line 222, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:13:25.001 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:13:25.002 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:13:25.002
+2025-11-03 11:13:25.002 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /login
+2025-11-03 11:13:25.002 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:13:25.003 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 1ms
+2025-11-03 11:13:25.003 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "member/login"
+2025-11-03 11:13:25.003 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:13:28.988 [http-nio-8001-exec-9] INFO  c.x.makify.common.jwt.JwtLoginFilter - 로그인 필터 들어옴
+2025-11-03 11:13:28.990 [http-nio-8001-exec-9] INFO  c.x.makify.common.jwt.JwtLoginFilter - 🚨 [RAW BODY] {"loginId":"user1","password":"1234"}
+2025-11-03 11:13:28.990 [http-nio-8001-exec-9] INFO  c.x.makify.common.jwt.JwtLoginFilter - Content-Type: application/json
+2025-11-03 11:13:29.027 [http-nio-8001-exec-9] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:29.207 [http-nio-8001-exec-9] INFO  c.x.makify.common.jwt.JwtLoginFilter - 토큰 발급: loginId=user1
+2025-11-03 11:13:29.228 [http-nio-8001-exec-10] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:29.230 [http-nio-8001-exec-10] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:13:29.230 [http-nio-8001-exec-10] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:13:29.230
+2025-11-03 11:13:29.230 [http-nio-8001-exec-10] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /
+2025-11-03 11:13:29.230 [http-nio-8001-exec-10] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:13:29.230 [http-nio-8001-exec-10] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:13:29.230 [http-nio-8001-exec-10] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "home"
+2025-11-03 11:13:29.230 [http-nio-8001-exec-10] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:13:29.231 [http-nio-8001-exec-10] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-10][home] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template home, line 18, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:13:29.233 [http-nio-8001-exec-10] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-10][home] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template home, line 222, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:13:29.242 [http-nio-8001-exec-1] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:29.242 [http-nio-8001-exec-5] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:29.242 [http-nio-8001-exec-2] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:29.242 [http-nio-8001-exec-4] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:32.760 [http-nio-8001-exec-3] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:32.783 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:13:32.784 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:13:32.784
+2025-11-03 11:13:32.784 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /challenges/1
+2025-11-03 11:13:32.784 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:13:32.792 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ServiceLoggingAspect - ───────────────────────────────────────────────────────────────
+2025-11-03 11:13:32.792 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ServiceLoggingAspect - [SERVICE START] ChallengeServiceImpl.getChallenge
+2025-11-03 11:13:32.792 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ServiceLoggingAspect -   Parameters: [user1, 1]
+2025-11-03 11:13:32.817 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ServiceLoggingAspect - [SERVICE END] ChallengeServiceImpl.getChallenge
+2025-11-03 11:13:32.824 [http-nio-8001-exec-3] DEBUG c.x.m.c.util.SensitiveDataMasker - Object serialization failed: Java 8 date/time type `java.time.LocalDate` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.xladmt.makify.challenge.dto.ChallengeDetailResponse["startDate"])
+2025-11-03 11:13:32.824 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ServiceLoggingAspect -   Return Value: [ChallengeDetailResponse]
+2025-11-03 11:13:32.824 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ServiceLoggingAspect -   Execution Time: 25ms
+2025-11-03 11:13:32.824 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ServiceLoggingAspect - ───────────────────────────────────────────────────────────────
+2025-11-03 11:13:32.826 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 42ms
+2025-11-03 11:13:32.826 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "challenge/detail"
+2025-11-03 11:13:32.826 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:13:32.829 [http-nio-8001-exec-3] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-3][challenge/detail] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template challenge/detail, line 16, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:13:32.835 [http-nio-8001-exec-3] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-3][challenge/detail] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template challenge/detail, line 212, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:13:32.850 [http-nio-8001-exec-7] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:32.850 [http-nio-8001-exec-8] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:32.850 [http-nio-8001-exec-6] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:32.850 [http-nio-8001-exec-9] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:32.851 [http-nio-8001-exec-10] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:38.322 [http-nio-8001-exec-2] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:38.332 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:13:38.332 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:13:38.332
+2025-11-03 11:13:38.333 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /challenges/2
+2025-11-03 11:13:38.333 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:13:38.335 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ServiceLoggingAspect - ───────────────────────────────────────────────────────────────
+2025-11-03 11:13:38.335 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ServiceLoggingAspect - [SERVICE START] ChallengeServiceImpl.getChallenge
+2025-11-03 11:13:38.335 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ServiceLoggingAspect -   Parameters: [user1, 2]
+2025-11-03 11:13:38.352 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ServiceLoggingAspect - [SERVICE END] ChallengeServiceImpl.getChallenge
+2025-11-03 11:13:38.353 [http-nio-8001-exec-2] DEBUG c.x.m.c.util.SensitiveDataMasker - Object serialization failed: Java 8 date/time type `java.time.LocalDate` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.xladmt.makify.challenge.dto.ChallengeDetailResponse["startDate"])
+2025-11-03 11:13:38.353 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ServiceLoggingAspect -   Return Value: [ChallengeDetailResponse]
+2025-11-03 11:13:38.353 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ServiceLoggingAspect -   Execution Time: 17ms
+2025-11-03 11:13:38.353 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ServiceLoggingAspect - ───────────────────────────────────────────────────────────────
+2025-11-03 11:13:38.355 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 22ms
+2025-11-03 11:13:38.355 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "challenge/detail"
+2025-11-03 11:13:38.356 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:13:38.359 [http-nio-8001-exec-2] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-2][challenge/detail] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template challenge/detail, line 16, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:13:38.363 [http-nio-8001-exec-2] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-2][challenge/detail] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template challenge/detail, line 212, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:13:38.381 [http-nio-8001-exec-5] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:38.381 [http-nio-8001-exec-4] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:38.381 [http-nio-8001-exec-1] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:38.381 [http-nio-8001-exec-7] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:38.381 [http-nio-8001-exec-3] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:44.307 [http-nio-8001-exec-6] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:44.316 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:13:44.317 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:13:44.317
+2025-11-03 11:13:44.317 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /challenges/3
+2025-11-03 11:13:44.317 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:13:44.319 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ServiceLoggingAspect - ───────────────────────────────────────────────────────────────
+2025-11-03 11:13:44.319 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ServiceLoggingAspect - [SERVICE START] ChallengeServiceImpl.getChallenge
+2025-11-03 11:13:44.319 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ServiceLoggingAspect -   Parameters: [user1, 3]
+2025-11-03 11:13:44.335 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ServiceLoggingAspect - [SERVICE END] ChallengeServiceImpl.getChallenge
+2025-11-03 11:13:44.336 [http-nio-8001-exec-6] DEBUG c.x.m.c.util.SensitiveDataMasker - Object serialization failed: Java 8 date/time type `java.time.LocalDate` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.xladmt.makify.challenge.dto.ChallengeDetailResponse["startDate"])
+2025-11-03 11:13:44.336 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ServiceLoggingAspect -   Return Value: [ChallengeDetailResponse]
+2025-11-03 11:13:44.336 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ServiceLoggingAspect -   Execution Time: 16ms
+2025-11-03 11:13:44.336 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ServiceLoggingAspect - ───────────────────────────────────────────────────────────────
+2025-11-03 11:13:44.337 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 20ms
+2025-11-03 11:13:44.337 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "challenge/detail"
+2025-11-03 11:13:44.337 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:13:44.339 [http-nio-8001-exec-6] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-6][challenge/detail] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template challenge/detail, line 16, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:13:44.343 [http-nio-8001-exec-6] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-6][challenge/detail] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template challenge/detail, line 212, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:13:44.356 [http-nio-8001-exec-4] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:44.356 [http-nio-8001-exec-10] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:44.356 [http-nio-8001-exec-9] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:44.356 [http-nio-8001-exec-8] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:44.356 [http-nio-8001-exec-2] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:50.177 [http-nio-8001-exec-3] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:50.186 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:13:50.187 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:13:50.187
+2025-11-03 11:13:50.187 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /challenges
+2025-11-03 11:13:50.187 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:13:50.188 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ServiceLoggingAspect - ───────────────────────────────────────────────────────────────
+2025-11-03 11:13:50.188 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ServiceLoggingAspect - [SERVICE START] ChallengeServiceImpl.getAllVisibleChallenges
+2025-11-03 11:13:50.414 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ServiceLoggingAspect - [SERVICE END] ChallengeServiceImpl.getAllVisibleChallenges
+2025-11-03 11:13:50.414 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ServiceLoggingAspect -   Return Value: [Collection of 19024 items]
+2025-11-03 11:13:50.414 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ServiceLoggingAspect -   Execution Time: 226ms
+2025-11-03 11:13:50.414 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ServiceLoggingAspect - ───────────────────────────────────────────────────────────────
+2025-11-03 11:13:50.417 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 230ms
+2025-11-03 11:13:50.417 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "challenge/challenges"
+2025-11-03 11:13:50.418 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:13:50.419 [http-nio-8001-exec-3] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-3][challenge/challenges] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template challenge/challenges, line 16, col 6. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:13:50.426 [http-nio-8001-exec-3] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-3][challenge/challenges] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template challenge/challenges, line 136, col 6. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:13:50.436 [http-nio-8001-exec-6] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:50.436 [http-nio-8001-exec-5] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:50.436 [http-nio-8001-exec-4] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:50.437 [http-nio-8001-exec-7] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:50.437 [http-nio-8001-exec-1] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:52.869 [http-nio-8001-exec-10] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:52.885 [http-nio-8001-exec-10] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource community.]
+2025-11-03 11:13:57.005 [http-nio-8001-exec-9] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:57.020 [http-nio-8001-exec-9] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource ranking.]
+2025-11-03 11:13:59.740 [http-nio-8001-exec-2] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:13:59.750 [http-nio-8001-exec-2] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource notifications.]
+2025-11-03 11:14:02.805 [http-nio-8001-exec-8] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:14:02.816 [http-nio-8001-exec-8] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource notifications.]
+2025-11-03 11:14:05.725 [http-nio-8001-exec-3] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:14:05.733 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:14:05.733 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:14:05.733
+2025-11-03 11:14:05.733 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /mypage
+2025-11-03 11:14:05.733 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:14:05.733 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:14:05.734 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "member/mypage"
+2025-11-03 11:14:05.734 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:14:05.738 [http-nio-8001-exec-3] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-3][member/mypage] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template member/mypage, line 16, col 6. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:14:05.742 [http-nio-8001-exec-3] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-3][member/mypage] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template member/mypage, line 244, col 6. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:14:05.755 [http-nio-8001-exec-7] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:14:05.755 [http-nio-8001-exec-4] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:14:05.756 [http-nio-8001-exec-5] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:14:05.756 [http-nio-8001-exec-1] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:14:12.702 [http-nio-8001-exec-6] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:14:12.709 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:14:12.710 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:14:12.710
+2025-11-03 11:14:12.710 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /
+2025-11-03 11:14:12.710 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:14:12.710 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:14:12.710 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "home"
+2025-11-03 11:14:12.710 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:14:12.713 [http-nio-8001-exec-6] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-6][home] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template home, line 18, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:14:12.717 [http-nio-8001-exec-6] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-6][home] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template home, line 222, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:14:12.732 [http-nio-8001-exec-2] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:14:12.732 [http-nio-8001-exec-8] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:14:12.733 [http-nio-8001-exec-9] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:14:12.733 [http-nio-8001-exec-10] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:16:55.097 [http-nio-8001-exec-1] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:16:55.102 [http-nio-8001-exec-1] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource notifications.]
+2025-11-03 11:22:01.508 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 28 class path changes (1 addition, 0 deletions, 27 modifications)
+2025-11-03 11:22:01.510 [Thread-7] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 11:22:01.511 [tomcat-shutdown] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:22:01.512 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-11-03 11:22:01.512 [Thread-7] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:22:01.523 [Thread-7] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 11:22:01.523 [Thread-7] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
+2025-11-03 11:22:01.527 [Thread-7] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
+2025-11-03 11:22:01.578 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - Starting MakifyApplication using Java 17.0.14 with PID 56834 (/Users/oseungmin/Documents/workspace/makify/build/classes/java/main started by oseungmin in /Users/oseungmin/Documents/workspace/makify)
+2025-11-03 11:22:01.578 [restartedMain] DEBUG com.xladmt.makify.MakifyApplication - Running with Spring Boot v3.4.1, Spring v6.2.1
+2025-11-03 11:22:01.578 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 11:22:01.652 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-03 11:22:01.652 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 11:22:01.659 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 5 ms. Found 5 JPA repository interfaces.
+2025-11-03 11:22:01.660 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-03 11:22:01.660 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-11-03 11:22:01.661 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.ChallengeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:22:01.661 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.UserChallengeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:22:01.661 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.VerificationMethodRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:22:01.661 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.member.repository.MemberRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:22:01.661 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.payment.repository.PaymentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:22:01.661 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 1 ms. Found 0 Redis repository interfaces.
+2025-11-03 11:22:01.722 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8001 (http)
+2025-11-03 11:22:01.723 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:22:01.723 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-03 11:22:01.723 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2025-11-03 11:22:01.727 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-11-03 11:22:01.727 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 148 ms
+2025-11-03 11:22:01.777 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 11:22:01.778 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-11-03 11:22:01.781 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 11:22:01.781 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Starting...
+2025-11-03 11:22:01.791 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-3 - Added connection com.mysql.cj.jdbc.ConnectionImpl@34f3fd34
+2025-11-03 11:22:01.791 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Start completed.
+2025-11-03 11:22:01.792 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 11:22:01.792 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 11:22:01.792 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-3)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 11:22:01.851 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 11:22:01.911 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 11:22:01.981 [restartedMain] DEBUG c.x.m.c.jwt.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 11:22:02.098 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-03 11:22:02.107 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name memberDetailsService
+2025-11-03 11:22:02.189 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/css/**'], Ant [pattern='/css/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:02.189 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/js/**'], Ant [pattern='/js/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:02.189 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/images/**'], Ant [pattern='/images/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:02.189 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/videos/**'], Ant [pattern='/videos/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:02.189 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/favicon.ico'], Ant [pattern='/favicon.ico']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:02.189 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/webjars/**'], Ant [pattern='/webjars/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:02.189 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/static/**'], Ant [pattern='/static/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:02.198 [restartedMain] INFO  o.s.v.b.OptionalValidatorFactoryBean - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-11-03 11:22:02.318 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-11-03 11:22:02.324 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:22:02.325 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8001 (http) with context path '/'
+2025-11-03 11:22:02.327 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - Started MakifyApplication in 0.76 seconds (process running for 609.04)
+2025-11-03 11:22:02.328 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-11-03 11:22:39.175 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 30 class path changes (2 additions, 0 deletions, 28 modifications)
+2025-11-03 11:22:39.176 [Thread-11] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 11:22:39.177 [tomcat-shutdown] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:22:39.178 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-11-03 11:22:39.178 [Thread-11] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:22:39.180 [Thread-11] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 11:22:39.180 [Thread-11] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown initiated...
+2025-11-03 11:22:39.183 [Thread-11] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown completed.
+2025-11-03 11:22:39.230 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - Starting MakifyApplication using Java 17.0.14 with PID 56834 (/Users/oseungmin/Documents/workspace/makify/build/classes/java/main started by oseungmin in /Users/oseungmin/Documents/workspace/makify)
+2025-11-03 11:22:39.230 [restartedMain] DEBUG com.xladmt.makify.MakifyApplication - Running with Spring Boot v3.4.1, Spring v6.2.1
+2025-11-03 11:22:39.230 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 11:22:39.293 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-03 11:22:39.293 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 11:22:39.298 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 5 ms. Found 5 JPA repository interfaces.
+2025-11-03 11:22:39.299 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-03 11:22:39.300 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-11-03 11:22:39.301 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.ChallengeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:22:39.301 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.UserChallengeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:22:39.301 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.VerificationMethodRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:22:39.301 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.member.repository.MemberRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:22:39.301 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.payment.repository.PaymentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:22:39.301 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 1 ms. Found 0 Redis repository interfaces.
+2025-11-03 11:22:39.356 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8001 (http)
+2025-11-03 11:22:39.357 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:22:39.357 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-03 11:22:39.357 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2025-11-03 11:22:39.360 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-11-03 11:22:39.360 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 130 ms
+2025-11-03 11:22:39.406 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 11:22:39.407 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-11-03 11:22:39.410 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 11:22:39.410 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Starting...
+2025-11-03 11:22:39.418 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-4 - Added connection com.mysql.cj.jdbc.ConnectionImpl@17c6435
+2025-11-03 11:22:39.418 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Start completed.
+2025-11-03 11:22:39.418 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 11:22:39.418 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 11:22:39.418 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-4)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 11:22:39.474 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 11:22:39.539 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 11:22:39.611 [restartedMain] DEBUG c.x.m.c.jwt.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 11:22:39.722 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-03 11:22:39.732 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name memberDetailsService
+2025-11-03 11:22:39.812 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/css/**'], Ant [pattern='/css/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:39.812 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/js/**'], Ant [pattern='/js/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:39.812 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/images/**'], Ant [pattern='/images/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:39.812 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/videos/**'], Ant [pattern='/videos/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:39.813 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/favicon.ico'], Ant [pattern='/favicon.ico']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:39.813 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/webjars/**'], Ant [pattern='/webjars/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:39.813 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/static/**'], Ant [pattern='/static/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:39.821 [restartedMain] INFO  o.s.v.b.OptionalValidatorFactoryBean - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-11-03 11:22:39.940 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-11-03 11:22:39.946 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:22:39.947 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8001 (http) with context path '/'
+2025-11-03 11:22:39.949 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - Started MakifyApplication in 0.729 seconds (process running for 646.662)
+2025-11-03 11:22:39.949 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-11-03 11:22:48.270 [http-nio-8001-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 11:22:48.270 [http-nio-8001-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-11-03 11:22:48.272 [http-nio-8001-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2025-11-03 11:22:48.279 [http-nio-8001-exec-1] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:22:48.313 [http-nio-8001-exec-1] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource notifications.]
+2025-11-03 11:22:51.555 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 11:22:51.556 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-11-03 11:22:51.558 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 11:22:51.558 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown initiated...
+2025-11-03 11:22:51.560 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown completed.
+2025-11-03 11:22:52.636 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - Starting MakifyApplication using Java 17.0.14 with PID 57331 (/Users/oseungmin/Documents/workspace/makify/build/classes/java/main started by oseungmin in /Users/oseungmin/Documents/workspace/makify)
+2025-11-03 11:22:52.636 [restartedMain] DEBUG com.xladmt.makify.MakifyApplication - Running with Spring Boot v3.4.1, Spring v6.2.1
+2025-11-03 11:22:52.637 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 11:22:52.652 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-11-03 11:22:52.652 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-11-03 11:22:53.003 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-03 11:22:53.004 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 11:22:53.069 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 61 ms. Found 5 JPA repository interfaces.
+2025-11-03 11:22:53.076 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-03 11:22:53.077 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-11-03 11:22:53.083 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.ChallengeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:22:53.083 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.UserChallengeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:22:53.083 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.VerificationMethodRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:22:53.083 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.member.repository.MemberRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:22:53.083 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.payment.repository.PaymentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:22:53.083 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 3 ms. Found 0 Redis repository interfaces.
+2025-11-03 11:22:53.360 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8001 (http)
+2025-11-03 11:22:53.364 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:22:53.365 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-03 11:22:53.365 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2025-11-03 11:22:53.382 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-11-03 11:22:53.382 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 730 ms
+2025-11-03 11:22:53.559 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 11:22:53.580 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.4.Final
+2025-11-03 11:22:53.593 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-11-03 11:22:53.692 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 11:22:53.703 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-11-03 11:22:53.803 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@78f8fd13
+2025-11-03 11:22:53.804 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-11-03 11:22:53.820 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 11:22:53.821 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 11:22:53.826 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 11:22:54.211 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 11:22:54.296 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 11:22:54.461 [restartedMain] DEBUG c.x.m.c.jwt.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 11:22:54.480 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 11:22:55.184 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-03 11:22:55.198 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name memberDetailsService
+2025-11-03 11:22:55.363 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/css/**'], Ant [pattern='/css/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:55.363 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/js/**'], Ant [pattern='/js/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:55.363 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/images/**'], Ant [pattern='/images/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:55.363 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/videos/**'], Ant [pattern='/videos/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:55.363 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/favicon.ico'], Ant [pattern='/favicon.ico']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:55.363 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/webjars/**'], Ant [pattern='/webjars/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:55.363 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/static/**'], Ant [pattern='/static/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:22:55.382 [restartedMain] INFO  o.s.v.b.OptionalValidatorFactoryBean - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-11-03 11:22:55.590 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-11-03 11:22:55.601 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:22:55.608 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8001 (http) with context path '/'
+2025-11-03 11:22:55.613 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - Started MakifyApplication in 3.127 seconds (process running for 3.319)
+2025-11-03 11:22:59.206 [http-nio-8001-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 11:22:59.206 [http-nio-8001-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-11-03 11:22:59.207 [http-nio-8001-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-11-03 11:22:59.237 [http-nio-8001-exec-1] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:22:59.286 [http-nio-8001-exec-1] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource notifications.]
+2025-11-03 11:23:57.776 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-11-03 11:23:57.785 [Thread-5] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 11:23:57.787 [tomcat-shutdown] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:23:57.794 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-11-03 11:23:57.795 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:23:57.806 [Thread-5] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 11:23:57.810 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-11-03 11:23:57.816 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-11-03 11:23:57.880 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - Starting MakifyApplication using Java 17.0.14 with PID 57331 (/Users/oseungmin/Documents/workspace/makify/build/classes/java/main started by oseungmin in /Users/oseungmin/Documents/workspace/makify)
+2025-11-03 11:23:57.881 [restartedMain] DEBUG com.xladmt.makify.MakifyApplication - Running with Spring Boot v3.4.1, Spring v6.2.1
+2025-11-03 11:23:57.881 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 11:23:57.954 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-03 11:23:57.954 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 11:23:57.960 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 5 ms. Found 5 JPA repository interfaces.
+2025-11-03 11:23:57.961 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-03 11:23:57.961 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-11-03 11:23:57.962 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.ChallengeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:23:57.963 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.UserChallengeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:23:57.963 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.VerificationMethodRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:23:57.963 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.member.repository.MemberRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:23:57.963 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.payment.repository.PaymentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:23:57.963 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 1 ms. Found 0 Redis repository interfaces.
+2025-11-03 11:23:58.026 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8001 (http)
+2025-11-03 11:23:58.026 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:23:58.027 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-03 11:23:58.027 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2025-11-03 11:23:58.031 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-11-03 11:23:58.031 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 150 ms
+2025-11-03 11:23:58.084 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 11:23:58.085 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-11-03 11:23:58.089 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 11:23:58.089 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2025-11-03 11:23:58.098 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6649638c
+2025-11-03 11:23:58.098 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2025-11-03 11:23:58.098 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 11:23:58.098 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 11:23:58.099 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-2)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 11:23:58.168 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 11:23:58.234 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 11:23:58.308 [restartedMain] DEBUG c.x.m.c.jwt.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 11:23:58.415 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-03 11:23:58.424 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name memberDetailsService
+2025-11-03 11:23:58.503 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/css/**'], Ant [pattern='/css/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:23:58.503 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/js/**'], Ant [pattern='/js/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:23:58.503 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/images/**'], Ant [pattern='/images/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:23:58.503 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/videos/**'], Ant [pattern='/videos/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:23:58.503 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/favicon.ico'], Ant [pattern='/favicon.ico']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:23:58.503 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/webjars/**'], Ant [pattern='/webjars/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:23:58.503 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/static/**'], Ant [pattern='/static/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:23:58.512 [restartedMain] INFO  o.s.v.b.OptionalValidatorFactoryBean - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-11-03 11:23:58.630 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-11-03 11:23:58.636 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:23:58.636 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8001 (http) with context path '/'
+2025-11-03 11:23:58.638 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - Started MakifyApplication in 0.77 seconds (process running for 66.345)
+2025-11-03 11:23:58.639 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-11-03 11:24:05.068 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 11:24:05.069 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-11-03 11:24:05.070 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 11:24:05.071 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
+2025-11-03 11:24:05.073 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
+2025-11-03 11:24:06.022 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - Starting MakifyApplication using Java 17.0.14 with PID 57407 (/Users/oseungmin/Documents/workspace/makify/build/classes/java/main started by oseungmin in /Users/oseungmin/Documents/workspace/makify)
+2025-11-03 11:24:06.023 [restartedMain] DEBUG com.xladmt.makify.MakifyApplication - Running with Spring Boot v3.4.1, Spring v6.2.1
+2025-11-03 11:24:06.023 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 11:24:06.038 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-11-03 11:24:06.038 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-11-03 11:24:06.326 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-03 11:24:06.327 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 11:24:06.388 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 57 ms. Found 5 JPA repository interfaces.
+2025-11-03 11:24:06.395 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-03 11:24:06.395 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-11-03 11:24:06.401 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.ChallengeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:24:06.401 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.UserChallengeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:24:06.401 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.challenge.repository.VerificationMethodRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:24:06.401 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.member.repository.MemberRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:24:06.401 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xladmt.makify.payment.repository.PaymentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-11-03 11:24:06.401 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 3 ms. Found 0 Redis repository interfaces.
+2025-11-03 11:24:06.654 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8001 (http)
+2025-11-03 11:24:06.658 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:24:06.659 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-03 11:24:06.659 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2025-11-03 11:24:06.674 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-11-03 11:24:06.674 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 636 ms
+2025-11-03 11:24:06.829 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 11:24:06.848 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.4.Final
+2025-11-03 11:24:06.861 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-11-03 11:24:06.947 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 11:24:06.957 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-11-03 11:24:07.047 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@515d709b
+2025-11-03 11:24:07.048 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-11-03 11:24:07.067 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 11:24:07.068 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 11:24:07.073 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 11:24:07.428 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 11:24:07.514 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 11:24:07.661 [restartedMain] DEBUG c.x.m.c.jwt.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 11:24:07.679 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 11:24:08.364 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-03 11:24:08.377 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name memberDetailsService
+2025-11-03 11:24:08.524 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/css/**'], Ant [pattern='/css/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:24:08.525 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/js/**'], Ant [pattern='/js/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:24:08.525 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/images/**'], Ant [pattern='/images/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:24:08.525 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/videos/**'], Ant [pattern='/videos/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:24:08.525 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/favicon.ico'], Ant [pattern='/favicon.ico']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:24:08.525 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/webjars/**'], Ant [pattern='/webjars/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:24:08.525 [restartedMain] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/static/**'], Ant [pattern='/static/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-11-03 11:24:08.541 [restartedMain] INFO  o.s.v.b.OptionalValidatorFactoryBean - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-11-03 11:24:08.731 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-11-03 11:24:08.741 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8001"]
+2025-11-03 11:24:08.748 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8001 (http) with context path '/'
+2025-11-03 11:24:08.752 [restartedMain] INFO  com.xladmt.makify.MakifyApplication - Started MakifyApplication in 2.878 seconds (process running for 3.063)
+2025-11-03 11:24:20.085 [http-nio-8001-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 11:24:20.085 [http-nio-8001-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-11-03 11:24:20.086 [http-nio-8001-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-11-03 11:24:20.115 [http-nio-8001-exec-1] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:20.158 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:24:20.159 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:24:20.159
+2025-11-03 11:24:20.159 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /notifications
+2025-11-03 11:24:20.159 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:24:20.159 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:24:20.162 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "notifications"
+2025-11-03 11:24:20.162 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:24:20.214 [http-nio-8001-exec-1] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-1][notifications] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template notifications, line 17, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:24:20.224 [http-nio-8001-exec-1] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-1][notifications] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template notifications, line 165, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:24:20.248 [http-nio-8001-exec-6] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:20.248 [http-nio-8001-exec-4] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:20.248 [http-nio-8001-exec-3] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:20.248 [http-nio-8001-exec-5] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:20.249 [http-nio-8001-exec-7] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:20.249 [http-nio-8001-exec-2] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:38.168 [http-nio-8001-exec-8] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:38.178 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:24:38.179 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:24:38.179
+2025-11-03 11:24:38.179 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /
+2025-11-03 11:24:38.179 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:24:38.179 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:24:38.180 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "home"
+2025-11-03 11:24:38.180 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:24:38.234 [http-nio-8001-exec-8] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-8][home] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template home, line 18, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:24:38.237 [http-nio-8001-exec-8] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-8][home] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template home, line 222, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:24:38.255 [http-nio-8001-exec-1] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:38.256 [http-nio-8001-exec-10] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:38.256 [http-nio-8001-exec-3] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:38.256 [http-nio-8001-exec-9] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:39.443 [http-nio-8001-exec-2] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:39.451 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:24:39.451 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:24:39.451
+2025-11-03 11:24:39.451 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /notifications
+2025-11-03 11:24:39.451 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:24:39.452 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:24:39.452 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "notifications"
+2025-11-03 11:24:39.452 [http-nio-8001-exec-2] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:24:39.456 [http-nio-8001-exec-2] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-2][notifications] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template notifications, line 17, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:24:39.461 [http-nio-8001-exec-2] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-2][notifications] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template notifications, line 165, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:24:39.476 [http-nio-8001-exec-6] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:39.476 [http-nio-8001-exec-7] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:39.477 [http-nio-8001-exec-5] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:39.477 [http-nio-8001-exec-4] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:39.477 [http-nio-8001-exec-8] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:39.477 [http-nio-8001-exec-9] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:55.022 [http-nio-8001-exec-1] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:55.031 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:24:55.032 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:24:55.032
+2025-11-03 11:24:55.032 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /
+2025-11-03 11:24:55.032 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:24:55.032 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:24:55.033 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "home"
+2025-11-03 11:24:55.033 [http-nio-8001-exec-1] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:24:55.036 [http-nio-8001-exec-1] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-1][home] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template home, line 18, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:24:55.042 [http-nio-8001-exec-1] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-1][home] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template home, line 222, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:24:55.058 [http-nio-8001-exec-2] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:55.058 [http-nio-8001-exec-10] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:55.058 [http-nio-8001-exec-7] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:55.058 [http-nio-8001-exec-3] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:56.344 [http-nio-8001-exec-6] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:56.352 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:24:56.353 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:24:56.353
+2025-11-03 11:24:56.353 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /notifications
+2025-11-03 11:24:56.353 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:24:56.353 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:24:56.353 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "notifications"
+2025-11-03 11:24:56.354 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:24:56.358 [http-nio-8001-exec-6] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-6][notifications] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template notifications, line 17, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:24:56.361 [http-nio-8001-exec-6] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-6][notifications] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template notifications, line 165, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:24:56.377 [http-nio-8001-exec-5] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:56.377 [http-nio-8001-exec-4] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:56.379 [http-nio-8001-exec-9] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:56.377 [http-nio-8001-exec-10] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:56.381 [http-nio-8001-exec-8] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:24:56.381 [http-nio-8001-exec-1] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:02.264 [http-nio-8001-exec-3] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:02.273 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:25:02.273 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:25:02.273
+2025-11-03 11:25:02.273 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /
+2025-11-03 11:25:02.273 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:25:02.273 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:25:02.274 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "home"
+2025-11-03 11:25:02.274 [http-nio-8001-exec-3] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:25:02.277 [http-nio-8001-exec-3] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-3][home] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template home, line 18, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:25:02.281 [http-nio-8001-exec-3] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-3][home] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template home, line 222, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:25:02.296 [http-nio-8001-exec-6] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:02.296 [http-nio-8001-exec-2] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:02.297 [http-nio-8001-exec-9] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:02.298 [http-nio-8001-exec-7] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:03.880 [http-nio-8001-exec-8] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:03.888 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:25:03.888 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:25:03.888
+2025-11-03 11:25:03.888 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /notifications
+2025-11-03 11:25:03.888 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:25:03.889 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 1ms
+2025-11-03 11:25:03.889 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "notifications"
+2025-11-03 11:25:03.889 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:25:03.893 [http-nio-8001-exec-8] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-8][notifications] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template notifications, line 17, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:25:03.897 [http-nio-8001-exec-8] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-8][notifications] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template notifications, line 165, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:25:03.916 [http-nio-8001-exec-10] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:03.921 [http-nio-8001-exec-5] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:03.922 [http-nio-8001-exec-3] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:03.923 [http-nio-8001-exec-4] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:03.925 [http-nio-8001-exec-1] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:03.926 [http-nio-8001-exec-9] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:05.824 [http-nio-8001-exec-6] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:05.829 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:25:05.830 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:25:05.830
+2025-11-03 11:25:05.830 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /notifications
+2025-11-03 11:25:05.830 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:25:05.830 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:25:05.830 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "notifications"
+2025-11-03 11:25:05.830 [http-nio-8001-exec-6] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:25:05.832 [http-nio-8001-exec-6] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-6][notifications] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template notifications, line 17, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:25:05.835 [http-nio-8001-exec-6] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-6][notifications] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template notifications, line 165, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:25:05.849 [http-nio-8001-exec-7] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:05.850 [http-nio-8001-exec-1] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:05.850 [http-nio-8001-exec-3] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:05.853 [http-nio-8001-exec-4] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:05.854 [http-nio-8001-exec-8] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:05.855 [http-nio-8001-exec-2] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:11.885 [http-nio-8001-exec-10] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:11.893 [http-nio-8001-exec-10] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:25:11.893 [http-nio-8001-exec-10] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:25:11.893
+2025-11-03 11:25:11.893 [http-nio-8001-exec-10] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /notifications
+2025-11-03 11:25:11.894 [http-nio-8001-exec-10] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:25:11.894 [http-nio-8001-exec-10] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:25:11.894 [http-nio-8001-exec-10] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "notifications"
+2025-11-03 11:25:11.894 [http-nio-8001-exec-10] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:25:11.896 [http-nio-8001-exec-10] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-10][notifications] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template notifications, line 17, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:25:11.899 [http-nio-8001-exec-10] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-10][notifications] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template notifications, line 165, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:25:11.918 [http-nio-8001-exec-7] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:11.919 [http-nio-8001-exec-1] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:11.921 [http-nio-8001-exec-3] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:11.921 [http-nio-8001-exec-5] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:11.922 [http-nio-8001-exec-9] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:11.924 [http-nio-8001-exec-6] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:17.711 [http-nio-8001-exec-8] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:17.719 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:25:17.719 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:25:17.719
+2025-11-03 11:25:17.719 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /
+2025-11-03 11:25:17.719 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:25:17.719 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:25:17.720 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "home"
+2025-11-03 11:25:17.720 [http-nio-8001-exec-8] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:25:17.723 [http-nio-8001-exec-8] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-8][home] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template home, line 18, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:25:17.727 [http-nio-8001-exec-8] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-8][home] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template home, line 222, col 8. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:25:17.740 [http-nio-8001-exec-3] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:17.740 [http-nio-8001-exec-4] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:17.742 [http-nio-8001-exec-10] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:17.742 [http-nio-8001-exec-2] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:22.658 [http-nio-8001-exec-7] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:22.667 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:25:22.668 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect - [REQUEST] 2025-11-03 11:25:22.668
+2025-11-03 11:25:22.668 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Method: GET | URI: /notifications
+2025-11-03 11:25:22.668 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Client IP: 0:0:0:0:0:0:0:1 | User ID: ANONYMOUS
+2025-11-03 11:25:22.668 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect - [RESPONSE] Status: 200 | Time: 0ms
+2025-11-03 11:25:22.669 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect -   Response Body: "notifications"
+2025-11-03 11:25:22.669 [http-nio-8001-exec-7] INFO  c.x.m.c.aop.ControllerLoggingAspect - ═══════════════════════════════════════════════════════════════
+2025-11-03 11:25:22.671 [http-nio-8001-exec-7] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-7][notifications] Deprecated unwrapped fragment expression "fragments/navbar :: navbar" found in template notifications, line 17, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/navbar :: navbar}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:25:22.673 [http-nio-8001-exec-7] WARN  o.t.s.p.AbstractStandardFragmentInsertionTagProcessor - [THYMELEAF][http-nio-8001-exec-7][notifications] Deprecated unwrapped fragment expression "fragments/footer :: footer" found in template notifications, line 165, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/footer :: footer}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2025-11-03 11:25:22.693 [http-nio-8001-exec-1] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:22.694 [http-nio-8001-exec-6] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:22.696 [http-nio-8001-exec-5] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:22.697 [http-nio-8001-exec-10] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:22.697 [http-nio-8001-exec-9] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
+2025-11-03 11:25:22.700 [http-nio-8001-exec-8] INFO  c.x.m.c.c.s.MemberDetailsService - 🔍 로그인 시도 ID: user1
