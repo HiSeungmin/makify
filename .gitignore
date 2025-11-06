@@ -40,3 +40,6 @@ out/
 src/main/resources/static/videos/*
 
 .env
+
+# logs
+logs
