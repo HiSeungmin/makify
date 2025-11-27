@@ -25,7 +25,17 @@
   <!-- 검색 및 필터 섹션 -->
   <div class="search-filter-section">
     <div class="search-bar">
-      <input type="text" id="searchKeyword" class="search-input" placeholder="챌린지 제목이나 설명을 검색하세요..." />
+      <!-- 자동완성 검색 래퍼 -->
+      <div class="search-input-wrapper">
+        <input type="text" id="searchKeyword" class="search-input" placeholder="챌린지 제목이나 설명을 검색하세요..." autocomplete="off" />
+        <!-- 자동완성 드롭다운 -->
+        <div id="autocompleteDropdown" class="autocomplete-dropdown d-none">
+          <ul id="autocompleteList" class="autocomplete-list">
+            <!-- JavaScript로 동적 생성 -->
+          </ul>
+        </div>
+      </div>
+      
       <select class="filter-select" id="categoryFilter">
         <option value="">전체 카테고리</option>
         <option value="ROUTINE">규칙적인 생활</option>
@@ -140,6 +150,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     initializeSearch();
+    initializeAutocomplete();
     
     const initialPagination = {
       totalPages: parseInt(document.getElementById('totalPages')?.value) || 1,
@@ -158,6 +169,7 @@
   let currentCategory = '';
   let currentStatus = '';
   let currentSort = 'latest';
+  let autocompleteTimeout;
 
   function initializeSearch() {
     const searchBtn = document.getElementById('searchBtn');
@@ -182,6 +194,81 @@
     categoryFilter.addEventListener('change', performSearch);
     statusFilter.addEventListener('change', performSearch);
     sortFilter.addEventListener('change', performSearch);
+  }
+
+  // 자동완성 초기화
+  function initializeAutocomplete() {
+    const searchKeyword = document.getElementById('searchKeyword');
+    const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+
+    searchKeyword.addEventListener('input', function() {
+      const prefix = this.value.trim();
+
+      // 기존 타이머 취소
+      clearTimeout(autocompleteTimeout);
+
+      if (prefix.length === 0) {
+        autocompleteDropdown.classList.add('d-none');
+        return;
+      }
+
+      // 300ms 후에 자동완성 요청
+      autocompleteTimeout = setTimeout(() => {
+        fetchAutocomplete(prefix);
+      }, 300);
+    });
+
+    // 외부 클릭시 드롭다운 닫기
+    document.addEventListener('click', function(e) {
+      if (!searchKeyword.contains(e.target) && !autocompleteDropdown.contains(e.target)) {
+        autocompleteDropdown.classList.add('d-none');
+      }
+    });
+  }
+
+  // 자동완성 데이터 요청
+  async function fetchAutocomplete(prefix) {
+    try {
+      const response = await fetch(`/api/search/autocomplete?prefix=${encodeURIComponent(prefix)}`);
+      
+      if (!response.ok) {
+        console.error('자동완성 요청 실패:', response.status);
+        return;
+      }
+
+      const data = await response.json();
+      renderAutocomplete(data.results || []);
+
+    } catch (error) {
+      console.error('자동완성 요청 중 오류:', error);
+    }
+  }
+
+  // 자동완성 결과 렌더링
+  function renderAutocomplete(results) {
+    const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+    const autocompleteList = document.getElementById('autocompleteList');
+
+    if (results.length === 0) {
+      autocompleteDropdown.classList.add('d-none');
+      return;
+    }
+
+    autocompleteList.innerHTML = results.map(result => `
+      <li class="autocomplete-item" onclick="selectAutocompleteItem('${result.replace(/'/g, "\\'")}')">
+        <i class="bi bi-search"></i>
+        <span class="autocomplete-item-text">${result}</span>
+      </li>
+    `).join('');
+
+    autocompleteDropdown.classList.remove('d-none');
+  }
+
+  // 자동완성 항목 선택
+  function selectAutocompleteItem(keyword) {
+    document.getElementById('searchKeyword').value = keyword;
+    document.getElementById('autocompleteDropdown').classList.add('d-none');
+    performSearch();
   }
 
   async function performSearch(page) {
@@ -221,6 +308,9 @@
       renderChallenges(data.content || []);
       renderPagination(data);
       updateSearchStatus(keyword, category, status, data.totalElements || 0);
+
+      // 자동완성 드롭다운 닫기
+      document.getElementById('autocompleteDropdown').classList.add('d-none');
 
     } catch (error) {
       console.error('검색 중 오류 발생:', error);
@@ -375,6 +465,7 @@
     document.getElementById('categoryFilter').value = '';
     document.getElementById('statusFilter').value = '';
     document.getElementById('sortFilter').value = 'latest';
+    document.getElementById('autocompleteDropdown').classList.add('d-none');
     window.location.href = '/challenges';
   }
 

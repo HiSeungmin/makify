@@ -49,9 +49,14 @@ body {
   flex-wrap: wrap;
 }
 
-.search-input {
+.search-input-wrapper {
+  position: relative;
   flex: 2;
   min-width: 300px;
+}
+
+.search-input {
+  width: 100%;
   padding: 14px 20px;
   border: 2px solid #e5e7eb;
   border-radius: 12px;
@@ -95,6 +100,78 @@ body {
 .filter-select:focus {
   outline: none;
   border-color: #10b981;
+}
+
+/* 자동완성 드롭다운 */
+.autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  margin-top: -2px;
+}
+
+.autocomplete-dropdown.d-none {
+  display: none !important;
+}
+
+.autocomplete-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.autocomplete-item {
+  padding: 14px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #374151;
+  font-size: 15px;
+}
+
+.autocomplete-item:last-child {
+  border-bottom: none;
+}
+
+.autocomplete-item:hover {
+  background-color: #f9fafb;
+  color: #10b981;
+}
+
+.autocomplete-item i {
+  color: #d1d5db;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.autocomplete-item:hover i {
+  color: #10b981;
+}
+
+.autocomplete-item-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.autocomplete-frequency {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-left: 8px;
+  flex-shrink: 0;
 }
 
 /* 검색 상태 표시 */
@@ -381,5 +458,15 @@ body {
 
   .search-bar {
     flex-direction: column;
+  }
+
+  .search-input-wrapper,
+  .search-input {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .autocomplete-dropdown {
+    max-height: 250px;
   }
 }
