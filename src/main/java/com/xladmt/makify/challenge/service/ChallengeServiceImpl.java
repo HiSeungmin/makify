@@ -3,6 +3,7 @@ package com.xladmt.makify.challenge.service;
 
 import com.xladmt.makify.challenge.dto.ChallengeCreateRequest;
 import com.xladmt.makify.challenge.dto.ChallengeDetailResponse;
+import com.xladmt.makify.challenge.dto.ChallengePageDto;
 import com.xladmt.makify.challenge.repository.ChallengeRepository;
 import com.xladmt.makify.challenge.repository.UserChallengeRepository;
 import com.xladmt.makify.challenge.repository.VerificationMethodRepository;
@@ -15,6 +16,7 @@ import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.member.repository.MemberRepository;
 import com.xladmt.makify.payment.dto.RequestPayDto;
 import com.xladmt.makify.payment.repository.PaymentRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,28 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .stream()
                 .filter(challenge -> challenge.getIsVisible().name().equals("Y"))
                 .toList();
+    }
+
+    @Override
+    public ChallengePageDto getChallengesPage(List<Challenge> allChallenges, int page, int size) {
+
+        int totalElements = allChallenges.size();
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+        int start = page * size;
+        int end = Math.min(start + size, totalElements);
+
+        List<Challenge> pagedChallenges = start < totalElements ?
+                allChallenges.subList(start, end) : new java.util.ArrayList<>();
+
+        ChallengePageDto pageDto = new ChallengePageDto();
+        pageDto.setChallenges(pagedChallenges);
+        pageDto.setTotalPages(totalPages);
+        pageDto.setTotalElements(totalElements);
+        pageDto.setCurrentPage(page);
+        pageDto.setHasNext(page < totalPages - 1);
+        pageDto.setHasPrevious(page > 0);
+
+        return pageDto;
     }
 
     @Override

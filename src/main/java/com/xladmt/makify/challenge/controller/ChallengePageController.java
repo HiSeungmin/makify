@@ -2,6 +2,7 @@ package com.xladmt.makify.challenge.controller;
 
 import com.xladmt.makify.challenge.dto.ChallengeCreateRequest;
 import com.xladmt.makify.challenge.dto.ChallengeDetailResponse;
+import com.xladmt.makify.challenge.dto.ChallengePageDto;
 import com.xladmt.makify.challenge.repository.ChallengeRepository;
 import com.xladmt.makify.challenge.service.ChallengeServiceImpl;
 import com.xladmt.makify.common.config.security.MemberDetails;
@@ -38,24 +39,12 @@ public class ChallengePageController {
             @RequestParam(defaultValue = "12") int size,
             Model model
     ) {
-        // 페이징 처리된 데이터 가져오기
+
         List<Challenge> allChallenges = challengeService.getAllVisibleChallenges();
-        
-        // 수동 페이징 처리
-        int totalElements = allChallenges.size();
-        int totalPages = (int) Math.ceil((double) totalElements / size);
-        int start = page * size;
-        int end = Math.min(start + size, totalElements);
-        
-        List<Challenge> pagedChallenges = start < totalElements ? 
-            allChallenges.subList(start, end) : new java.util.ArrayList<>();
-        
-        model.addAttribute("challenges", pagedChallenges);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalElements", totalElements);
-        model.addAttribute("hasNext", page < totalPages - 1);
-        model.addAttribute("hasPrevious", page > 0);
+
+        ChallengePageDto challengePageDto = challengeService.getChallengesPage(allChallenges, page, size);
+
+        model.addAttribute("challengePage", challengePageDto);
         
         return "challenge/challenges";
     }
@@ -72,7 +61,7 @@ public class ChallengePageController {
         model.addAttribute("loginMemberId", loginId);
         model.addAttribute("challenge", challenge);
 
-        return "challenge/detail"; // detail.html
+        return "challenge/detail";
     }
 
     @GetMapping("/challenges/new")
