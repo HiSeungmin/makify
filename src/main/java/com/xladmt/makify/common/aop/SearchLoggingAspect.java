@@ -23,7 +23,7 @@ public class SearchLoggingAspect {
     private static final org.slf4j.Logger searchLogger = org.slf4j.LoggerFactory.getLogger("search");
 
     // ChallengeController의 searchChallenges 메서드 로깅
-    @Around("execution(* com.xladmt.makify.challenge.controller.ChallengeController.searchChallenges(..))")
+    @Around("execution(* com.xladmt.makify.challenge.controller.ChallengeApiController.searchChallenges(..))")
     public Object logSearchChallenges(ProceedingJoinPoint joinPoint) throws Throwable {
         // 파라미터 추출
         Object[] args = joinPoint.getArgs();
