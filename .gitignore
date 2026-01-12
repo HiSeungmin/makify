@@ -43,3 +43,6 @@ src/main/resources/static/videos/*
 
 # logs
 logs
+
+# sql
+*.sql
