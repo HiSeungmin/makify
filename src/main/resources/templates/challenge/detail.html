@@ -23,18 +23,18 @@
         </a>
 
         <div class="challenge-layout">
-            <!-- 왼쪽: 이미지 및 통계 -->
+            <!-- 왼쪽: 이미지 -->
             <div class="challenge-image-section">
                 <div class="position-relative">
                     <img th:src="@{/images/default-challenge.avif}" alt="챌린지 이미지" class="challenge-hero-image">
                     <div class="category-badge" th:text="'#' + ${challenge.category}">운동</div>
-                    
-                    <!-- 수정 버튼: 로그인한 사용자와 개설자가 같을 때만 보임 -->
+
+                    <!-- 수정 버튼 -->
                     <div th:if="${loginMemberId != null and loginMemberId == challenge.creatorLoginId}" class="position-absolute" style="top: 20px; right: 60px;">
                         <a th:href="@{'/challenges/edit/' + ${challenge.id}}" class="btn btn-sm btn-outline-light">✏️</a>
                     </div>
 
-                    <!-- 설정 드롭다운: 신고하기 -->
+                    <!-- 설정 드롭다운 -->
                     <div class="dropdown position-absolute" style="top: 20px; right: 20px;">
                         <button class="btn btn-sm btn-outline-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-three-dots-vertical"></i>
@@ -44,41 +44,6 @@
                         </ul>
                     </div>
                 </div>
-
-                <!-- 통계 -->
-                <div class="challenge-stats">
-                    <div class="stat-box">
-                        <div class="stat-icon">
-                            <i class="bi bi-people"></i>
-                        </div>
-                        <div class="stat-number" th:text="${challenge.currentParticipants ?: 0}">0</div>
-                        <div class="stat-label">참여자</div>
-                    </div>
-
-                    <div class="stat-box">
-                        <div class="stat-icon">
-                            <i class="bi bi-calendar"></i>
-                        </div>
-                        <div class="stat-number">30일</div>
-                        <div class="stat-label">챌린지 기간</div>
-                    </div>
-
-                    <div class="stat-box">
-                        <div class="stat-icon">
-                            <i class="bi bi-star"></i>
-                        </div>
-                        <div class="stat-number">4.8</div>
-                        <div class="stat-label">평점</div>
-                    </div>
-
-                    <div class="stat-box">
-                        <div class="stat-icon">
-                            <i class="bi bi-chat"></i>
-                        </div>
-                        <div class="stat-number">2340</div>
-                        <div class="stat-label">리뷰</div>
-                    </div>
-                </div>
             </div>
 
             <!-- 오른쪽: 챌린지 정보 -->
@@ -86,14 +51,13 @@
                 <h1 class="challenge-title" th:text="${challenge.title}">챌린지 제목</h1>
                 <p class="challenge-description" th:text="${challenge.description}">챌린지 설명입니다.</p>
 
-                <!-- 진행률 (임시 데이터) -->
                 <div class="progress-section">
                     <div class="progress-label d-flex justify-content-between align-items-center">
-                        <span class="progress-text">전체 참여자 평균 진행률</span>
-                        <span class="progress-percent">65%</span>
+                        <span class="progress-text">챌린지 진행률</span>
+                        <span class="progress-percent" th:text="${challenge.progressPercentage} + '%'">0%</span>
                     </div>
                     <div class="progress-bar-container">
-                        <div class="progress-bar-fill" style="width: 65%"></div>
+                        <div class="progress-bar-fill" th:style="'width: ' + ${challenge.progressPercentage} + '%'"></div>
                     </div>
                 </div>
 
@@ -106,16 +70,14 @@
 
                 <!-- 참여 버튼 -->
                 <div th:if="${challenge.status.name() != 'IN_PROGRESS' and challenge.status.name() != 'COMPLETED'}">
-                    <!-- 내가 만든 챌린지 -->
-                    <button class="join-button" 
+                    <button class="join-button"
                             th:if="${loginMemberId != null and loginMemberId == challenge.creatorLoginId}"
                             disabled>
                         <i class="bi bi-clock"></i>
                         참가 인원 모집 중
                     </button>
 
-                    <!-- 이미 참가 신청한 챌린지 -->
-                    <button class="join-button" 
+                    <button class="join-button"
                             th:if="${challenge.alreadyJoined}"
                             disabled
                             th:data-start="${challenge.startDate}">
@@ -123,15 +85,13 @@
                         <span id="countdown" class="mx-1"></span>후 시작
                     </button>
 
-                    <!-- 인원 마감 -->
-                    <button class="join-button" 
+                    <button class="join-button"
                             th:if="${challenge.currentParticipants >= challenge.maxParticipants}"
                             disabled>
                         <i class="bi bi-x-circle"></i>
                         모집 마감 (<span th:text="${challenge.currentParticipants}"></span> / <span th:text="${challenge.maxParticipants}"></span>)
                     </button>
 
-                    <!-- 참가 가능 -->
                     <a th:href="@{'/challenges/' + ${challenge.id} + '/join'}"
                        class="join-button"
                        th:if="${loginMemberId != challenge.creatorLoginId and !challenge.alreadyJoined and challenge.currentParticipants < challenge.maxParticipants}">
@@ -139,6 +99,41 @@
                         챌린지 참여하기
                     </a>
                 </div>
+            </div>
+        </div>
+
+        <!-- 통계 (이미지와 설명 아래에 독립적으로 배치) -->
+        <div class="challenge-stats">
+            <div class="stat-box">
+                <div class="stat-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <div class="stat-number" th:text="${challenge.currentParticipants ?: 0}">0</div>
+                <div class="stat-label">참여자</div>
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-icon">
+                    <i class="bi bi-calendar"></i>
+                </div>
+                <div class="stat-number">30일</div>
+                <div class="stat-label">챌린지 기간</div>
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-icon">
+                    <i class="bi bi-star"></i>
+                </div>
+                <div class="stat-number">4.8</div>
+                <div class="stat-label">평점</div>
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-icon">
+                    <i class="bi bi-chat"></i>
+                </div>
+                <div class="stat-number">2340</div>
+                <div class="stat-label">리뷰</div>
             </div>
         </div>
 

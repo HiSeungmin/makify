@@ -27,6 +27,7 @@ public class ChallengeDetailResponse {
     private YN isFixedDeposit;
     private BigDecimal maxDeposit;
     private ChallengeStatus status;
+    private Integer progressPercentage;
 
     // 개설자
     private String creatorLoginId;

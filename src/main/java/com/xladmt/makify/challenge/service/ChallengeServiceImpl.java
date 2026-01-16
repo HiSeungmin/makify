@@ -143,6 +143,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .category(challenge.getCategory().getDescription())
                 .alreadyJoined(alreadyJoined)
                 .currentParticipants(currentParticipants)
+                .progressPercentage(challenge.getProgressPercentage())
                 .build();
     }
 

@@ -77,7 +77,8 @@
   <!-- 챌린지 그리드 -->
   <div id="challengeList" class="challenges-grid">
     <!-- 서버 렌더링 데이터 -->
-    <div class="challenge-card" th:each="challenge : ${challengePage.challenges}">
+    <div class="challenge-card" th:each="challenge : ${challengePage.challenges}"
+         th:onclick="'location.href=\'' + @{'/challenges/' + ${challenge.id}} + '\''">
       <div class="position-relative">
         <img th:src="@{/images/default-challenge.avif}" class="card-image" alt="챌린지 이미지">
         <div class="card-badges">
@@ -119,36 +120,28 @@
 
         <div class="card-footer">
           <!-- 모집 마감 (정원 초과) -->
-          <button th:if="${challenge.participantCount >= challenge.maxParticipants and challenge.status.name() == 'NOT_STARTED'}"
-                  class="join-btn disabled" disabled>
+          <div th:if="${challenge.participantCount >= challenge.maxParticipants and challenge.status.name() == 'NOT_STARTED'}"
+               class="join-btn disabled">
             <i class="bi bi-x-circle"></i> 모집 마감
-          </button>
+          </div>
 
           <!-- 진행중 -->
-          <button th:if="${challenge.status.name() == 'IN_PROGRESS'}"
-                  class="join-btn disabled" disabled>
+          <div th:if="${challenge.status.name() == 'IN_PROGRESS'}"
+               class="join-btn disabled">
             <i class="bi bi-hourglass-split"></i> 진행중
-          </button>
+          </div>
 
           <!-- 종료 -->
-          <button th:if="${challenge.status.name() == 'COMPLETED'}"
-                  class="join-btn disabled" disabled>
+          <div th:if="${challenge.status.name() == 'COMPLETED'}"
+               class="join-btn disabled">
             <i class="bi bi-check-circle"></i> 종료
-          </button>
+          </div>
 
           <!-- 모집중 (참여 가능) -->
-          <a th:if="${challenge.participantCount < challenge.maxParticipants and challenge.status.name() == 'NOT_STARTED'}"
-             th:href="@{'/challenges/' + ${challenge.id}}"
-             class="join-btn">
+          <div th:if="${challenge.participantCount < challenge.maxParticipants and challenge.status.name() == 'NOT_STARTED'}"
+               class="join-btn">
             <i class="bi bi-trophy"></i> 챌린지 참여
-          </a>
-        </div>
-
-<!--          <div class="card-footer">-->
-<!--            <a th:href="@{'/challenges/' + ${challenge.id}}" class="join-btn">-->
-<!--              <i class="bi bi-trophy"></i> 챌린지 참여-->
-<!--            </a>-->
-<!--        </div>-->
+          </div>
       </div>
     </div>
   </div>

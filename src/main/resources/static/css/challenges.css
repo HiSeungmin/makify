@@ -378,13 +378,13 @@ body {
 
 .join-btn.disabled {
   background: #9ca3af;
-  cursor: not-allowed;
   opacity: 0.6;
+  cursor: default;
 }
 
 .join-btn.disabled:hover {
   background: #9ca3af;
-  transform: none;
+  transform: translateY(-2px); /* 호버 효과 유지 */
 }
 
 /* 로딩 및 빈 결과 */
