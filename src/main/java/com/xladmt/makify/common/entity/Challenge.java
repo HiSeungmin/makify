@@ -7,11 +7,10 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 @Entity
@@ -148,5 +147,24 @@ public class Challenge extends BaseEntity {
     // 참여자 수 감소
     public void decrementParticipantCount() {
         this.participantCount = Math.max(0, (this.participantCount == null ? 0 : this.participantCount) - 1);
+    }
+
+    public int getProgressPercentage() {
+        LocalDate now = LocalDate.now();
+        LocalDate start = this.startDate;
+        LocalDate end = this.endDate;
+
+        if (now.isBefore(start)) {
+            return 0;
+        }
+
+        if (now.isAfter(end)) {
+            return 100;
+        }
+
+        long totalDays = ChronoUnit.DAYS.between(start, end) + 1;
+        long elapsedDays = ChronoUnit.DAYS.between(start, now) + 1;
+
+        return (int) ((elapsedDays * 100) / totalDays);
     }
 }

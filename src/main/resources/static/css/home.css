@@ -242,6 +242,12 @@ body {
   font-size: 14px;
   line-height: 1.5;
   margin-bottom: 20px;
+  height: 42px; /* 2줄 고정 높이 (14px * 1.5 * 3 = 63px) */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 2줄까지만 표시 */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 }
 
 .challenge-meta {

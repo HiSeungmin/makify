@@ -91,41 +91,64 @@
       <div class="card-content">
         <h3 class="card-title" th:text="${challenge.title}">챌린지 제목</h3>
         <p class="card-description" th:text="${challenge.description}">챌린지 설명입니다.</p>
-        
+
         <div class="card-meta">
           <span th:text="${challenge.startDate} + ' ~ ' + ${challenge.endDate}">2025.01.01 ~ 2025.01.31</span>
         </div>
 
         <div class="card-stats">
-          <div class="stat-item">
-            <i class="bi bi-people"></i>
-            <span th:text="${challenge.participantCount ?: 0} + '명'">0명</span>
+          <div class="participants-info">
+            <i class="bi bi-people-fill"></i>
+            <span th:text="${challenge.participantCount ?: 0} + '/' + ${challenge.maxParticipants} + '명 참여'">0/50명 참여</span>
           </div>
           <div class="stat-item">
             <i class="bi bi-calendar-check"></i>
-            <span>매일</span>
+            <span th:text="${challenge.verificationMethod.frequency.label} + ' 인증'">매일</span>
           </div>
         </div>
 
         <div class="progress-section">
           <div class="progress-label">
             <span class="progress-text">진행률</span>
-            <span class="progress-percent">65%</span>
+            <span class="progress-percent" th:text="${challenge.progressPercentage} + '%'">0%</span>
           </div>
           <div class="progress-bar">
-            <div class="progress-fill" style="width: 65%"></div>
+            <div class="progress-fill" th:style="'width: ' + ${challenge.progressPercentage} + '%'"></div>
           </div>
         </div>
 
         <div class="card-footer">
-          <div class="participants-info">
-            <i class="bi bi-people-fill"></i>
-            <span th:text="${challenge.participantCount ?: 0} + '/' + ${challenge.maxParticipants} + '명 참여'">0/50명 참여</span>
-          </div>
-          <a th:href="@{'/challenges/' + ${challenge.id}}" class="join-btn">
-            챌린지 참여
+          <!-- 모집 마감 (정원 초과) -->
+          <button th:if="${challenge.participantCount >= challenge.maxParticipants and challenge.status.name() == 'NOT_STARTED'}"
+                  class="join-btn disabled" disabled>
+            <i class="bi bi-x-circle"></i> 모집 마감
+          </button>
+
+          <!-- 진행중 -->
+          <button th:if="${challenge.status.name() == 'IN_PROGRESS'}"
+                  class="join-btn disabled" disabled>
+            <i class="bi bi-hourglass-split"></i> 진행중
+          </button>
+
+          <!-- 종료 -->
+          <button th:if="${challenge.status.name() == 'COMPLETED'}"
+                  class="join-btn disabled" disabled>
+            <i class="bi bi-check-circle"></i> 종료
+          </button>
+
+          <!-- 모집중 (참여 가능) -->
+          <a th:if="${challenge.participantCount < challenge.maxParticipants and challenge.status.name() == 'NOT_STARTED'}"
+             th:href="@{'/challenges/' + ${challenge.id}}"
+             class="join-btn">
+            <i class="bi bi-trophy"></i> 챌린지 참여
           </a>
         </div>
+
+<!--          <div class="card-footer">-->
+<!--            <a th:href="@{'/challenges/' + ${challenge.id}}" class="join-btn">-->
+<!--              <i class="bi bi-trophy"></i> 챌린지 참여-->
+<!--            </a>-->
+<!--        </div>-->
       </div>
     </div>
   </div>
@@ -334,57 +357,53 @@
 
     emptyResult.classList.add('d-none');
     
-    challengeList.innerHTML = challenges.map(challenge => `
-      <div class="challenge-card">
-        <div class="position-relative">
-          <img src="/images/default-challenge.avif" class="card-image" alt="챌린지 이미지">
-          <div class="card-badges">
-            <span class="category-badge">${challenge.categoryDisplayName}</span>
-            <span class="status-badge ${getStatusClassName(challenge.status)}">${getStatusDisplayName(challenge.status)}</span>
-          </div>
-        </div>
-        
-        <div class="card-content">
-          <h3 class="card-title">${challenge.title}</h3>
-          <p class="card-description">${challenge.description}</p>
-          
-          <div class="card-meta">
-            <span>${challenge.startDate} ~ ${challenge.endDate}</span>
-          </div>
-
-          <div class="card-stats">
-            <div class="stat-item">
-              <i class="bi bi-people"></i>
-              <span>${challenge.currentParticipants || 0}명</span>
-            </div>
-            <div class="stat-item">
-              <i class="bi bi-calendar-check"></i>
-              <span>매일</span>
-            </div>
-          </div>
-
-          <div class="progress-section">
-            <div class="progress-label">
-              <span class="progress-text">진행률</span>
-              <span class="progress-percent">65%</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 65%"></div>
-            </div>
-          </div>
-
-          <div class="card-footer">
-            <div class="participants-info">
-              <i class="bi bi-people-fill"></i>
-              <span>${challenge.currentParticipants || 0}/${challenge.maxParticipants}명 참여</span>
-            </div>
-            <a href="/challenges/${challenge.id}" class="join-btn">
-              챌린지 참여
-            </a>
-          </div>
-        </div>
-      </div>
-    `).join('');
+    // challengeList.innerHTML = challenges.map(challenge => `
+    //   <div class="challenge-card">
+    //     <div class="position-relative">
+    //       <img src="/images/default-challenge.avif" class="card-image" alt="챌린지 이미지">
+    //       <div class="card-badges">
+    //         <span class="category-badge">${challenge.categoryDisplayName}</span>
+    //         <span class="status-badge ${getStatusClassName(challenge.status)}">${getStatusDisplayName(challenge.status)}</span>
+    //       </div>
+    //     </div>
+    //
+    //     <div class="card-content">
+    //       <h3 class="card-title">${challenge.title}</h3>
+    //       <p class="card-description">${challenge.description}</p>
+    //
+    //       <div class="card-meta">
+    //         <span>${challenge.startDate} ~ ${challenge.endDate}</span>
+    //       </div>
+    //
+    //       <div class="card-stats">
+    //         <div class="participants-info">
+    //           <i class="bi bi-people-fill"></i>
+    //           <span>${challenge.participantCount || 0}/${challenge.maxParticipants}명 참여</span>
+    //         </div>
+    //         <div class="stat-item">
+    //           <i class="bi bi-calendar-check"></i>
+    //           <span>매일</span>
+    //         </div>
+    //       </div>
+    //
+    //       <div class="progress-section">
+    //         <div class="progress-label">
+    //           <span class="progress-text">진행률</span>
+    //           <span class="progress-percent">30%</span>
+    //         </div>
+    //         <div class="progress-bar">
+    //           <div class="progress-fill" style="width: 30%"></div>
+    //         </div>
+    //       </div>
+    //
+    //       <div class="card-footer">
+    //         <a href="/challenges/${challenge.id}" class="join-btn">
+    //           <i class="bi bi-trophy"></i>챌린지 참여
+    //         </a>
+    //       </div>
+    //     </div>
+    //   </div>
+    // `).join('');
   }
 
   function renderPagination(data) {

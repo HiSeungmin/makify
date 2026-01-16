@@ -30,24 +30,24 @@
         </rollingPolicy>
     </appender>
 
-    <!-- Error 로그 파일 Appender (에러만) -->
-    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_FILE_PATH}/error.log</file>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-        <encoder>
-            <pattern>${LOG_PATTERN}</pattern>
-            <charset>utf8</charset>
-        </encoder>
-        <!-- 날짜별 롤링 정책만 사용 -->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_FILE_PATH}/error-%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>
-        </rollingPolicy>
-    </appender>
+<!--    &lt;!&ndash; Error 로그 파일 Appender (에러만) &ndash;&gt;-->
+<!--    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>${LOG_FILE_PATH}/error.log</file>-->
+<!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+<!--            <level>ERROR</level>-->
+<!--            <onMatch>ACCEPT</onMatch>-->
+<!--            <onMismatch>DENY</onMismatch>-->
+<!--        </filter>-->
+<!--        <encoder>-->
+<!--            <pattern>${LOG_PATTERN}</pattern>-->
+<!--            <charset>utf8</charset>-->
+<!--        </encoder>-->
+<!--        &lt;!&ndash; 날짜별 롤링 정책만 사용 &ndash;&gt;-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${LOG_FILE_PATH}/error-%d{yyyy-MM-dd}.log</fileNamePattern>-->
+<!--            <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
 
     <!-- Data 로그 파일 Appender (추후 데이터 수집용) -->
     <appender name="DATA_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">

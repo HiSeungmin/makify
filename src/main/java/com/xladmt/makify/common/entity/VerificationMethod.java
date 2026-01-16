@@ -20,7 +20,7 @@ public class VerificationMethod extends BaseEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private Frequency frequency; // 인증 빈도
+    private Frequency frequency; // 주당 인증 빈도
 
     @Column(name = "start_time", nullable = false)
     private LocalTime startTime; // 인증 시작 시간
