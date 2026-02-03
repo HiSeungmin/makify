@@ -485,4 +485,56 @@ body {
   .autocomplete-dropdown {
     max-height: 250px;
   }
+
+}
+
+
+/*챌린지 생성*/
+
+/* 플로팅 버튼 */
+.floating-create-btn {
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  width: 60px;
+  height: 60px;
+  background-color: #10b981;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+/* hover 효과 */
+.floating-create-btn:hover {
+  background-color: #059669;
+  transform: translateY(-4px);
+}
+
+/* 툴팁 */
+.floating-create-btn .tooltip-text {
+  position: absolute;
+  right: 70px;
+  background-color: #333;
+  color: white;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+/* hover 시 툴팁 표시 */
+.floating-create-btn:hover .tooltip-text {
+  opacity: 1;
+  transform: translateY(0);
 }
