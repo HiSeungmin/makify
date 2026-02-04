@@ -72,7 +72,6 @@ public class ChallengePageController {
     @PostMapping("/challenges/new")
     public String createChallenge(@ModelAttribute ChallengeCreateRequest request, @AuthenticationPrincipal MemberDetails memberDetails, BindingResult bindingResult) {
 
-        log.info("챌린지 생성 중.. \n"+request);
         challengeCreateRequestValidator.validate(request, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -85,7 +84,7 @@ public class ChallengePageController {
         return "redirect:/challenges";
     }
 
-    // 챌린지 참여 페이지 - 결제 정보만 표시 (DB 생성 X)
+    // 챌린지 참여 페이지 - 결제 정보만 표시
     @GetMapping("/challenges/{id}/join")
     public String showJoinPage(@PathVariable Long id, @AuthenticationPrincipal MemberDetails memberDetails, Model model) {
         // 1. 챌린지 조회
@@ -95,7 +94,7 @@ public class ChallengePageController {
         // 2. 참여 가능 여부 확인
         challengeValidator.validateJoinable(id, memberDetails.getId());
         
-        // 3. 결제 정보만 준비 (uuid 없음)
+        // 3. 결제 정보
         RequestPayDto paymentInfo = challengeService.getPaymentInfo(id, memberDetails.getId());
         
         // 4. 모델에 담기
@@ -107,5 +106,18 @@ public class ChallengePageController {
         // 5. 참여 페이지 반환
         return "challenge/join";
     }
+
+
+//    @GetMapping("/api/challenges/search")
+//    public String searchChallenges(@RequestParam(required = false) String keyword,
+//                                   @RequestParam(required = false) String category,
+//                                   @RequestParam(required = false) String status,  // 상태 필터 추가
+//                                   @RequestParam(defaultValue = "latest") String sortBy,
+//                                   @RequestParam(defaultValue = "0") String page,
+//                                   @RequestParam(defaultValue = "20") String size){
+//
+//
+//        return "";
+//    }
 
 }

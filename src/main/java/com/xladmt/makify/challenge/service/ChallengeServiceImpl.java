@@ -1,9 +1,7 @@
 package com.xladmt.makify.challenge.service;
 
 
-import com.xladmt.makify.challenge.dto.ChallengeCreateRequest;
-import com.xladmt.makify.challenge.dto.ChallengeDetailResponse;
-import com.xladmt.makify.challenge.dto.ChallengePageDto;
+import com.xladmt.makify.challenge.dto.*;
 import com.xladmt.makify.challenge.repository.ChallengeRepository;
 import com.xladmt.makify.challenge.repository.UserChallengeRepository;
 import com.xladmt.makify.challenge.repository.VerificationMethodRepository;
@@ -17,6 +15,10 @@ import com.xladmt.makify.member.repository.MemberRepository;
 import com.xladmt.makify.payment.dto.RequestPayDto;
 import com.xladmt.makify.payment.repository.PaymentRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     private final UserChallengeRepository userChallengeRepository;
     private final VerificationMethodRepository verificationMethodRepository;
     private final PaymentRepository paymentRepository;
+    private final ChallengeMapper challengeMapper;
 
     @Override
     @Transactional(readOnly = true)
@@ -225,5 +228,33 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
 
+    @Override
+    public ChallengeSearchResponse searchChallenges(ChallengeSearchRequest request) {
+        // 기본값 설정
+        request.setDefaultsIfNull();
+
+        // 정렬 조건 생성
+        Sort sort = createSort(request.getSortBy());
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
+
+        // 검색 실행
+        Page<ChallengeSearchDto> resultPage = challengeRepository.searchChallenges(
+                request.getKeyword(),
+                request.getCategory(),
+                pageable
+        ).map(challengeMapper::toSearchDto);
+
+        // 응답 생성
+        return ChallengeSearchResponse.from(resultPage, request);
+    }
+
+    private Sort createSort(String sortBy) {
+        return switch (sortBy) {
+            case "popularity" -> Sort.by("participantCount").descending();
+            case "latest" -> Sort.by("createdAt").descending();
+            case "startDate" -> Sort.by("startDate").ascending();
+            default -> Sort.by("createdAt").descending();
+        };
+    }
 
 }

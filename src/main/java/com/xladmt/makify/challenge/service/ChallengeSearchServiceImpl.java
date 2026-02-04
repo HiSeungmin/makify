@@ -22,7 +22,7 @@ public class ChallengeSearchServiceImpl implements ChallengeSearchService {
     private final ChallengeRepository challengeRepository;
     private final ChallengeMapper challengeMapper;
 
-    @Override
+    //@Override
     public ChallengeSearchResponse searchChallenges(ChallengeSearchRequest request) {
         // 기본값 설정
         request.setDefaultsIfNull();
@@ -42,27 +42,27 @@ public class ChallengeSearchServiceImpl implements ChallengeSearchService {
         return ChallengeSearchResponse.from(resultPage, request);
     }
 
-    @Override
-    public Page<ChallengeSearchDto> searchChallenges(
-            String keyword,
-            Category category,
-            String sortBy,
-            int page,
-            int size
-    ) {
-        ChallengeSearchRequest request = new ChallengeSearchRequest();
-        request.setKeyword(keyword);
-        request.setCategory(category);
-        request.setSortBy(sortBy);
-        request.setPage(page);
-        request.setSize(size);
-
-        return searchChallenges(request).getContent() != null ?
-            Page.empty() : // 임시 - 실제로는 Page 객체를 반환해야 함
-            challengeRepository.searchChallenges(keyword, category,
-                PageRequest.of(page, size, createSort(sortBy)))
-                .map(challengeMapper::toSearchDto);
-    }
+//    @Override
+//    public Page<ChallengeSearchDto> searchChallenges(
+//            String keyword,
+//            Category category,
+//            String sortBy,
+//            int page,
+//            int size
+//    ) {
+//        ChallengeSearchRequest request = new ChallengeSearchRequest();
+//        request.setKeyword(keyword);
+//        request.setCategory(category);
+//        request.setSortBy(sortBy);
+//        request.setPage(page);
+//        request.setSize(size);
+//
+//        return searchChallenges(request).getContent() != null ?
+//            Page.empty() : // 임시 - 실제로는 Page 객체를 반환해야 함
+//            challengeRepository.searchChallenges(keyword, category,
+//                PageRequest.of(page, size, createSort(sortBy)))
+//                .map(challengeMapper::toSearchDto);
+//    }
 
     private Sort createSort(String sortBy) {
         return switch (sortBy) {
