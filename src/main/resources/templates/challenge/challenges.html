@@ -127,7 +127,7 @@
 
           <!-- 진행중 -->
           <div th:if="${challenge.status.name() == 'IN_PROGRESS'}"
-               class="join-btn disabled">
+               class="join-btn ongoing">
             <i class="bi bi-hourglass-split"></i> 진행중
           </div>
 
@@ -165,7 +165,6 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('✅ DOM 로드 완료');
     initializeSearch();
     initializeAutocomplete();
     renderInitialPagination();
@@ -415,13 +414,13 @@
           </div>
         </div>
 
-        <div class="progress-section">
+        <div class="progress-section" data-progress="${challenge.progressPercentage || 0}">
           <div class="progress-label">
             <span class="progress-text">진행률</span>
-            <span class="progress-percent">60%</span>
+            <span class="progress-percent">0%</span>
           </div>
           <div class="progress-bar">
-            <div class="progress-fill" style="width: 60%"></div>
+            <div class="progress-fill"></div>
           </div>
         </div>
 
@@ -431,6 +430,20 @@
       </div>
     </div>
   `}).join('');
+    updateProgressBars();
+  }
+
+  function updateProgressBars() {
+    document.querySelectorAll(".progress-section").forEach(section => {
+
+      const progress = parseInt(section.dataset.progress) || 0;
+
+      const percentElement = section.querySelector(".progress-percent");
+      const fillElement = section.querySelector(".progress-fill");
+
+      percentElement.textContent = progress + "%";
+      fillElement.style.width = progress + "%";
+    });
   }
 
   function renderJoinButton(challenge) {
@@ -450,7 +463,7 @@
     // 진행중
     if (status === 'IN_PROGRESS') {
       return `
-      <div class="join-btn disabled">
+      <div class="join-btn ongoing">
         <i class="bi bi-hourglass-split"></i> 진행중
       </div>
     `;

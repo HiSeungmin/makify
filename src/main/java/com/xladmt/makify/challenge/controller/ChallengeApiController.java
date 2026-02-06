@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -112,13 +113,13 @@ public class ChallengeApiController {
                                 return c2.getCreatedAt().compareTo(c1.getCreatedAt()); // 최신순
                         }
                     })
-                    .collect(java.util.stream.Collectors.toList());
+                    .collect(Collectors.toList());
 
             // 페이징 처리
             int start = PAGE_NUM * SIZE_NUM;
             int end = Math.min(start + SIZE_NUM, filteredChallenges.size());
             List<Challenge> pagedChallenges = start < filteredChallenges.size() ?
-                    filteredChallenges.subList(start, end) : new java.util.ArrayList<>();
+                    filteredChallenges.subList(start, end) : new ArrayList<>();
 
             // 페이지네이션 정보 (filteredChallenges.size()로 확실히 계산)
             int totalElements = filteredChallenges.size();
@@ -127,9 +128,9 @@ public class ChallengeApiController {
             log.info("필터링 결과: 전체 {}개, 현재 페이지 {}개", totalElements, pagedChallenges.size());
 
             // 응답 생성
-            java.util.Map<String, Object> response = new java.util.HashMap<>();
+            Map<String, Object> response = new HashMap<>();
             response.put("content", pagedChallenges.stream().map(challenge -> {
-                java.util.Map<String, Object> challengeMap = new java.util.HashMap<>();
+                Map<String, Object> challengeMap = new HashMap<>();
                 challengeMap.put("id", challenge.getId());
                 challengeMap.put("title", challenge.getTitle());
                 challengeMap.put("description", challenge.getDescription());
@@ -141,8 +142,9 @@ public class ChallengeApiController {
                 challengeMap.put("currentParticipants", challenge.getParticipantCount() != null ? challenge.getParticipantCount() : 0);
                 challengeMap.put("status", challenge.getStatus().name());
                 challengeMap.put("statusDisplayName", getStatusDisplayName(challenge.getStatus().name()));
+                challengeMap.put("progressPercentage", challenge.getProgressPercentage());
                 return challengeMap;
-            }).collect(java.util.stream.Collectors.toList()));
+            }).collect(Collectors.toList()));
 
             response.put("totalElements", totalElements);
             response.put("totalPages", totalPages);
@@ -156,9 +158,9 @@ public class ChallengeApiController {
 
         } catch (Exception e) {
             log.error("검색 API 오류:", e);
-            java.util.Map<String, Object> errorResponse = new java.util.HashMap<>();
+            Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("error", "검색 중 오류가 발생했습니다: " + e.getMessage());
-            errorResponse.put("content", new java.util.ArrayList<>());
+            errorResponse.put("content", new ArrayList<>());
             errorResponse.put("totalElements", 0);
             return ResponseEntity.status(500).body(errorResponse);
         }
