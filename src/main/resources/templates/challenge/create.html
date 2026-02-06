@@ -7,6 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+  <link rel="stylesheet" th:href="@{/css/footer.css}" />
   <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.png}">
   <style>
     body {
@@ -41,6 +42,23 @@
     .conditional-field {
       display: none;
     }
+
+    .custom-title {
+      color: #10b981;
+    }
+
+    .btn-create {
+      background-color: #10b981;
+      border-color: #10b981;
+      color: white;
+      transition: all 0.2s ease;
+    }
+
+    .btn-create:hover {
+      background-color: #059669;
+      border-color: #059669;
+      color: white;
+    }
   </style>
 </head>
 <body>
@@ -53,7 +71,7 @@
     <form th:action="@{/challenges/new}" method="post" enctype="multipart/form-data">
       <!-- 기본 정보 -->
       <div class="p-4 mb-4 bg-white rounded-4 shadow-sm">
-        <h5 class="fw-semibold mb-3 text-primary">기본 정보</h5>
+        <h5 class="fw-semibold mb-3 custom-title">기본 정보</h5>
 
         <div class="mb-3">
           <label for="title" class="form-label small" >챌린지 이름</label>
@@ -109,7 +127,7 @@
 
       <!-- 인증 설정 -->
       <div class="p-4 mb-4 bg-white rounded-4 shadow-sm">
-        <h5 class="fw-semibold mb-3 text-primary">인증 설정</h5>
+        <h5 class="fw-semibold mb-3 custom-title">인증 설정</h5>
 
         <!-- 인증 수단 -->
         <div class="row g-3">
@@ -161,7 +179,7 @@
 
       <!-- 공개 및 예치금 -->
       <div class="p-4 mb-4 bg-white rounded-4 shadow-sm">
-        <h5 class="fw-semibold mb-3 text-primary">기타 설정</h5>
+        <h5 class="fw-semibold mb-3 custom-title">기타 설정</h5>
 
         <div class="row g-3 mb-3 align-items-end">
           <!-- 공개 여부 -->
@@ -224,7 +242,7 @@
       </div>
 
       <div class="text-center mt-4">
-        <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill shadow">챌린지 생성</button>
+        <button type="submit" class="btn btn-create px-5 py-2 rounded-pill shadow">챌린지 생성</button>
       </div>
     </form>
   </div>

@@ -155,7 +155,14 @@
   </div>
 
   <!-- 페이지네이션 -->
-  <div id="pagination" class="pagination-container"></div>
+  <div id="pagination" class="pagination-container">
+    <!-- JavaScript로 동적 생성 -->
+  </div>
+
+    <a href="/challenges/new" class="floating-create-btn">
+      <span class="tooltip-text">새 챌린지 개설하기</span>
+      <i class="bi bi-plus-lg"></i>
+    </a>
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>
