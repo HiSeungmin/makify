@@ -376,16 +376,22 @@ body {
   text-decoration: none;
 }
 
+.join-btn.ongoing {
+  background-color: #fad250;  /* 연한 회색 */
+  color: #ffffff;
+  cursor: default;
+}
+
 .join-btn.disabled {
   background: #9ca3af;
   opacity: 0.6;
   cursor: default;
 }
 
-.join-btn.disabled:hover {
-  background: #9ca3af;
-  transform: translateY(-2px); /* 호버 효과 유지 */
-}
+/*.join-btn.disabled:hover {*/
+/*  background: #9ca3af;*/
+/*  transform: translateY(-2px); !* 호버 효과 유지 *!*/
+/*}*/
 
 /* 로딩 및 빈 결과 */
 .loading-spinner {

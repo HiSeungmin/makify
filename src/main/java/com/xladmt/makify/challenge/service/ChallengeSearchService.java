@@ -11,16 +11,16 @@ public interface ChallengeSearchService {
     /**
      * 챌린지 검색 (통합 버전)
      */
-    ChallengeSearchResponse searchChallenges(ChallengeSearchRequest request);
+    //ChallengeSearchResponse searchChallenges(ChallengeSearchRequest request);
 
     /**
      * 챌린지 검색 (개별 파라미터 버전) - 하위 호환성
      */
-    Page<ChallengeSearchDto> searchChallenges(
-        String keyword,
-        Category category,
-        String sortBy,
-        int page,
-        int size
-    );
+//    Page<ChallengeSearchDto> searchChallenges(
+//        String keyword,
+//        Category category,
+//        String sortBy,
+//        int page,
+//        int size
+//    );
 }
