@@ -8,6 +8,7 @@ import com.xladmt.makify.challenge.repository.VerificationMethodRepository;
 import com.xladmt.makify.common.constant.Frequency;
 import com.xladmt.makify.common.constant.PaidStatus;
 import com.xladmt.makify.common.constant.UserChallengeStatus;
+import com.xladmt.makify.common.constant.YN;
 import com.xladmt.makify.common.entity.*;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
@@ -42,10 +43,8 @@ public class ChallengeServiceImpl implements ChallengeService {
     @Override
     @Transactional(readOnly = true)
     public List<Challenge> getAllVisibleChallenges() {
-        return challengeRepository.findAll()
-                .stream()
-                .filter(challenge -> challenge.getIsVisible().name().equals("Y"))
-                .toList();
+        return challengeRepository
+                .findAllByIsVisibleOrderByCreatedAtDesc(YN.Y);
     }
 
     @Override
