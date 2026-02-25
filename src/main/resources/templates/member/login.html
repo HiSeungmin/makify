@@ -128,12 +128,19 @@
     // 로그인 처리
     async function handleLogin(event) {
         event.preventDefault();
-        
+
         const loginId = document.getElementById('loginId').value;
         const password = document.getElementById('loginPassword').value;
 
+        // redirectURL 쿼리 파라미터 추출
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectURL = urlParams.get('redirectURL');
+
+        // redirectURL이 있으면 /auth/login?redirectURL=... 형태로 전송
+        const loginURL = redirectURL ? `/auth/login?redirectURL=${encodeURIComponent(redirectURL)}` : '/auth/login';
+
         try {
-            const response = await fetch('/auth/login', {
+            const response = await fetch(loginURL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -143,7 +150,12 @@
             });
 
             if (response.ok) {
-                window.location.href = '/';
+                // 서버가 리다이렉트 했을 경우 response.url 사용, 아니면 redirectURL 또는 홈으로
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    window.location.href = redirectURL || '/';
+                }
             } else {
                 showLoginError();
             }

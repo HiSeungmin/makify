@@ -53,14 +53,25 @@ public class SecurityConfig {
                         .requestMatchers("/", "/login", "/auth/login", "/signup", "/css/**", "/js/**", "/images/**", "/videos/**").permitAll()
                         .requestMatchers("POST", "/signup").permitAll()
                         .requestMatchers("/auth/reissue").permitAll()
-                        .requestMatchers("GET", "/challenges").permitAll()  // 챌린지 목록 페이지
-                        .requestMatchers("GET", "/challenges/**").permitAll()  // 챌린지 상세 페이지
-                        .requestMatchers("GET", "/api/challenges/**").permitAll()  // 챌린지 API 검색 및 상세
+                        .requestMatchers("GET", "/challenges").permitAll()       // 챌린지 목록
+                        .requestMatchers("GET", "/api/challenges/search").permitAll()   // 챌린지 검색 API
+                        .requestMatchers("GET", "/api/search/autocomplete").permitAll() // 자동완성 API
+                        .requestMatchers("GET", "/challenges/new").authenticated()      // 챌린지 생성 폼 (반드시 {id} 패턴보다 위에 위치해야 함)
+                        .requestMatchers("GET", "/challenges/{id}").permitAll()         // 챌린지 상세 (비로그인 허용)
+                        .requestMatchers("POST", "/challenges/new").authenticated()     // 챌린지 생성
+                        .requestMatchers("GET", "/challenges/{id}/join").authenticated() // 챌린지 참여
+                        .requestMatchers("GET", "/mypage").authenticated()              // 마이페이지
                         .anyRequest().authenticated()
                 )
                 .addFilterAt(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            // 미인증 접근 시 로그인 페이지로 리다이렉트
+                            response.sendRedirect("/login?redirectURL=" + request.getRequestURI());
+                        })
+                );
 
         return http.build();
     }

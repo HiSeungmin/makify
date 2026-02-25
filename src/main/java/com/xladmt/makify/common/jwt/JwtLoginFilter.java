@@ -93,7 +93,13 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
 
-        response.setStatus(HttpServletResponse.SC_OK);
+        // 로그인 전 접근하려던 페이지로 리다이렉트
+        String redirectURL = request.getParameter("redirectURL");
+        if (redirectURL != null && !redirectURL.isBlank()) {
+            response.sendRedirect(redirectURL);
+        } else {
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
     }
 
     @Override
