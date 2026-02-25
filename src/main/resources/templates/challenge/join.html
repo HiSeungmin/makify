@@ -49,34 +49,32 @@
       border-color: #059669 !important;
     }
   </style>
-  <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+  <script src="https://cdn.portone.io/v2/browser-sdk.esm.js" type="module"></script>
   <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
   <script th:src="@{/js/navbar.js}"></script>
+  <script type="module">
+    import * as PortOne from "https://cdn.portone.io/v2/browser-sdk.esm.js";
+    window.PortOne = PortOne;
+  </script>
   <script>
 
     function initPayment(challengeId, userId) {
-      // 1. 결제 초기화 API 호출
       fetch('/payment/init', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           challengeId: challengeId,
           userId: userId,
-          paymentAmount: 100 // TODO: 실제 금액으로 변경
+          paymentAmount: 100
         })
       })
       .then(response => response.json())
       .then(data => {
         if (data.status === 'success') {
           console.log('결제 초기화 성공:', data);
-
-          // 2. 외부 결제 API 호출 (예: 아임포트)
           requestPay(data.uuid);
         } else {
           console.error('결제 초기화 실패:', data.message);
-          console.log("data => ", data)
           alert('결제 초기화에 실패했습니다: ' + data.message);
         }
       })
@@ -86,50 +84,47 @@
       });
     }
 
-    function requestPay(uuid) {
-      // 아임포트 결제 요청
-      IMP.init('imp76137208'); // 가맹점 식별코드
+    async function requestPay(uuid) {
+      try {
+        const response = await PortOne.requestPayment({
+          storeId: 'store-4153e990-8de7-4c65-a411-47199ea3733f',                                          // 가맹점 식별코드
+          channelKey: 'channel-key-dd622c42-27d0-47e4-9393-ec4364c5f44f', // 토스페이먼츠 테스트 채널키
+          paymentId: uuid,
+          orderName: '챌린지 참가비',
+          totalAmount: 100,
+          currency: 'KRW',
+          payMethod: 'CARD',
+          customer: {
+            email: '[[${paymentInfo.buyerEmail}]]',
+            fullName: '[[${paymentInfo.buyerName}]]',
+          }
+        });
 
-      IMP.request_pay({
-        pg: 'tosspayments', // PG사 선택(토스, KG이니시스)
-        pay_method: 'card', // 결제 방식
-        merchant_uid: uuid, // 주문번호
-        name: '챌린지 참여비',
-        amount: 100, // TODO: 실제 금액
-        buyer_email: '[[${paymentInfo.buyerEmail}]]',
-        buyer_name: '[[${paymentInfo.buyerName}]]',
-        buyer_tel: '010-1234-5678', // TODO: 실제 전화번호
-        buyer_addr: '서울시',
-        buyer_postcode: '12345',
-        custom_data: {
-          uuid: uuid // 우리 시스템의 UUID 전달
-        }
-      }, function (rsp) { // callback
-        console.log("결제 응답:", rsp);
-        if (rsp.imp_uid) {
-          console.log('결제 성공:', rsp);
+        console.log('결제 응답:', response);
 
-          // 3. 결제 완료 콜백 API 호출
-          verifyPayment(rsp.imp_uid, uuid);
+        if (response.code) {
+          // 결제 실패 (사용자 취소 포함)
+          console.log('결제 실패:', response.message);
+          alert('결제에 실패했습니다: ' + response.message);
+          verifyPayment(null, uuid);
         } else {
-          console.log('결제 실패:', rsp);
-          alert('결제에 실패했습니다: ' + rsp.error_msg);
-
-          // 실패시 생성된 PENDING 데이터 정리를 위해 콜백 호출 (실패 상태로)
-          verifyPayment(null, uuid, false);
+          // 결제 성공
+          console.log('결제 성공, imp_uid:', response.paymentId);
+          verifyPayment(response.paymentId, uuid);
         }
-      });
+      } catch (error) {
+        console.error('결제 오류:', error);
+        alert('결제 중 오류가 발생했습니다.');
+        verifyPayment(null, uuid);
+      }
     }
 
-    function verifyPayment(impUid, uuid, success = true) {
+    function verifyPayment(impUid, uuid) {
       console.log('결제 검증 요청:', 'impUid=' + impUid, 'uuid=' + uuid);
 
-      // 결제 검증 API 호출
       fetch('/payment/callback', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           paymentUid: impUid,
           uuid: uuid
@@ -138,28 +133,20 @@
       .then(response => response.json())
       .then(data => {
         if (data.status === 'success') {
-          console.log('결제 검증 성공:', data);
           alert('챌린지 참여가 완료되었습니다!');
-
-          // 성공 페이지로 이동
           window.location.href = '/challenges/' + '[[${challengeId}]]';
         } else {
-          console.error('결제 검증 실패:', data.message);
           alert('결제 검증에 실패했습니다: ' + data.message);
-
-          // 실패 페이지로 이동
           window.location.href = '/fail-payment';
         }
       })
       .catch(error => {
         console.error('결제 검증 오류:', error);
-        alert('결제 검증 중 오류가 발생했습니다.');
         window.location.href = '/fail-payment';
       });
     }
 
     function handlePayment() {
-      console.log('결제하기 버튼 클릭');
       const challengeId = '[[${challengeId}]]';
       const userId = '[[${userId}]]';
 
@@ -172,11 +159,8 @@
         return;
       }
 
-      if (errorDiv) {
-        errorDiv.classList.add('d-none');
-      }
+      if (errorDiv) errorDiv.classList.add('d-none');
 
-      // 결제 프로세스 시작
       initPayment(challengeId, userId);
     }
 

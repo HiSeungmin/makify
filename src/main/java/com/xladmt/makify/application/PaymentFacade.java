@@ -54,20 +54,40 @@ public class PaymentFacade {
     @Transactional
     public IamportResponse<Payment> processPaymentCallback(PaymentCallbackRequest request) {
         try {
+            // imp_uid가 없으면 프론트에서 결제 자체가 실패한 것 → DB만 정리
+            if (request.getPaymentUid() == null || request.getPaymentUid().isBlank()) {
+                challengeService.failUserChallenge(request.getUuid());
+                paymentService.failPayment(request.getUuid(), null);
+                throw new BusinessException(ErrorCode.PAYMENT_NOT_COMPLETED);
+            }
+
             // 1. 외부 결제 검증
             IamportResponse<Payment> iamportResponse = paymentService.verifyExternalPayment(request.getPaymentUid());
-            
+
+            if (iamportResponse == null || iamportResponse.getResponse() == null) {
+                throw new BusinessException(ErrorCode.IAMPORT_RESPONSE_ERROR);
+            }
+
             // 2. DB의 결제 정보와 대조 검증
             paymentValidator.validatePaymentAmount(request.getUuid(), iamportResponse.getResponse());
-            
+
             // 3. 상태 변경: PENDING → COMPLETE
             challengeService.completeUserChallenge(request.getUuid());
             paymentService.completePayment(request.getUuid(), request.getPaymentUid());
 
             return iamportResponse;
-            
+
         } catch (BusinessException e) {
-            cleanupFailedPayment(request.getUuid(), request.getPaymentUid());
+            if (e.getErrorCode() == ErrorCode.PAYMENT_NOT_COMPLETED) {
+                // imp_uid 없음 → 이미 위에서 DB 정리 완료, 아무것도 하지 않음
+            } else if (e.getErrorCode() == ErrorCode.IAMPORT_RESPONSE_ERROR) {
+                // 아임포트 조회 실패 → 실제 결제 안 됨, DB만 정리
+                challengeService.failUserChallenge(request.getUuid());
+                paymentService.failPayment(request.getUuid(), request.getPaymentUid());
+            } else {
+                // 결제는 됐지만 검증 실패(금액 불일치 등) → 외부 취소까지
+                cleanupFailedPayment(request.getUuid(), request.getPaymentUid());
+            }
             throw e;
         }
     }

@@ -68,8 +68,8 @@
                         <i class="bi bi-cash-coin"></i> <span th:text="${#numbers.formatInteger(challenge.maxDeposit, 0, 'COMMA')} + '원'">0원</span></p>
                 </div>
 
-                <!-- 참여 버튼 -->
-                <div th:if="${challenge.status.name() != 'IN_PROGRESS' and challenge.status.name() != 'COMPLETED'}">
+                <!-- 참여 버튼 (데스크탑용 - 모바일에서는 하단 고정 버튼 사용) -->
+                <div th:if="${challenge.status.name() != 'IN_PROGRESS' and challenge.status.name() != 'COMPLETED'}" class="d-none d-md-block">
                     <button class="join-button"
                             th:if="${loginMemberId != null and loginMemberId == challenge.creatorLoginId}"
                             disabled>
@@ -177,30 +177,37 @@
     </div>
 
     <!-- 하단 고정 버튼 (모바일용) -->
-    <div th:if="${challenge.status.name() != 'IN_PROGRESS' and challenge.status.name() != 'COMPLETED'}">
+    <div th:if="${challenge.status.name() != 'IN_PROGRESS' and challenge.status.name() != 'COMPLETED'}" class="d-md-none">
         <div class="fixed-bottom-btn">
             <!-- 내가 만든 챌린지 -->
-            <button class="btn btn-secondary"
+            <button class="btn btn-secondary w-100"
                     th:if="${loginMemberId != null and loginMemberId == challenge.creatorLoginId}"
                     disabled>
                 참가 인원 모집 중
             </button>
 
             <!-- 이미 참가 신청한 챌린지 -->
-            <button class="btn btn-secondary"
+            <button class="btn btn-secondary w-100"
                     th:if="${challenge.alreadyJoined}"
                     disabled
                     th:data-start="${challenge.startDate}">
-                <span id="countdown" class="mx-1"></span>후 시작
+                <span id="countdown-mobile" class="mx-1"></span>후 시작
             </button>
 
             <!-- 인원 마감 -->
-            <button class="btn btn-secondary"
+            <button class="btn btn-secondary w-100"
                     th:if="${challenge.currentParticipants >= challenge.maxParticipants}"
                     disabled>
                 모집 마감 (<span th:text="${challenge.currentParticipants}"></span> / <span th:text="${challenge.maxParticipants}"></span>)
             </button>
 
+            <!-- 참여하기 -->
+            <a th:href="@{'/challenges/' + ${challenge.id} + '/join'}"
+               class="btn btn-primary w-100"
+               th:if="${loginMemberId != challenge.creatorLoginId and !challenge.alreadyJoined and challenge.currentParticipants < challenge.maxParticipants}">
+                <i class="bi bi-trophy"></i>
+                챌린지 참여하기
+            </a>
         </div>
     </div>
 
@@ -210,9 +217,13 @@
     <script th:src="@{/js/navbar.js}"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            // 데스크탑 카운트다운
             const countdownSpan = document.getElementById("countdown");
+            // 모바일 카운트다운
+            const countdownMobileSpan = document.getElementById("countdown-mobile");
+
             const button = document.querySelector("button[data-start]");
-            if (!button || !countdownSpan) return;
+            if (!button) return;
 
             const startDateTimeStr = button.getAttribute("data-start");
             const targetDate = new Date(startDateTimeStr);
@@ -221,18 +232,20 @@
                 const now = new Date();
                 const diff = targetDate - now;
 
+                let text;
                 if (diff <= 0) {
-                    countdownSpan.textContent = "시작됨";
+                    text = "시작됨";
                     clearInterval(timer);
-                    return;
+                } else {
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                    text = `${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
                 }
 
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-                countdownSpan.textContent = `${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
+                if (countdownSpan) countdownSpan.textContent = text;
+                if (countdownMobileSpan) countdownMobileSpan.textContent = text;
             }
 
             updateCountdown();

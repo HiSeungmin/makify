@@ -7,6 +7,7 @@ import com.xladmt.makify.payment.dto.PaymentCallbackRequest;
 import com.xladmt.makify.payment.dto.PaymentInitRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,22 +28,15 @@ public class PaymentController {
     @PostMapping("/payment/init")
     public ResponseEntity<Map<String, String>> initPayment(@RequestBody PaymentInitRequest request) {
 
-        try {
-            String uuid = paymentFacade.initializePayment(request);
-            
-            return ResponseEntity.ok(Map.of(
+        String uuid = paymentFacade.initializePayment(request);
+
+        if (uuid == null) { return new ResponseEntity<>(HttpStatus.BAD_REQUEST); }
+
+        return ResponseEntity.ok(Map.of(
                 "status", "success",
                 "uuid", uuid,
                 "message", "결제 초기화 성공"
-            ));
-            
-        } catch (Exception e) {
-
-            return ResponseEntity.badRequest().body(Map.of(
-                "status", "error",
-                "message", e.getMessage()
-            ));
-        }
+        ));
     }
 
     /**
@@ -52,22 +46,15 @@ public class PaymentController {
     @PostMapping("/payment/callback")
     public ResponseEntity<Map<String, Object>> paymentCallback(@RequestBody PaymentCallbackRequest request) {
 
-        try {
-            IamportResponse<Payment> iamportResponse = paymentFacade.processPaymentCallback(request);
+        IamportResponse<Payment> iamportResponse = paymentFacade.processPaymentCallback(request);
 
-            return ResponseEntity.ok(Map.of(
+        if (iamportResponse == null) { return new ResponseEntity<>(HttpStatus.BAD_REQUEST); }
+
+        return ResponseEntity.ok(Map.of(
                 "status", "success",
                 "message", "결제 완료",
                 "paymentInfo", iamportResponse.getResponse()
-            ));
-            
-        } catch (Exception e) {
-
-            return ResponseEntity.badRequest().body(Map.of(
-                "status", "error",
-                "message", e.getMessage()
-            ));
-        }
+        ));
     }
 
     @GetMapping("/fail-payment")

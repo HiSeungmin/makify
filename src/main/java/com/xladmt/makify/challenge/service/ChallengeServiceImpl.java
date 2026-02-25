@@ -177,7 +177,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         paymentRepository.save(payment);
         
         // PENDING 상태로 UserChallenge 생성
-        String uuid = UUID.randomUUID().toString();
+        String uuid = "imp_"+UUID.randomUUID();
         UserChallenge userChallenge = UserChallenge.createUserChallenge(challenge, member, payment, uuid);
         userChallengeRepository.save(userChallenge);
         

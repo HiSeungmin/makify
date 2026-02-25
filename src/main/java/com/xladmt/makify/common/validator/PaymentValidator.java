@@ -23,7 +23,7 @@ public class PaymentValidator {
         BigDecimal expectedAmount = userChallenge.getPayment().getAmount();
         BigDecimal actualAmount = externalPayment.getAmount();
 
-        if (!expectedAmount.equals(actualAmount)) {
+        if (expectedAmount.compareTo(actualAmount)!=0) {
             throw new BusinessException(ErrorCode.PAYMENT_AMOUNT_MISMATCH);
         }
     }
