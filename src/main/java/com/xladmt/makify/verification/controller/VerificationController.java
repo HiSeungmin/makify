@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequiredArgsConstructor
 public class VerificationController {
 
-//    @GetMapping("api/verification/check/{id}")
-//    public String check(@PathVariable("id") long id, Model model) {
-//
-//    }
+    @GetMapping("/verify")
+    public String check() {
+        return "verify";
+    }
 }

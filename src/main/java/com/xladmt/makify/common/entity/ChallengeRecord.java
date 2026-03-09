@@ -28,14 +28,33 @@ public class ChallengeRecord extends BaseEntity {
     @Column(name = "verificated_date", nullable = false)
     private LocalDateTime verificatedDate;
 
-    @Enumerated(EnumType.STRING)
-    private YN is_approved;
+    @Column(name = "image_url")
+    private String imageUrl;
 
-    @Column(name = "refusal_reason", length = 100)
+    @Column(name = "memo", length = 200)
+    private String memo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "is_approved")
+    private YN isApproved;
+
+    @Column(name = "refusal_reason", length = 200)
     private String refusalReason;
 
     @Enumerated(EnumType.STRING)
     private YN isVisible;
 
     private Long manager;
+
+    public static ChallengeRecord create(Member member, Challenge challenge, String imageUrl, String memo) {
+        ChallengeRecord record = new ChallengeRecord();
+        record.member = member;
+        record.challenge = challenge;
+        record.imageUrl = imageUrl;
+        record.memo = memo;
+        record.verificatedDate = LocalDateTime.now();
+        record.isApproved = YN.Y;  // 기본 자동 승인
+        record.isVisible = YN.Y;
+        return record;
+    }
 }

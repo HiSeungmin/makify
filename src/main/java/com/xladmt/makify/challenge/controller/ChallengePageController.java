@@ -3,10 +3,13 @@ package com.xladmt.makify.challenge.controller;
 import com.xladmt.makify.challenge.dto.ChallengeCreateRequest;
 import com.xladmt.makify.challenge.dto.ChallengeDetailResponse;
 import com.xladmt.makify.challenge.dto.ChallengePageDto;
+import com.xladmt.makify.verification.repository.ChallengeRecordRepository;
 import com.xladmt.makify.challenge.repository.ChallengeRepository;
+import com.xladmt.makify.challenge.repository.UserChallengeRepository;
 import com.xladmt.makify.challenge.service.ChallengeServiceImpl;
 import com.xladmt.makify.common.config.security.MemberDetails;
 import com.xladmt.makify.common.entity.Challenge;
+import com.xladmt.makify.common.entity.UserChallenge;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.common.validator.ChallengeCreateRequestValidator;
@@ -21,6 +24,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 import java.util.List;
 
 @Controller
@@ -32,6 +37,8 @@ public class ChallengePageController {
     private final ChallengeRepository challengeRepository;
     private final ChallengeValidator challengeValidator;
     private final ChallengeCreateRequestValidator challengeCreateRequestValidator;
+    private final UserChallengeRepository userChallengeRepository;
+    private final ChallengeRecordRepository challengeRecordRepository;
 
     @GetMapping("/challenges")
     public String getChallenges(
@@ -82,6 +89,26 @@ public class ChallengePageController {
         challengeService.create(request, memberDetails.getId());
 
         return "redirect:/challenges";
+    }
+
+    // 챌린지 인증 페이지
+    @GetMapping("/challenges/{id}/verify")
+    public String showVerifyPage(@PathVariable Long id, @AuthenticationPrincipal MemberDetails memberDetails, Model model) {
+        Challenge challenge = challengeRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
+
+        UserChallenge userChallenge = userChallengeRepository.findByMemberIdAndChallengeId(memberDetails.getId(), id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
+
+        int todayVerifiedCount = challengeRecordRepository.countTodayVerifications(
+                memberDetails.getId(), id, LocalDate.now());
+
+        model.addAttribute("challenge", challenge);
+        model.addAttribute("verificationMethod", challenge.getVerificationMethod());
+        model.addAttribute("targetFrequency", userChallenge.getTargetFrequency() == null ? 1 : userChallenge.getTargetFrequency());
+        model.addAttribute("todayVerifiedCount", todayVerifiedCount);
+
+        return "challenge/verify";
     }
 
     // 챌린지 참여 페이지 - 결제 정보만 표시
