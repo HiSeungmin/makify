@@ -26,20 +26,9 @@
   <div class="profile-card">
     <div class="profile-header">
       <div class="profile-info">
-        <h2>슬기로운챌린지</h2>
-        <div class="profile-details">
-          <div class="profile-detail-item">
-            <i class="bi bi-person"></i>
-            <span>홍길동</span>
-          </div>
-          <div class="profile-detail-item">
-            <i class="bi bi-calendar"></i>
-            <span>1995-01-01</span>
-          </div>
-          <div class="profile-detail-item">
-            <i class="bi bi-envelope"></i>
-            <span>user@example.com</span>
-          </div>
+        <h2 th:text="${mypageData.nickName}">닉네임</h2>
+        <div class="profile-detail-item">
+          <span th:text="${mypageData.introduction != null and !mypageData.introduction.isEmpty()} ? ${mypageData.introduction} : '자신을 소개해주세요.'"></span>
         </div>
       </div>
       <button class="edit-profile-btn">
@@ -83,55 +72,51 @@
 
   <!-- 탭 콘텐츠 -->
   <div id="challengesTab" class="tab-content-section">
+
     <!-- 진행중인 챌린지 -->
     <div class="section-title">
       <i class="bi bi-play-circle"></i>
       진행중인 챌린지
     </div>
-    <div class="challenges-grid">
-      <div class="challenge-card">
+    <div th:if="${challenges.inProgress.isEmpty()}" class="empty-state">
+      <i class="bi bi-play-circle"></i>
+      <h4>진행중인 챌린지가 없어요</h4>
+      <p>새로운 챌린지에 참여해보세요!</p>
+      <a href="/challenges" class="action-btn btn-primary">챌린지 둘러보기</a>
+    </div>
+    <div th:if="${!challenges.inProgress.isEmpty()}" class="challenges-scroll">
+      <div class="challenge-card" th:each="c : ${challenges.inProgress}">
         <div class="challenge-status status-ongoing">진행중</div>
-        <h3 class="challenge-title">매일 10분 스트레칭</h3>
-        <p class="challenge-description">매일 스트레칭으로 유연성을 기르고 건강한 몸을 만들어보세요!</p>
+        <h3 class="challenge-title" th:text="${c.title}"></h3>
+        <p class="challenge-description" th:text="${c.description}"></p>
         <div class="challenge-meta">
-          <span><i class="bi bi-calendar"></i> 2025.01.01 ~ 2025.01.31</span>
-          <span><i class="bi bi-people"></i> 15/20명</span>
+          <span><i class="bi bi-calendar"></i> <span th:text="${c.startDate}"></span> ~ <span th:text="${c.endDate}"></span></span>
+          <span><i class="bi bi-people"></i> <span th:text="${c.currentParticipants}"></span>/<span th:text="${c.maxParticipants}"></span>명</span>
         </div>
         <div class="challenge-progress">
           <div class="progress-label">
             <span>진행률</span>
-            <span>75%</span>
+            <span th:text="${c.progressPercentage} + '%'"></span>
           </div>
           <div class="progress-bar-container">
-            <div class="progress-bar-fill" style="width: 75%"></div>
+            <div class="progress-bar-fill" th:style="'width: ' + ${c.progressPercentage} + '%'"></div>
           </div>
         </div>
         <div class="challenge-actions">
-          <a href="#" class="action-btn btn-primary">인증하기</a>
-          <a href="#" class="action-btn btn-secondary">상세보기</a>
-        </div>
-      </div>
-
-      <div class="challenge-card">
-        <div class="challenge-status status-ongoing">진행중</div>
-        <h3 class="challenge-title">물 2L 마시기</h3>
-        <p class="challenge-description">하루 수분 섭취량을 늘려 건강한 몸을 만들어보세요!</p>
-        <div class="challenge-meta">
-          <span><i class="bi bi-calendar"></i> 2025.01.05 ~ 2025.02.05</span>
-          <span><i class="bi bi-people"></i> 8/15명</span>
-        </div>
-        <div class="challenge-progress">
-          <div class="progress-label">
-            <span>진행률</span>
-            <span>60%</span>
-          </div>
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill" style="width: 60%"></div>
-          </div>
-        </div>
-        <div class="challenge-actions">
-          <a href="#" class="action-btn btn-primary">인증하기</a>
-          <a href="#" class="action-btn btn-secondary">상세보기</a>
+          <a th:href="@{/challenges/{id}/verify(id=${c.challengeId})}"
+             th:if="${c.todayVerifiedCount < c.targetFrequency}"
+             class="action-btn btn-primary">
+            인증하기
+            <span th:if="${c.targetFrequency > 1}"
+                  th:text="'(' + ${c.todayVerifiedCount} + '/' + ${c.targetFrequency} + ')'"></span>
+          </a>
+          <a th:if="${c.todayVerifiedCount >= c.targetFrequency}"
+             class="action-btn btn-primary" style="cursor:default; opacity:0.6;">
+            인증완료
+            <span th:if="${c.targetFrequency > 1}"
+                  th:text="'(' + ${c.targetFrequency} + '/' + ${c.targetFrequency} + ')'"></span>
+          </a>
+          <a th:href="@{/challenges/{id}(id=${c.challengeId})}" class="action-btn btn-secondary">상세보기</a>
         </div>
       </div>
     </div>
@@ -141,18 +126,23 @@
       <i class="bi bi-clock"></i>
       시작 예정 챌린지
     </div>
-    <div class="challenges-grid">
-      <div class="challenge-card">
+    <div th:if="${challenges.notStarted.isEmpty()}" class="empty-state">
+      <i class="bi bi-clock"></i>
+      <h4>시작 예정 챌린지가 없어요</h4>
+      <p>곧 시작할 챌린지에 미리 참여해보세요!</p>
+      <a href="/challenges" class="action-btn btn-primary">챌린지 둘러보기</a>
+    </div>
+    <div th:if="${!challenges.notStarted.isEmpty()}" class="challenges-scroll">
+      <div class="challenge-card" th:each="c : ${challenges.notStarted}">
         <div class="challenge-status status-upcoming">시작예정</div>
-        <h3 class="challenge-title">아침 7시 기상</h3>
-        <p class="challenge-description">부지런한 하루의 시작을 함께 만들어가요!</p>
+        <h3 class="challenge-title" th:text="${c.title}"></h3>
+        <p class="challenge-description" th:text="${c.description}"></p>
         <div class="challenge-meta">
-          <span><i class="bi bi-calendar"></i> 2025.02.01 ~ 2025.02.28</span>
-          <span><i class="bi bi-people"></i> 12/25명</span>
+          <span><i class="bi bi-calendar"></i> <span th:text="${c.startDate}"></span> ~ <span th:text="${c.endDate}"></span></span>
+          <span><i class="bi bi-people"></i> <span th:text="${c.currentParticipants}"></span>/<span th:text="${c.maxParticipants}"></span>명</span>
         </div>
         <div class="challenge-actions">
-          <a href="#" class="action-btn btn-secondary">준비하기</a>
-          <a href="#" class="action-btn btn-secondary">상세보기</a>
+          <a th:href="@{/challenges/{id}(id=${c.challengeId})}" class="action-btn btn-secondary">상세보기</a>
         </div>
       </div>
     </div>
@@ -162,30 +152,35 @@
       <i class="bi bi-check-circle"></i>
       완료된 챌린지
     </div>
-    <div class="challenges-grid">
-      <div class="challenge-card">
+    <div th:if="${challenges.completed.isEmpty()}" class="empty-state">
+      <i class="bi bi-check-circle"></i>
+      <h4>완료된 챌린지가 없어요</h4>
+      <p>챌린지를 완주하면 여기에 기록돼요!</p>
+    </div>
+    <div th:if="${!challenges.completed.isEmpty()}" class="challenges-scroll">
+      <div class="challenge-card" th:each="c : ${challenges.completed}">
         <div class="challenge-status status-completed">완료</div>
-        <h3 class="challenge-title">한 달 독서 챌린지</h3>
-        <p class="challenge-description">매일 독서 30분 실천으로 지식을 쌓아보세요!</p>
+        <h3 class="challenge-title" th:text="${c.title}"></h3>
+        <p class="challenge-description" th:text="${c.description}"></p>
         <div class="challenge-meta">
-          <span><i class="bi bi-calendar"></i> 2024.12.01 ~ 2024.12.31</span>
-          <span><i class="bi bi-people"></i> 20/20명</span>
+          <span><i class="bi bi-calendar"></i> <span th:text="${c.startDate}"></span> ~ <span th:text="${c.endDate}"></span></span>
+          <span><i class="bi bi-people"></i> <span th:text="${c.currentParticipants}"></span>/<span th:text="${c.maxParticipants}"></span>명</span>
         </div>
         <div class="challenge-progress">
           <div class="progress-label">
             <span>최종 달성률</span>
-            <span>95%</span>
+            <span th:text="${c.progressPercentage} + '%'"></span>
           </div>
           <div class="progress-bar-container">
-            <div class="progress-bar-fill" style="width: 95%"></div>
+            <div class="progress-bar-fill" th:style="'width: ' + ${c.progressPercentage} + '%'"></div>
           </div>
         </div>
         <div class="challenge-actions">
-          <a href="#" class="action-btn btn-primary">후기 작성</a>
-          <a href="#" class="action-btn btn-secondary">상세보기</a>
+          <a th:href="@{/challenges/{id}(id=${c.challengeId})}" class="action-btn btn-secondary">상세보기</a>
         </div>
       </div>
     </div>
+
   </div>
 
   <!-- 내 후기 탭 -->

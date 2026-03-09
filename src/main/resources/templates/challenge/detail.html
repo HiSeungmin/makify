@@ -203,7 +203,7 @@
 
             <!-- 참여하기 -->
             <a th:href="@{'/challenges/' + ${challenge.id} + '/join'}"
-               class="btn btn-primary w-100"
+               class="join-button"
                th:if="${loginMemberId != challenge.creatorLoginId and !challenge.alreadyJoined and challenge.currentParticipants < challenge.maxParticipants}">
                 <i class="bi bi-trophy"></i>
                 챌린지 참여하기

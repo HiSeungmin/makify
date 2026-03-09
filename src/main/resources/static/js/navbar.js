@@ -121,7 +121,7 @@ function updateAuthUI(isAuthenticated) {
       
       const profileItem = document.createElement('li');
       profileItem.className = 'nav-auth-item';
-      profileItem.innerHTML = '<a href="/profile" class="habit-btn-login"><i class="bi bi-person"></i> 마이페이지</a>';
+      profileItem.innerHTML = '<a href="/mypage" class="habit-btn-login"><i class="bi bi-person"></i> 마이페이지</a>';
       menu.appendChild(profileItem);
       
       const logoutItem = document.createElement('li');

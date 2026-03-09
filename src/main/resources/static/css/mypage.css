@@ -176,12 +176,48 @@ body {
   color: #10b981;
 }
 
-/* 챌린지 카드 그리드 */
-.challenges-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+/* 챌린지 카드 가로 스크롤 */
+.challenges-scroll {
+  display: flex;
   gap: 24px;
+  overflow-x: auto;
+  padding-bottom: 12px;
   margin-bottom: 40px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.challenges-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.challenges-scroll::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 2px;
+}
+
+.challenges-scroll::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 2px;
+}
+
+.challenges-scroll .challenge-card {
+  min-width: 380px;
+  max-width: 380px;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+.challenges-scroll .challenge-card .challenge-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.challenges-scroll .empty-state {
+  min-width: 100%;
 }
 
 .challenge-card {

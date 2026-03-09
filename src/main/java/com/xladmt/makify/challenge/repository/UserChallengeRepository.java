@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserChallengeRepository extends JpaRepository<UserChallenge, Long> {
@@ -20,8 +21,10 @@ public interface UserChallengeRepository extends JpaRepository<UserChallenge, Lo
             "AND uc.status = 'JOINED'")
     boolean existsJoinedByChallengeIdAndMemberId(@Param("challengeId") Long challengeId,
                                                  @Param("memberId") Long memberId);
-    Optional<UserChallenge> findByChallengeIdAndMemberId(
-            Long challengeId,
-            Long memberId
-    );
+
+    @Query("SELECT uc " +
+            "FROM UserChallenge uc " +
+            "WHERE uc.member.id = :memberId " +
+            "AND (uc.status = 'JOINED' OR uc.status = 'COMPLETED')")
+    List<UserChallenge> findByMemberId(@Param("memberId") Long memberId);
 }

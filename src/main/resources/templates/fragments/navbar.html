@@ -17,7 +17,6 @@
       <li><a href="/">홈</a></li>
       <li><a href="/challenges">챌린지</a></li>
       <li><a href="/#">커뮤니티</a></li>
-      <li><a href="/#">랭킹</a></li>
     </ul>
   </nav>
 
@@ -28,6 +27,7 @@
   </button>
 
   <div class="habit-nav-actions">
+    <a sec:authorize="isAuthenticated()" href="/mypage" class="habit-btn-login">마이페이지</a>
     <a sec:authorize="isAuthenticated()" href="/notifications" class="habit-btn-login">알림</a>
     <a sec:authorize="!isAuthenticated()" href="/login" class="habit-btn-login">로그인</a>
     <a sec:authorize="!isAuthenticated()" href="/register" class="habit-btn-signup">회원가입</a>

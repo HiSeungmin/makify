@@ -2,12 +2,11 @@ package com.xladmt.makify.member.controller;
 
 import com.xladmt.makify.common.config.security.MemberDetails;
 import com.xladmt.makify.common.validator.SignUpValidator;
+import com.xladmt.makify.member.dto.MypageResponse;
 import com.xladmt.makify.member.dto.SignupRequest;
+import com.xladmt.makify.member.dto.SignupResponse;
 import com.xladmt.makify.member.service.MemberService;
-import io.swagger.v3.oas.annotations.Operation;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,12 +21,10 @@ public class MemberController {
 
     @GetMapping("/login")
     public String loginForm() {
-        return "member/login"; // 로그인 폼
+        return "member/login";
     }
 
-    /**
-     * 회원가입
-     */
+
     @PostMapping("/signup")
     @ResponseBody
     public SignupResponse signup(@RequestBody SignupRequest request) {
@@ -44,10 +41,27 @@ public class MemberController {
 
     @GetMapping("/mypage")
     public String mypage(@AuthenticationPrincipal MemberDetails member, Model model) {
-        model.addAttribute("member", member);
+        model.addAttribute("mypageData", memberService.mypage(member.getId()));
+        model.addAttribute("challenges", memberService.myChallenge(member.getId()));
         return "member/mypage";
     }
 
-    // Response DTO
-    record SignupResponse(boolean success, String message) {}
+
+    @GetMapping("/mypage/challenges")
+    public String mypageChallenges(@AuthenticationPrincipal MemberDetails member, Model model) {
+        model.addAttribute("challenges",memberService.myChallenge(member.getId()));
+        return "member/mypage";
+    }
+
+    @GetMapping("/mypage/reviews")
+    public String mypageReviews(@AuthenticationPrincipal MemberDetails member, Model model) {
+
+        return "member/mypage";
+    }
+
+    @GetMapping("/mypage/inquiry")
+    public String mypageInquiry(@AuthenticationPrincipal MemberDetails member, Model model) {
+        return "member/mypage";
+    }
+
 }
