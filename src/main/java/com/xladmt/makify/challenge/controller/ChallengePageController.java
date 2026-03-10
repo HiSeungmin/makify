@@ -14,6 +14,7 @@ import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.common.validator.ChallengeCreateRequestValidator;
 import com.xladmt.makify.common.validator.ChallengeValidator;
+import com.xladmt.makify.common.validator.VerifyValidator;
 import com.xladmt.makify.payment.dto.RequestPayDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 
@@ -37,8 +39,6 @@ public class ChallengePageController {
     private final ChallengeRepository challengeRepository;
     private final ChallengeValidator challengeValidator;
     private final ChallengeCreateRequestValidator challengeCreateRequestValidator;
-    private final UserChallengeRepository userChallengeRepository;
-    private final ChallengeRecordRepository challengeRecordRepository;
 
     @GetMapping("/challenges")
     public String getChallenges(
@@ -91,26 +91,6 @@ public class ChallengePageController {
         return "redirect:/challenges";
     }
 
-    // 챌린지 인증 페이지
-    @GetMapping("/challenges/{id}/verify")
-    public String showVerifyPage(@PathVariable Long id, @AuthenticationPrincipal MemberDetails memberDetails, Model model) {
-        Challenge challenge = challengeRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
-
-        UserChallenge userChallenge = userChallengeRepository.findByMemberIdAndChallengeId(memberDetails.getId(), id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
-
-        int todayVerifiedCount = challengeRecordRepository.countTodayVerifications(
-                memberDetails.getId(), id, LocalDate.now());
-
-        model.addAttribute("challenge", challenge);
-        model.addAttribute("verificationMethod", challenge.getVerificationMethod());
-        model.addAttribute("targetFrequency", userChallenge.getTargetFrequency() == null ? 1 : userChallenge.getTargetFrequency());
-        model.addAttribute("todayVerifiedCount", todayVerifiedCount);
-
-        return "challenge/verify";
-    }
-
     // 챌린지 참여 페이지 - 결제 정보만 표시
     @GetMapping("/challenges/{id}/join")
     public String showJoinPage(@PathVariable Long id, @AuthenticationPrincipal MemberDetails memberDetails, Model model) {
@@ -120,31 +100,18 @@ public class ChallengePageController {
 
         // 2. 참여 가능 여부 확인
         challengeValidator.validateJoinable(id, memberDetails.getId());
-        
+
         // 3. 결제 정보
         RequestPayDto paymentInfo = challengeService.getPaymentInfo(id, memberDetails.getId());
-        
+
         // 4. 모델에 담기
         model.addAttribute("challenge", challenge);
         model.addAttribute("paymentInfo", paymentInfo);
         model.addAttribute("challengeId", id);
         model.addAttribute("userId", memberDetails.getId());
-        
+
         // 5. 참여 페이지 반환
         return "challenge/join";
     }
-
-
-//    @GetMapping("/api/challenges/search")
-//    public String searchChallenges(@RequestParam(required = false) String keyword,
-//                                   @RequestParam(required = false) String category,
-//                                   @RequestParam(required = false) String status,  // 상태 필터 추가
-//                                   @RequestParam(defaultValue = "latest") String sortBy,
-//                                   @RequestParam(defaultValue = "0") String page,
-//                                   @RequestParam(defaultValue = "20") String size){
-//
-//
-//        return "";
-//    }
 
 }

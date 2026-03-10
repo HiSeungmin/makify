@@ -44,7 +44,9 @@ public enum ErrorCode {
     CHALLENGE_ALREADY_STARTED(2017, HttpStatus.BAD_REQUEST, "이미 시작된 챌린지입니다."),
 
     // 인증 관련 에러
-    VERIFICATION_METHOD_NOT_FOUND(3001,HttpStatus.NOT_FOUND, "인증 수단 정보를 찾을 수 없습니다."),
+    VERIFICATION_METHOD_NOT_FOUND(3001, HttpStatus.NOT_FOUND, "인증 수단 정보를 찾을 수 없습니다."),
+    VERIFICATION_NOT_ALLOWED_DAY(3002, HttpStatus.BAD_REQUEST, "오늘은 인증 가능한 요일이 아닙니다."),
+    VERIFICATION_NOT_ALLOWED_TIME(3003, HttpStatus.BAD_REQUEST, "인증 가능한 시간이 아닙니다."),
 
     // 결제 관련 에러
     PAYMENT_INIT_FAIL(4001, HttpStatus.BAD_REQUEST,"결제 초기화에 실패했습니다"),

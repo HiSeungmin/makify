@@ -484,3 +484,29 @@ body {
     flex-direction: column;
   }
 }
+
+/* 인증 시간 인라인 메시지 */
+.verify-inline-msg {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #c2410c;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: fadeInMsg 0.2s ease;
+}
+
+.verify-inline-msg::before {
+  content: '⏰';
+  font-size: 14px;
+}
+
+@keyframes fadeInMsg {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

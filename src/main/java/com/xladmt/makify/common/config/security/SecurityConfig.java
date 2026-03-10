@@ -60,6 +60,8 @@ public class SecurityConfig {
                         .requestMatchers("GET", "/challenges/{id}").permitAll()         // 챌린지 상세 (비로그인 허용)
                         .requestMatchers("POST", "/challenges/new").authenticated()     // 챌린지 생성
                         .requestMatchers("GET", "/challenges/{id}/join").authenticated() // 챌린지 참여
+                        .requestMatchers("GET", "/challenges/{id}/verify").authenticated() // 챌린지 인증 페이지
+                        .requestMatchers("GET", "/api/challenges/{id}/verify/validate").authenticated() // 인증 시간 검증
                         .requestMatchers("GET", "/mypage").authenticated()              // 마이페이지
                         .anyRequest().authenticated()
                 )
