@@ -97,7 +97,7 @@ public class ChallengeServiceImpl implements ChallengeService {
             try {
                 thumbnailUrl = s3Uploader.upload(request.getThumbnailImage(), "challenge/thumbnail");
             } catch (Exception e) {
-                new BusinessException(ErrorCode.FILE_UPLOAD_FAIL);
+                throw new BusinessException(ErrorCode.FILE_UPLOAD_FAIL);
             }
         }
 
@@ -138,7 +138,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                             ext
                     ));
                 } catch (Exception e) {
-                    new BusinessException(ErrorCode.FILE_UPLOAD_FAIL);
+                    throw new BusinessException(ErrorCode.FILE_UPLOAD_FAIL);
                 }
             }
 
