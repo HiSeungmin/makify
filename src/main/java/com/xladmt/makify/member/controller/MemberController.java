@@ -27,10 +27,9 @@ public class MemberController {
     @PostMapping("/signup")
     @ResponseBody
     public SignupResponse signup(@RequestBody SignupRequest request) {
-        // 입력값 검증
+
         signUpValidator.validateSignupRequest(request);
 
-        // 회원가입
         memberService.signup(request);
 
         return new SignupResponse(true, "회원가입이 완료되었습니다.");

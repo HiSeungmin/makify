@@ -25,9 +25,7 @@ public class ChallengeApiController {
     private static int SIZE_NUM;
 
     private final ChallengeServiceImpl challengeService;
-    private final ChallengeRepository challengeRepository;
     private final ChallengeValidator challengeValidator;
-    private final ChallengeCreateRequestValidator challengeCreateRequestValidator;
 
     @GetMapping("/api/challenges/search")
     @ResponseBody
