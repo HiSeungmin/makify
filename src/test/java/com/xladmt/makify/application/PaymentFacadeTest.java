@@ -1,8 +1,6 @@
 package com.xladmt.makify.application;
 
 import com.siot.IamportRestClient.IamportClient;
-import com.siot.IamportRestClient.exception.IamportResponseException;
-import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 import com.xladmt.makify.challenge.service.ChallengeService;
@@ -92,7 +90,6 @@ class PaymentFacadeTest {
             assertThatThrownBy(() -> paymentFacade.initializePayment(null))
                     .isInstanceOf(BusinessException.class);
 
-            // 검증: 다른 서비스들은 호출되지 않았는지 확인
             verifyNoInteractions(challengeValidator);
             verifyNoInteractions(challengeService);
         }
@@ -112,13 +109,13 @@ class PaymentFacadeTest {
         }
     }
 
-
     @Nested
     @DisplayName("결제 콜백 처리 테스트")
     class ProcessPaymentCallbackTest {
 
         private PaymentCallbackRequest request;
         private IamportResponse<Payment> mockIamportResponse;
+
         @Mock
         private Payment mockPayment;
 
@@ -140,10 +137,8 @@ class PaymentFacadeTest {
         @DisplayName("정상적인 결제 콜백 처리 - 성공")
         void processPaymentCallback_Success() {
             // given
-
             given(mockIamportResponse.getResponse()).willReturn(mockPayment);
-            given(paymentService.verifyExternalPayment(PAYMENT_UID))
-                    .willReturn(mockIamportResponse);
+            given(paymentService.verifyExternalPayment(PAYMENT_UID)).willReturn(mockIamportResponse);
             willDoNothing().given(paymentValidator).validatePaymentAmount(UUID, mockPayment);
             willDoNothing().given(challengeService).completeUserChallenge(UUID);
             willDoNothing().given(paymentService).completePayment(UUID, PAYMENT_UID);
@@ -172,10 +167,10 @@ class PaymentFacadeTest {
                     .hasFieldOrPropertyWithValue("errorCode", ErrorCode.PAYMENT_NOT_COMPLETED);
 
             verify(paymentService).verifyExternalPayment(PAYMENT_UID);
-            // cleanup 메서드 호출 검증
-            verify(challengeService).failUserChallenge(UUID);
-            verify(paymentService).failPayment(UUID, PAYMENT_UID);
-            verify(paymentService).cancelExternalPayment(PAYMENT_UID);
+            // PAYMENT_NOT_COMPLETED는 catch에서 아무 처리 안 함 (cancelExternalPayment 호출 없음)
+            verify(challengeService, never()).failUserChallenge(UUID);
+            verify(paymentService, never()).failPayment(UUID, PAYMENT_UID);
+            verify(paymentService, never()).cancelExternalPayment(PAYMENT_UID);
         }
 
         @Test
@@ -191,35 +186,29 @@ class PaymentFacadeTest {
                     .hasFieldOrPropertyWithValue("errorCode", ErrorCode.IAMPORT_RESPONSE_ERROR);
 
             verify(paymentService).verifyExternalPayment(PAYMENT_UID);
-            // cleanup 메서드 호출 검증
+            // IAMPORT_RESPONSE_ERROR는 failUserChallenge + failPayment만 호출, cancelExternalPayment 없음
             verify(challengeService).failUserChallenge(UUID);
             verify(paymentService).failPayment(UUID, PAYMENT_UID);
-            verify(paymentService).cancelExternalPayment(PAYMENT_UID);
+            verify(paymentService, never()).cancelExternalPayment(PAYMENT_UID);
         }
-
 
         @Test
         @DisplayName("DB 결제 정보 검증 실패 - 금액 불일치")
         void processPaymentCallback_WhenAmountMismatch_ThrowsException() {
             // given
             Payment mismatchPayment = mock(Payment.class);
-
             IamportResponse<Payment> response = mock(IamportResponse.class);
             given(response.getResponse()).willReturn(mismatchPayment);
-
-            given(paymentService.verifyExternalPayment(PAYMENT_UID))
-                    .willReturn(response);
-
+            given(paymentService.verifyExternalPayment(PAYMENT_UID)).willReturn(response);
             willThrow(new BusinessException(ErrorCode.PAYMENT_AMOUNT_MISMATCH))
                     .given(paymentValidator).validatePaymentAmount(UUID, mismatchPayment);
 
             // when & then
-            // PaymentValidator가 실제로 10000 != 15000 비교해서 예외 발생!
             assertThatThrownBy(() -> paymentFacade.processPaymentCallback(request))
                     .isInstanceOf(BusinessException.class)
                     .hasFieldOrPropertyWithValue("errorCode", ErrorCode.PAYMENT_AMOUNT_MISMATCH);
 
-            // cleanup 메서드 호출 검증
+            // 금액 불일치는 cleanupFailedPayment 호출 → cancelExternalPayment까지
             verify(challengeService).failUserChallenge(UUID);
             verify(paymentService).failPayment(UUID, PAYMENT_UID);
             verify(paymentService).cancelExternalPayment(PAYMENT_UID);
