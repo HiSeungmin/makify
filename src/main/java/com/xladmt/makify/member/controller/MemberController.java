@@ -2,7 +2,6 @@ package com.xladmt.makify.member.controller;
 
 import com.xladmt.makify.common.config.security.MemberDetails;
 import com.xladmt.makify.common.validator.SignUpValidator;
-import com.xladmt.makify.member.dto.MypageResponse;
 import com.xladmt.makify.member.dto.SignupRequest;
 import com.xladmt.makify.member.dto.SignupResponse;
 import com.xladmt.makify.member.service.MemberService;
