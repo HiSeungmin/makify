@@ -2,16 +2,17 @@ package com.xladmt.makify.challenge.controller;
 
 import com.xladmt.makify.challenge.repository.ChallengeRepository;
 import com.xladmt.makify.challenge.service.ChallengeServiceImpl;
+import com.xladmt.makify.common.config.security.MemberDetails;
 import com.xladmt.makify.common.entity.Challenge;
+import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.validator.ChallengeCreateRequestValidator;
 import com.xladmt.makify.common.validator.ChallengeValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -143,6 +144,7 @@ public class ChallengeApiController {
                 challengeMap.put("status", challenge.getStatus().name());
                 challengeMap.put("statusDisplayName", getStatusDisplayName(challenge.getStatus().name()));
                 challengeMap.put("progressPercentage", challenge.getProgressPercentage());
+                challengeMap.put("thumbnailUrl", challenge.getThumbnailUrl());
                 return challengeMap;
             }).collect(Collectors.toList()));
 
@@ -173,6 +175,23 @@ public class ChallengeApiController {
             case "IN_PROGRESS": return "진행중";
             case "COMPLETED": return "완료";
             default: return "알 수 없음";
+        }
+    }
+
+    // 비공개 챌린지 참여 코드 검증 API
+    @PostMapping("/api/challenges/{id}/verify-code")
+    @ResponseBody
+    public ResponseEntity<?> verifyPrivateCode(
+            @PathVariable("id") Long challengeId,
+            @RequestBody Map<String, String> body,
+            @AuthenticationPrincipal MemberDetails memberDetails
+    ) {
+        try {
+            String code = body.get("code");
+            challengeValidator.validatePrivateCode(challengeId, code);
+            return ResponseEntity.ok(Map.of("valid", true));
+        } catch (BusinessException e) {
+            return ResponseEntity.ok(Map.of("valid", false, "message", e.getErrorCode().getMessage()));
         }
     }
 

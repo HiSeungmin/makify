@@ -35,5 +35,6 @@ public class ChallengeCreateRequest {
     public BigDecimal maxDeposit;
 
     public Category category;
-    private List<MultipartFile> images;
+    private MultipartFile thumbnailImage;           // 대표 이미지 1장
+    private List<MultipartFile> exampleImages;      // 인증 예시 이미지 최대 3장
 }

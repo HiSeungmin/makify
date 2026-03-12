@@ -36,18 +36,24 @@ public class VerificationMethod extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private YN isVisible;
 
-    public static VerificationMethod create( Frequency frequency,
+    @Enumerated(EnumType.STRING)
+    @Column(name = "has_example_image")
+    private YN hasExampleImage = YN.N; // 인증 예시 이미지 존재 여부
+
+    public static VerificationMethod create(Frequency frequency,
                                              LocalTime startTime,
                                              LocalTime endTime,
                                              Integer minDailyCount,
-                                             VerificationType method) {
+                                             VerificationType method,
+                                            YN hasExampleImage) {
         VerificationMethod setting = new VerificationMethod();
         setting.frequency = frequency;
         setting.startTime = startTime;
         setting.endTime = endTime;
         setting.minDailyCount = minDailyCount;
         setting.method = method;
-        setting.isVisible = YN.Y; // 기본값으로 보이도록
+        setting.isVisible = YN.Y;
+        setting.hasExampleImage = hasExampleImage;
         return setting;
     }
 
@@ -61,6 +67,10 @@ public class VerificationMethod extends BaseEntity {
         this.endTime = endTime;
         this.minDailyCount = minDailyCount;
         this.method = method;
+    }
+
+    public void markHasExampleImage() {
+        this.hasExampleImage = YN.Y;
     }
 
     public void delete() {

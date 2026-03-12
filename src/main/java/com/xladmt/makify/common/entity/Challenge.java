@@ -65,6 +65,9 @@ public class Challenge extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private YN isVisible;
 
+    @Column(name = "thumbnail_url", length = 1000)
+    private String thumbnailUrl; // 대표 이미지
+
     public ChallengeStatus getStatus() {
         LocalDate today = LocalDate.now();
         if (today.isBefore(startDate)) {
@@ -89,7 +92,8 @@ public class Challenge extends BaseEntity {
                                    VerificationMethod verificationMethod,
                                    String privateCode,
                                    Integer maxParticipants,
-                                   Category category) {
+                                   Category category,
+                                   String thumbnailUrl) {
         Challenge challenge = new Challenge();
         challenge.member = member;
         challenge.title = title;
@@ -105,6 +109,7 @@ public class Challenge extends BaseEntity {
         challenge.category = category;
         challenge.status = ChallengeStatus.NOT_STARTED;
         challenge.isVisible = YN.Y;
+        challenge.thumbnailUrl = thumbnailUrl;
         return challenge;
     }
 

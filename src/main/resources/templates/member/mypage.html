@@ -119,7 +119,7 @@
               <span th:if="${c.targetFrequency > 1}"
                     th:text="'(' + ${c.targetFrequency} + '/' + ${c.targetFrequency} + ')'"></span>
             </a>
-            <a th:href="@{/challenges/{id}(id=${c.challengeId})}" class="action-btn btn-secondary">인증 내역</a>
+            <a th:href="@{/challenges/{id}/history(id=${c.challengeId})}" class="action-btn btn-secondary">인증 내역</a>
           </div>
         </div>
       </div>

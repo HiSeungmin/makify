@@ -26,7 +26,13 @@
             <!-- 왼쪽: 이미지 -->
             <div class="challenge-image-section">
                 <div class="position-relative">
-                    <img th:src="@{/images/default-challenge.avif}" alt="챌린지 이미지" class="challenge-hero-image">
+                    <!-- S3 URL이면 그대로, 로컬 경로면 기본 이미지 -->
+                    <img th:if="${challenge.thumbnailUrl != null and !#strings.startsWith(challenge.thumbnailUrl, '/')}"
+                         th:src="${challenge.thumbnailUrl}"
+                         alt="챌린지 이미지" class="challenge-hero-image">
+                    <img th:unless="${challenge.thumbnailUrl != null and !#strings.startsWith(challenge.thumbnailUrl, '/')}"
+                         th:src="@{/images/default-challenge.avif}"
+                         alt="챌린지 이미지" class="challenge-hero-image">
                     <div class="category-badge" th:text="'#' + ${challenge.category}">운동</div>
 
                     <!-- 수정 버튼 -->
@@ -140,7 +146,7 @@
         <!-- 챌린지 상세 정보 -->
         <div class="challenge-details-section">
             <div class="section-title"><i class="bi bi-person-circle"></i> 개설자 정보</div>
-            <p>닉네임: <span th:text="${challenge.creatorLoginId}">user1</span></p>
+            <p>닉네임: <span th:text="${challenge.creatorNickName}">user1</span></p>
 
             <div class="section-title"><i class="bi bi-check-circle"></i> 인증 방법</div>
             <ul>
@@ -149,6 +155,19 @@
                 <li>하루 인증 횟수: <span th:text="${challenge.minDailyCount}">1</span>회</li>
                 <li>수단: <span th:text="${challenge.verificationType}">카메라</span></li>
             </ul>
+
+            <!-- 인증 예시 이미지 -->
+            <div th:if="${challenge.exampleImageUrls != null and !challenge.exampleImageUrls.isEmpty()}">
+                <div class="section-title"><i class="bi bi-images"></i> 인증 예시 사진</div>
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    <div th:each="imgUrl : ${challenge.exampleImageUrls}" class="position-relative">
+                        <img th:src="${imgUrl}" alt="인증 예시"
+                             style="width:220px; height:220px; object-fit:cover; border-radius:12px; cursor:pointer; border:1px solid #e5e7eb; transition: transform 0.2s;"
+                             onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'"
+                             th:attr="onclick='openExampleModal(this.src)'">
+                    </div>
+                </div>
+            </div>
 
             <div class="section-title"><i class="bi bi-chat-dots"></i> 리뷰</div>
             <div class="border rounded p-3 bg-light mb-2">아직 작성된 리뷰가 없습니다.</div>
@@ -213,8 +232,28 @@
 
     <div th:replace="fragments/footer :: footer"></div>
 
+    <!-- 예시 이미지 확대 모달 -->
+    <div class="modal fade" id="exampleImageModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-body p-0 text-center position-relative">
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-2"
+                            data-bs-dismiss="modal" style="z-index:10;"></button>
+                    <img id="exampleModalImg" src="" alt="예시 이미지"
+                         style="max-width:100%; max-height:80vh; border-radius:12px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src="@{/js/navbar.js}"></script>
+    <script>
+        function openExampleModal(url) {
+            document.getElementById("exampleModalImg").src = url;
+            new bootstrap.Modal(document.getElementById("exampleImageModal")).show();
+        }
+    </script>
 
     <!-- 토스트 메시지 (쿼리 파라미터 ?error=) -->
     <div th:if="${param.error}" class="position-fixed bottom-0 start-50 translate-middle-x mb-4" style="z-index: 9999;">

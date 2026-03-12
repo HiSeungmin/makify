@@ -59,7 +59,15 @@ public enum ErrorCode {
     PAYMENT_ALREADY_PROCESSED(4007, HttpStatus.BAD_REQUEST, "이미 처리된 결제입니다."),
 
     IAMPORT_API_ERROR(4008, HttpStatus.BAD_GATEWAY, "아임포트 API 호출 중 오류가 발생했습니다."),
-    IAMPORT_RESPONSE_ERROR(4009, HttpStatus.BAD_GATEWAY, "아임포트 응답 처리 중 오류가 발생했습니다.")
+    IAMPORT_RESPONSE_ERROR(4009, HttpStatus.BAD_GATEWAY, "아임포트 응답 처리 중 오류가 발생했습니다."),
+
+
+    // 이미지 관련 에러
+    FILE_UPLOAD_FAIL(5001, HttpStatus.BAD_REQUEST, "이미지 파일 업로드 중 오류가 발생했습니다."),
+
+    // 비공개 챌린지 관련 에러
+    INVALID_PRIVATE_CODE(2018, HttpStatus.BAD_REQUEST, "참여 코드가 올바르지 않습니다.");
+
 
 
     ;

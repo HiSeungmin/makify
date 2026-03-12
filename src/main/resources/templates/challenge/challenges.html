@@ -80,7 +80,10 @@
     <div class="challenge-card" th:each="challenge : ${challengePage.challenges}"
          th:onclick="'location.href=\'' + @{'/challenges/' + ${challenge.id}} + '\''">
       <div class="position-relative">
-        <img th:src="@{/images/default-challenge.avif}" class="card-image" alt="챌린지 이미지">
+        <img th:if="${challenge.thumbnailUrl != null and !#strings.startsWith(challenge.thumbnailUrl, '/')}"
+             th:src="${challenge.thumbnailUrl}" class="card-image" alt="챌린지 이미지">
+        <img th:unless="${challenge.thumbnailUrl != null and !#strings.startsWith(challenge.thumbnailUrl, '/')}"
+             th:src="@{/images/default-challenge.avif}" class="card-image" alt="챌린지 이미지">
         <div class="card-badges">
           <span class="category-badge" th:text="${challenge.category.description}">카테고리</span>
           <span class="status-badge"
@@ -391,11 +394,14 @@
     emptyResult.classList.add('d-none');
 
     challengeList.innerHTML = challenges.map(challenge => {
+      const imgSrc = (challenge.thumbnailUrl && !challenge.thumbnailUrl.startsWith('/'))
+          ? challenge.thumbnailUrl
+          : '/images/default-challenge.avif';
 
       return `
     <div class="challenge-card" onclick="location.href='/challenges/${challenge.id}'">
       <div class="position-relative">
-        <img src="/images/default-challenge.avif" class="card-image" alt="챌린지 이미지">
+        <img src="${imgSrc}" class="card-image" alt="챌린지 이미지">
         <div class="card-badges">
           <span class="category-badge">${challenge.categoryDisplayName}</span>
           <span class="status-badge ${getStatusClassName(challenge.status)}">${getStatusDisplayName(challenge.status)}</span>

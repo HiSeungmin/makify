@@ -34,6 +34,22 @@ public class ChallengeValidator {
     }
 
     /**
+     * 비공개 챌린지 참여 코드 검증
+     */
+    public void validatePrivateCode(Long challengeId, String inputCode) {
+        Challenge challenge = validateChallengeExists(challengeId);
+
+        if (challenge.getIsPublic() == com.xladmt.makify.common.constant.YN.N) {
+            if (inputCode == null || inputCode.isBlank()) {
+                throw new BusinessException(ErrorCode.INVALID_PRIVATE_CODE);
+            }
+            if (!inputCode.equals(challenge.getPrivateCode())) {
+                throw new BusinessException(ErrorCode.INVALID_PRIVATE_CODE);
+            }
+        }
+    }
+
+    /**
      * 챌린지 존재 검증
      */
     public Challenge validateChallengeExists(Long challengeId) {

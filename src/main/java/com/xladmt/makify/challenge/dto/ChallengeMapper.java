@@ -19,6 +19,7 @@ public class ChallengeMapper {
             .creatorName(challenge.getMember().getName())
             .status(challenge.getStatus())
             .createdAt(challenge.getCreatedAt())
+            .thumbnailUrl(challenge.getThumbnailUrl())
             .build();
     }
     

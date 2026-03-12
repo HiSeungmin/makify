@@ -149,6 +149,7 @@
     function handlePayment() {
       const challengeId = '[[${challengeId}]]';
       const userId = '[[${userId}]]';
+      const isPublic = '[[${challenge.isPublic.name()}]]';
 
       const depositInput = document.getElementById('depositAmount');
       const errorDiv = document.getElementById('depositError');
@@ -161,7 +162,61 @@
 
       if (errorDiv) errorDiv.classList.add('d-none');
 
+      // 비공개 챌린지면 코드 먼저 검증
+      if (isPublic === 'N') {
+        const codeVerified = document.getElementById('privateCodeSection')?.dataset.verified;
+        if (codeVerified !== 'true') {
+          document.getElementById('codeError').classList.remove('d-none');
+          document.getElementById('codeError').textContent = '먼저 참여 코드를 확인해주세요.';
+          return;
+        }
+      }
+
       initPayment(challengeId, userId);
+    }
+
+    async function verifyCode() {
+      const challengeId = '[[${challengeId}]]';
+      const code = document.getElementById('privateCodeInput').value.trim();
+      const errorDiv = document.getElementById('codeError');
+      const successDiv = document.getElementById('codeSuccess');
+
+      if (!code) {
+        errorDiv.textContent = '참여 코드를 입력해주세요.';
+        errorDiv.classList.remove('d-none');
+        successDiv.classList.add('d-none');
+        return;
+      }
+
+      try {
+        const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+
+        const headers = { 'Content-Type': 'application/json' };
+        if (csrfToken && csrfHeader) headers[csrfHeader] = csrfToken;
+
+        const res = await fetch(`/api/challenges/${challengeId}/verify-code`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ code })
+        });
+        const data = await res.json();
+
+        if (data.valid) {
+          successDiv.classList.remove('d-none');
+          errorDiv.classList.add('d-none');
+          document.getElementById('privateCodeSection').dataset.verified = 'true';
+          document.getElementById('privateCodeInput').readOnly = true;
+        } else {
+          errorDiv.textContent = data.message || '참여 코드가 올바르지 않습니다.';
+          errorDiv.classList.remove('d-none');
+          successDiv.classList.add('d-none');
+          document.getElementById('privateCodeSection').dataset.verified = 'false';
+        }
+      } catch (e) {
+        errorDiv.textContent = '코드 확인 중 오류가 발생했습니다.';
+        errorDiv.classList.remove('d-none');
+      }
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -199,6 +254,18 @@
         </li>
         <li><strong>최대 예치금:</strong> <span th:text="${#numbers.formatInteger(challenge.maxDeposit, 0, 'COMMA')} + '원'">0원</span></li>
       </ul>
+    </div>
+
+    <!-- 비공개 챌린지 코드 입력 -->
+    <div th:if="${challenge.isPublic.name() == 'N'}" class="mb-4" id="privateCodeSection">
+      <div class="section-title"><i class="bi bi-lock-fill text-warning"></i> 비공개 챌린지</div>
+      <p class="small text-muted mb-2">이 챌린지는 비공개입니다. 참여하려면 초대 코드를 입력해주세요.</p>
+      <div class="input-group">
+        <input type="text" id="privateCodeInput" class="form-control" placeholder="참여 코드를 입력하세요">
+        <button type="button" class="btn btn-outline-secondary" onclick="verifyCode()">확인</button>
+      </div>
+      <div id="codeError" class="text-danger small mt-1 d-none">참여 코드가 올바르지 않습니다.</div>
+      <div id="codeSuccess" class="text-success small mt-1 d-none"><i class="bi bi-check-circle"></i> 코드가 확인되었습니다.</div>
     </div>
 
     <!-- 참여 조건 -->

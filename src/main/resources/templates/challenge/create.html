@@ -84,7 +84,7 @@
           <select name="category" class="form-select" required>
             <option value="ROUTINE">규칙적인 생활</option>
             <option value="EXERCISE">운동</option>
-            <option value="MINDFULNESS">마음챙김</option>
+            <option value="MINDSET">마음챙김</option>
             <option value="EATING_HABITS">식습관</option>
             <option value="HOBBY">취미</option>
             <option value="STUDY">공부</option>
@@ -112,14 +112,13 @@
           <input type="number" id="maxParticipants" name="maxParticipants" class="form-control" min="1" max="9999" required>
         </div>
 
-        <!-- 챌린지 이미지 업로드 (드래그 앤 드롭) -->
+        <!-- 대표 이미지 업로드 -->
         <div class="mb-3">
-          <label class="form-label small">챌린지 이미지 업로드 (최대 5장)</label>
-          <div id="drop-area" class="border border-2 border-secondary rounded-3 p-4 text-center bg-light">
-            <p class="text-muted">이곳에 이미지를 드래그하거나 클릭하여 업로드 (최대 5장)</p>
-            <input type="file" id="imageInput" name="images" class="d-none" accept="image/*" multiple>
-            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('imageInput').click()">파일 선택</button>
-            <div id="preview" class="d-flex flex-wrap justify-content-start mt-3 gap-2"></div>
+          <label class="form-label small">챌린지 대표 이미지 <span class="text-muted">(선택)</span></label>
+          <div id="thumbnailDropArea" class="border border-2 border-secondary rounded-3 p-4 text-center bg-light" style="cursor:pointer;" onclick="document.getElementById('thumbnailInput').click()">
+            <p class="text-muted mb-1">클릭하거나 이미지를 드래그하세요 (1장)</p>
+            <input type="file" id="thumbnailInput" name="thumbnailImage" class="d-none" accept="image/*">
+            <div id="thumbnailPreview" class="d-flex justify-content-center mt-3"></div>
           </div>
         </div>
 
@@ -173,6 +172,17 @@
           <div class="col-md-6">
             <label class="form-label small">최소 인증 횟수 (1일 기준)</label>
             <input type="number" name="minDailyCount" class="form-control" min="1" required>
+          </div>
+        </div>
+
+        <!-- 챌린지 이미지 업로드 (드래그 앤 드롭) -->
+        <div class="mb-3 mt-4">
+          <label class="form-label small">인증 예시 이미지 업로드 (최대 3장)</label>
+          <div id="drop-area" class="border border-2 border-secondary rounded-3 p-4 text-center bg-light">
+            <p class="text-muted">이곳에 이미지를 드래그하거나 클릭하여 업로드 (최대 3장)</p>
+            <input type="file" id="imageInput" name="exampleImages" class="d-none" accept="image/*" multiple>
+            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('imageInput').click()">파일 선택</button>
+            <div id="preview" class="d-flex flex-wrap justify-content-start mt-3 gap-2"></div>
           </div>
         </div>
       </div>
@@ -382,6 +392,71 @@
   });
 </script>
 <script>
+  // 대표 이미지 드래그앤드롭 + 미리보기
+  const thumbnailDropArea = document.getElementById("thumbnailDropArea");
+  const thumbnailInput = document.getElementById("thumbnailInput");
+  const thumbnailPreview = document.getElementById("thumbnailPreview");
+
+  function updateThumbnailPreview(file) {
+    thumbnailPreview.innerHTML = "";
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("position-relative", "d-inline-block");
+
+      const img = document.createElement("img");
+      img.src = reader.result;
+      img.classList.add("img-thumbnail");
+      img.style.width = "120px";
+      img.style.height = "120px";
+      img.style.objectFit = "cover";
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn-close position-absolute top-0 end-0 bg-white";
+      btn.style.transform = "scale(0.8)";
+      btn.title = "삭제";
+      btn.onclick = () => {
+        thumbnailInput.value = "";
+        thumbnailPreview.innerHTML = "";
+      };
+
+      wrapper.appendChild(img);
+      wrapper.appendChild(btn);
+      thumbnailPreview.appendChild(wrapper);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  thumbnailDropArea.addEventListener("dragover", e => {
+    e.preventDefault();
+    thumbnailDropArea.classList.add("border-primary");
+  });
+
+  thumbnailDropArea.addEventListener("dragleave", () => {
+    thumbnailDropArea.classList.remove("border-primary");
+  });
+
+  thumbnailDropArea.addEventListener("drop", e => {
+    e.preventDefault();
+    thumbnailDropArea.classList.remove("border-primary");
+    const file = e.dataTransfer.files[0];
+    if (!file || !file.type.startsWith("image/")) {
+      alert("이미지 파일만 업로드할 수 있습니다.");
+      return;
+    }
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    thumbnailInput.files = dt.files;
+    updateThumbnailPreview(file);
+  });
+
+  thumbnailInput.addEventListener("change", () => {
+    updateThumbnailPreview(thumbnailInput.files[0]);
+  });
+
+  // 예시 이미지 드래그앤드롭 + 미리보기
   const dropArea = document.getElementById("drop-area");
   const input = document.getElementById("imageInput");
   const preview = document.getElementById("preview");
@@ -434,8 +509,8 @@
       return true;
     });
 
-    if (files.length + newFiles.length > 5) {
-      alert("최대 5개의 이미지만 업로드할 수 있습니다.");
+    if (files.length + newFiles.length > 3) {
+      alert("최대 3장의 이미지만 업로드할 수 있습니다.");
       return;
     }
 

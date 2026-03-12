@@ -55,6 +55,9 @@ public class Member extends BaseEntity {
 
     private LocalDateTime joinDate; // 가입일
 
+    @Column(name = "introduction", length = 200)
+    private String intoduction;
+
     // 생성 메서드
     public static Member create(String loginId, String password, Role role, String name, String nickname, String email,
                                 LocalDate birthDate, String phoneNumber) {
@@ -92,5 +95,9 @@ public class Member extends BaseEntity {
     // 탈퇴 메서드
     public void withDraw() {
         this.status = MemberStatus.WITHDRAW;
+    }
+
+    public void updateIntroduction(String introduction) {
+        this.intoduction = introduction;
     }
 }
