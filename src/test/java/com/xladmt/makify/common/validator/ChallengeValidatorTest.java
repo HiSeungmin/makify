@@ -54,50 +54,13 @@ class ChallengeValidatorTest {
         member = Member.create("user1", "1234", Role.USER, "홍길동", "동동이"
                 ,"gildong@test.com",LocalDate.now(),"010-1234-2345");
 
-        verificationMethod = VerificationMethod.create(Frequency.DAILY, LocalTime.MIN,LocalTime.MAX,1, VerificationType.CAMERA);
+        verificationMethod = VerificationMethod.create(Frequency.DAILY, LocalTime.MIN, LocalTime.MAX, 1, VerificationType.CAMERA, YN.N);
 
-        challenge = Challenge.create(member,"독서 챌린지", "매일 5쪽 읽기", LocalDate.now().minusDays(1), LocalDate.MAX, YN.Y, YN.N, BigDecimal.valueOf(1000),
-                verificationMethod, null, 10, Category.MINDSET);
+        challenge = Challenge.create(member, "독서 챌린지", "매일 5쪽 읽기", LocalDate.now().minusDays(1), LocalDate.MAX, YN.Y, YN.N, BigDecimal.valueOf(1000),
+                verificationMethod, null, 10, Category.MINDSET, null);
 
         challengeValidator = new ChallengeValidator(challengeRepository, memberRepository, userChallengeRepository);
     }
-
-    /**
-     * validateJoinable() 정상 케이스
-     *  - 챌린지 존재 검증
-     *  - 사용자 존재 검증
-     *  - 중복 참여 검증
-     *  - 참여 인원 제한 검증
-     *  - 챌린지 시작일 검증
-     */
-
-//    @ParameterizedTest
-//    @CsvSource({
-//            "CHALLENGE_NOT_FOUND, 챌린지 정보를 찾을 수 없습니다., validateChallengeExists() 단계 실패",
-//            "MEMBER_NOT_FOUND, 회원 정보를 찾을 수 없습니다., validateMemberExists() 단계 실패",
-//            "ALREADY_JOINED_CHALLENGE, 이미 참여한 챌린지입니다., validateNotAlreadyJoined() 단계 실패",
-//            "CHALLENGE_FULL, 참여 가능한 인원이 모두 찬 챌린지입니다., validateChallengeCapacity() 단계 실패",
-//            "CHALLENGE_ALREADY_STARTED, 이미 시작된 챌린지입니다., validateChallengeStartDate() 단계 실패"
-//    })
-//    @DisplayName("챌린지 참여 불가능한 각종 케이스 - ChallengeValidator 검증 단계별 실패")
-//    void challengeNotJoinable_VariousValidationFailures(String errorCodeName, String expectedMessage, String scenario) {
-//        // given
-//        ErrorCode errorCode = ErrorCode.valueOf(errorCodeName);
-//        willThrow(new BusinessException(errorCode))
-//                .given(challengeValidator).validateJoinable(CHALLENGE_ID, USER_ID);
-//
-//        // when & then
-//        Assertions.assertThatThrownBy(() -> paymentFacade.initializePayment(request))
-//                .isInstanceOf(BusinessException.class)
-//                .hasFieldOrPropertyWithValue("errorCode", errorCode)
-//                .hasMessage(expectedMessage);
-//
-//        // 검증: challengeValidator.validateJoinable()이 호출되었는지 확인
-//        verify(challengeValidator).validateJoinable(CHALLENGE_ID, USER_ID);
-//        // 검증: challengeService는 호출되지 않았는지 확인 (예외 발생으로 인해)
-//        verifyNoInteractions(challengeService);
-//    }
-
 
     @Test
     @DisplayName("챌리지 참여 가능성 종합 검증")
