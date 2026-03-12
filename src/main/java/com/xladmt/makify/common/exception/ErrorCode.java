@@ -43,6 +43,8 @@ public enum ErrorCode {
     CHALLENGE_FULL(2016, HttpStatus.BAD_REQUEST, "참여 가능한 인원이 모두 찬 챌린지입니다."),
     CHALLENGE_ALREADY_STARTED(2017, HttpStatus.BAD_REQUEST, "이미 시작된 챌린지입니다."),
 
+    INVALID_PRIVATE_CODE(2018, HttpStatus.BAD_REQUEST, "참여 코드가 올바르지 않습니다."), // 비공개 챌린지 에러
+
     // 인증 관련 에러
     VERIFICATION_METHOD_NOT_FOUND(3001, HttpStatus.NOT_FOUND, "인증 수단 정보를 찾을 수 없습니다."),
     VERIFICATION_NOT_ALLOWED_DAY(3002, HttpStatus.BAD_REQUEST, "오늘은 인증 가능한 요일이 아닙니다."),
@@ -64,10 +66,7 @@ public enum ErrorCode {
 
     // 이미지 관련 에러
     FILE_UPLOAD_FAIL(5001, HttpStatus.BAD_REQUEST, "이미지 파일 업로드 중 오류가 발생했습니다."),
-
-    // 비공개 챌린지 관련 에러
-    INVALID_PRIVATE_CODE(2018, HttpStatus.BAD_REQUEST, "참여 코드가 올바르지 않습니다.");
-
+    FILE_META_DB_UPLOAD_FAIL(5002, HttpStatus.BAD_REQUEST, "데이터베이스 이미지 파일 업로드 중 오류가 발생했습니다.")
 
 
     ;

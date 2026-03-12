@@ -124,7 +124,7 @@ public class VerificationServiceImpl implements VerificationService {
 
         } catch (Exception e) {
             // DB 저장 실패 시 S3 파일 삭제 (고아 파일 방지)
-            log.error("[VerificationService] DB 저장 실패로 S3 파일 삭제 - key: {}", key);
+            new BusinessException(ErrorCode.FILE_META_DB_UPLOAD_FAIL);
             s3Uploader.delete(key);
             throw e;
         }
