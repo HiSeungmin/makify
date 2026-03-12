@@ -84,44 +84,46 @@
       <p>새로운 챌린지에 참여해보세요!</p>
       <a href="/challenges" class="action-btn btn-primary">챌린지 둘러보기</a>
     </div>
-    <div th:if="${!challenges.inProgress.isEmpty()}" class="challenges-scroll">
-      <div class="challenge-card" th:each="c : ${challenges.inProgress}">
-        <div class="challenge-status status-ongoing">진행중</div>
-        <h3 class="challenge-title" th:text="${c.title}"></h3>
-        <p class="challenge-description" th:text="${c.description}"></p>
-        <div class="challenge-meta">
-          <span><i class="bi bi-calendar"></i> <span th:text="${c.startDate}"></span> ~ <span th:text="${c.endDate}"></span></span>
-          <span><i class="bi bi-people"></i> <span th:text="${c.currentParticipants}"></span>/<span th:text="${c.maxParticipants}"></span>명</span>
-        </div>
-        <div class="challenge-progress">
-          <div class="progress-label">
-            <span>진행률</span>
-            <span th:text="${c.progressPercentage} + '%'"></span>
+    <div th:if="${!challenges.inProgress.isEmpty()}" class="challenges-scroll-wrapper">
+      <div class="challenges-scroll">
+        <div class="challenge-card" th:each="c : ${challenges.inProgress}">
+          <div class="challenge-status status-ongoing">진행중</div>
+          <h3 class="challenge-title" th:text="${c.title}"></h3>
+          <p class="challenge-description" th:text="${c.description}"></p>
+          <div class="challenge-meta">
+            <span><i class="bi bi-calendar"></i> <span th:text="${c.startDate}"></span> ~ <span th:text="${c.endDate}"></span></span>
+            <span><i class="bi bi-people"></i> <span th:text="${c.currentParticipants}"></span>/<span th:text="${c.maxParticipants}"></span>명</span>
           </div>
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill" th:style="'width: ' + ${c.progressPercentage} + '%'"></div>
+          <div class="challenge-progress">
+            <div class="progress-label">
+              <span>진행률</span>
+              <span th:text="${c.progressPercentage} + '%'"></span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" th:style="'width: ' + ${c.progressPercentage} + '%'"></div>
+            </div>
+          </div>
+          <div class="challenge-actions">
+            <a th:href="@{/challenges/{id}/verify(id=${c.challengeId})}"
+               th:if="${c.todayVerifiedCount < c.targetFrequency}"
+               th:data-challenge-id="${c.challengeId}"
+               class="action-btn btn-primary verify-btn"
+               onclick="return checkVerifyTime(event, this)">
+              인증하기
+              <span th:if="${c.targetFrequency > 1}"
+                    th:text="'(' + ${c.todayVerifiedCount} + '/' + ${c.targetFrequency} + ')'"></span>
+            </a>
+            <a th:if="${c.todayVerifiedCount >= c.targetFrequency}"
+               class="action-btn btn-primary" style="cursor:default; opacity:0.6;">
+              인증완료
+              <span th:if="${c.targetFrequency > 1}"
+                    th:text="'(' + ${c.targetFrequency} + '/' + ${c.targetFrequency} + ')'"></span>
+            </a>
+            <a th:href="@{/challenges/{id}(id=${c.challengeId})}" class="action-btn btn-secondary">인증 내역</a>
           </div>
         </div>
-        <div class="challenge-actions">
-          <a th:href="@{/challenges/{id}/verify(id=${c.challengeId})}"
-             th:if="${c.todayVerifiedCount < c.targetFrequency}"
-             th:data-challenge-id="${c.challengeId}"
-             class="action-btn btn-primary verify-btn"
-             onclick="return checkVerifyTime(event, this)">
-            인증하기
-            <span th:if="${c.targetFrequency > 1}"
-                  th:text="'(' + ${c.todayVerifiedCount} + '/' + ${c.targetFrequency} + ')'"></span>
-          </a>
-          <a th:if="${c.todayVerifiedCount >= c.targetFrequency}"
-             class="action-btn btn-primary" style="cursor:default; opacity:0.6;">
-            인증완료
-            <span th:if="${c.targetFrequency > 1}"
-                  th:text="'(' + ${c.targetFrequency} + '/' + ${c.targetFrequency} + ')'"></span>
-          </a>
-          <a th:href="@{/challenges/{id}(id=${c.challengeId})}" class="action-btn btn-secondary">상세보기</a>
-        </div>
-        <div class="verify-inline-msg" style="display:none;"></div>
       </div>
+      <div class="verify-inline-msg" style="display:none;"></div>
     </div>
 
     <!-- 시작 예정 챌린지 -->
@@ -250,8 +252,8 @@
   async function checkVerifyTime(event, el) {
     event.preventDefault();
     const challengeId = el.dataset.challengeId;
-    const card = el.closest('.challenge-card');
-    const msgEl = card.querySelector('.verify-inline-msg');
+    const wrapper = el.closest('.challenges-scroll').closest('.challenges-scroll-wrapper');
+    const msgEl = wrapper.querySelector('.verify-inline-msg');
 
     try {
       const res = await fetch(`/api/challenges/${challengeId}/verify/validate`);

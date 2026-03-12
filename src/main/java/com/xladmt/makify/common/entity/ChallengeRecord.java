@@ -28,18 +28,21 @@ public class ChallengeRecord extends BaseEntity {
     @Column(name = "verificated_date", nullable = false)
     private LocalDateTime verificatedDate;
 
-    @Column(name = "image_url")
+    @Column(name = "image_url", length = 1000)
     private String imageUrl;
 
-    @Column(name = "memo", length = 200)
+    @Column(name = "memo", length = 1000)
     private String memo;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "is_approved")
     private YN isApproved;
 
-    @Column(name = "refusal_reason", length = 200)
+    @Column(name = "refusal_reason", length = 1000)
     private String refusalReason;
+
+    @Enumerated(EnumType.STRING)
+    private YN isPublic; // 공개/비공개 설정
 
     @Enumerated(EnumType.STRING)
     private YN isVisible;

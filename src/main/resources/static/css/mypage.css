@@ -202,18 +202,10 @@ body {
 }
 
 .challenges-scroll .challenge-card {
-  min-width: 380px;
-  max-width: 380px;
+  min-width: 360px;
+  max-width: 360px;
   scroll-snap-align: start;
   flex-shrink: 0;
-}
-
-.challenges-scroll .challenge-card .challenge-description {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .challenges-scroll .empty-state {
@@ -228,6 +220,26 @@ body {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 340px;
+}
+
+.challenge-card .challenge-description {
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.challenge-card .challenge-progress {
+  margin-top: auto;
+}
+
+.challenge-card .challenge-actions {
+  margin-top: 12px;
+  flex-shrink: 0;
 }
 
 .challenge-card:hover {
@@ -442,6 +454,23 @@ body {
 
 /* 반응형 */
 @media (max-width: 768px) {
+  .challenge-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .challenge-meta {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .challenge-meta span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .mypage-container {
     padding: 20px 16px;
   }
@@ -483,11 +512,23 @@ body {
   .challenge-actions {
     flex-direction: column;
   }
+
+  .challenge-card .challenge-description {
+    -webkit-line-clamp: 1;
+  }
 }
 
 /* 인증 시간 인라인 메시지 */
+.challenges-scroll-wrapper {
+  margin-bottom: 40px;
+}
+
+.challenges-scroll-wrapper .challenges-scroll {
+  margin-bottom: 0;
+}
+
 .verify-inline-msg {
-  margin-top: 12px;
+  margin-top: 10px;
   padding: 10px 14px;
   background: #fff7ed;
   border: 1px solid #fed7aa;
@@ -504,6 +545,7 @@ body {
 .verify-inline-msg::before {
   content: '⏰';
   font-size: 14px;
+  flex-shrink: 0;
 }
 
 @keyframes fadeInMsg {

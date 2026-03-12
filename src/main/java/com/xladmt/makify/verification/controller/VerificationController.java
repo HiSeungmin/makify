@@ -10,10 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Map;
 
 
@@ -47,5 +47,15 @@ public class VerificationController {
         } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
+    }
+
+    // 인증 제출
+    @PostMapping("/challenges/{id}/verify")
+    public String verify(@PathVariable Long id,
+                         @RequestParam("image") MultipartFile image,
+                         @RequestParam(value = "memo", required = false) String memo,
+                         @AuthenticationPrincipal MemberDetails memberDetails) throws IOException {
+        verificationService.verify(id, memberDetails.getMember().getId(), image, memo);
+        return "redirect:/mypage";
     }
 }
