@@ -33,7 +33,7 @@ public class VerificationController {
         model.addAttribute("targetFrequency", verifyResponse.targetFrequency());
         model.addAttribute("todayVerifiedCount", verifyResponse.todayVerifiedCount());
 
-        return "challenge/verify";
+        return "verification/verify";
     }
 
     // 인증 시간 검증 API

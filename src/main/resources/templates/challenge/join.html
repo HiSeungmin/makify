@@ -104,9 +104,8 @@
 
         if (response.code) {
           // 결제 실패 (사용자 취소 포함)
-          console.log('결제 실패:', response.message);
-          alert('결제에 실패했습니다: ' + response.message);
-          verifyPayment(null, uuid);
+          console.log('결제 취소 또는 실패:', response.message);
+          window.location.href = '/challenges/' + '[[${challengeId}]]';
         } else {
           // 결제 성공
           console.log('결제 성공, imp_uid:', response.paymentId);
@@ -114,8 +113,7 @@
         }
       } catch (error) {
         console.error('결제 오류:', error);
-        alert('결제 중 오류가 발생했습니다.');
-        verifyPayment(null, uuid);
+        window.location.href = '/challenges/' + '[[${challengeId}]]';
       }
     }
 
@@ -137,12 +135,12 @@
           window.location.href = '/challenges/' + '[[${challengeId}]]';
         } else {
           alert('결제 검증에 실패했습니다: ' + data.message);
-          window.location.href = '/fail-payment';
+          window.location.href = '/challenges/' + '[[${challengeId}]]';
         }
       })
       .catch(error => {
         console.error('결제 검증 오류:', error);
-        window.location.href = '/fail-payment';
+        window.location.href = '/challenges/' + '[[${challengeId}]]';
       });
     }
 
@@ -161,6 +159,16 @@
       }
 
       if (errorDiv) errorDiv.classList.add('d-none');
+
+      // 약관 동의 체크
+      const agreeCheck = document.getElementById('agree');
+      const agreeError = document.getElementById('agreeError');
+      if (!agreeCheck.checked) {
+        agreeError.classList.remove('d-none');
+        agreeCheck.closest('.form-check').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      agreeError.classList.add('d-none');
 
       // 비공개 챌린지면 코드 먼저 검증
       if (isPublic === 'N') {
@@ -247,7 +255,7 @@
       <p class="mb-2" th:text="${challenge.description}">챌린지 설명</p>
       <ul class="list-unstyled small">
         <li><strong>기간:</strong> <span th:text="${challenge.startDate}"></span> ~ <span th:text="${challenge.endDate}"></span></li>
-        <li><strong>카테고리:</strong> <span th:text="${challenge.category}"></span></li>
+        <li><strong>카테고리:</strong> <span th:text="${challenge.category.getDescription()}"></span></li>
         <li>
           <strong>예치금 유형:</strong>
           <span th:text="${challenge.isFixedDeposit.name() == 'Y'} ? '고정 예치금' : '유동 예치금'"></span>
@@ -285,7 +293,7 @@
 
         <div th:if="${challenge.isFixedDeposit.name() == 'Y'}">
           <input type="number" class="form-control" id="depositFixAmount" name="depositAmount"
-                 th:value="${challenge.maxDeposit}" readonly>
+                 th:value="${challenge.maxDeposit.intValue()}" readonly>
           <div class="form-text text-muted">이 챌린지는 고정 예치금 챌린지입니다.</div>
         </div>
 
@@ -300,22 +308,24 @@
       </div>
 
       <!-- 보유 자산 사용 -->
-      <div class="mb-4">
-        <label class="form-label">보유 예치금 / 상금 사용</label>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="useBalance" name="useBalance">
-          <label class="form-check-label" for="useBalance">사용하기</label>
-        </div>
-      </div>
+<!--      <div class="mb-4">-->
+<!--        <label class="form-label">보유 예치금 / 상금 사용</label>-->
+<!--        <div class="form-check">-->
+<!--          <input class="form-check-input" type="checkbox" id="useBalance" name="useBalance">-->
+<!--          <label class="form-check-label" for="useBalance">사용하기</label>-->
+<!--        </div>-->
+<!--      </div>-->
 
       <!-- 약관 동의 -->
       <div class="mb-4">
         <div class="form-check">
           <input class="form-check-input" type="checkbox" id="agree" required>
           <label class="form-check-label" for="agree">
-            <a href="/policy" target="_blank">운영정책</a> 및 <a href="/terms" target="_blank">이용약관</a>에 동의합니다.
+            <a href="#" onclick="openModal('policy'); return false;">운영정책</a> 및
+            <a href="#" onclick="openModal('terms'); return false;">이용약관</a>에 동의합니다.
           </label>
         </div>
+        <div id="agreeError" class="text-danger small mt-1 d-none">운영정책 및 이용약관에 동의해주세요.</div>
       </div>
 
       <!-- 참여 버튼 -->
@@ -325,5 +335,94 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/navbar.js}"></script>
+
+<!-- 운영정책 / 이용약관 모달 -->
+<div id="policyModal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.45); align-items:center; justify-content:center;">
+  <div style="background:#fff; border-radius:14px; width:90%; max-width:520px; max-height:75vh; display:flex; flex-direction:column; box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+    <div style="padding:1.2rem 1.5rem; border-bottom:1px solid #e9ecef; display:flex; justify-content:space-between; align-items:center;">
+      <h6 id="modalTitle" style="margin:0; font-weight:700; font-size:1rem;"></h6>
+      <button onclick="closeModal()" style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:#6c757d; line-height:1;">&times;</button>
+    </div>
+    <div id="modalBody" style="padding:1.2rem 1.5rem; overflow-y:auto; font-size:0.88rem; line-height:1.7; color:#343a40;"></div>
+    <div style="padding:0.9rem 1.5rem; border-top:1px solid #e9ecef; text-align:right;">
+      <button onclick="closeModal()" style="background:#10b981; color:#fff; border:none; border-radius:8px; padding:0.45rem 1.3rem; font-weight:600; cursor:pointer;">확인</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const modalContents = {
+    policy: {
+      title: '운영정책',
+      body: `
+        <h6 style="font-weight:700; margin-bottom:0.5rem;">1. 챌린지 참여 및 예치금 정책</h6>
+        <p>챌린지 참여 시 설정된 예치금을 결제해야 하며, 챌린지 시작 이후에는 환불이 불가합니다.<br>
+        예치금은 챌린지 종료 후 달성 여부에 따라 환급됩니다.</p>
+
+        <h6 style="font-weight:700; margin-bottom:0.5rem;">2. 인증 규정</h6>
+        <p>인증은 지정된 시간 내에만 가능하며, 하루 최소 인증 횟수를 달성하지 못하면 해당 일은 실패로 처리됩니다.<br>
+        허위 인증, 타인 사진 도용, 조작된 이미지 업로드 등의 행위는 즉시 퇴출 및 예치금 몰수 처리됩니다.</p>
+
+        <h6 style="font-weight:700; margin-bottom:0.5rem;">3. 부정 행위 처리</h6>
+        <p>부정 행위가 적발된 경우 서비스 이용이 영구 제한될 수 있으며, 예치금은 반환되지 않습니다.<br>
+        다른 참여자의 신고로 확인된 부정 행위도 동일하게 처리됩니다.</p>
+
+        <h6 style="font-weight:700; margin-bottom:0.5rem;">4. 챌린지 강제 종료</h6>
+        <p>운영 정책 위반, 참여자 수 미달, 기타 운영 판단에 따라 챌린지가 조기 종료될 수 있습니다.<br>
+        이 경우 참여 기간에 비례하여 예치금이 환급됩니다.</p>
+
+        <h6 style="font-weight:700; margin-bottom:0.5rem;">5. 분쟁 해결</h6>
+        <p>챌린지 진행 중 발생하는 분쟁은 운영팀의 최종 판단을 따릅니다.<br>
+        문의사항은 고객센터를 통해 접수해주세요.</p>
+      `
+    },
+    terms: {
+      title: '이용약관',
+      body: `
+        <h6 style="font-weight:700; margin-bottom:0.5rem;">제1조 (목적)</h6>
+        <p>본 약관은 Makify(이하 "서비스")가 제공하는 챌린지 참여 서비스의 이용 조건 및 절차에 관한 사항을 규정합니다.</p>
+
+        <h6 style="font-weight:700; margin-bottom:0.5rem;">제2조 (회원 가입 및 자격)</h6>
+        <p>서비스 이용을 위해 회원 가입이 필요하며, 만 14세 미만은 가입이 제한됩니다.<br>
+        타인의 정보를 도용하거나 허위 정보로 가입한 경우 서비스 이용이 제한됩니다.</p>
+
+        <h6 style="font-weight:700; margin-bottom:0.5rem;">제3조 (서비스 이용)</h6>
+        <p>회원은 본 약관 및 운영정책을 준수하여 서비스를 이용해야 합니다.<br>
+        서비스 내 콘텐츠(챌린지 정보, 인증 사진 등)의 무단 복제 및 배포를 금지합니다.</p>
+
+        <h6 style="font-weight:700; margin-bottom:0.5rem;">제4조 (결제 및 환불)</h6>
+        <p>챌린지 참여를 위한 예치금은 서비스 내 결제 수단을 통해 납부합니다.<br>
+        챌린지 시작 전 취소 시 전액 환불되며, 시작 후에는 환불이 불가합니다.<br>
+        서비스 장애 등 회사 귀책 사유 발생 시 전액 환불을 보장합니다.</p>
+
+        <h6 style="font-weight:700; margin-bottom:0.5rem;">제5조 (개인정보 보호)</h6>
+        <p>서비스는 개인정보 보호법에 따라 회원의 개인정보를 보호하며, 별도의 개인정보처리방침에 따라 관리합니다.</p>
+
+        <h6 style="font-weight:700; margin-bottom:0.5rem;">제6조 (서비스 변경 및 중단)</h6>
+        <p>서비스는 운영상 필요에 따라 서비스 내용을 변경하거나 중단할 수 있으며, 이 경우 사전에 공지합니다.</p>
+
+        <h6 style="font-weight:700; margin-bottom:0.5rem;">제7조 (준거법 및 관할)</h6>
+        <p>본 약관은 대한민국 법률에 따르며, 분쟁 발생 시 서울중앙지방법원을 관할 법원으로 합니다.</p>
+      `
+    }
+  };
+
+  function openModal(type) {
+    const content = modalContents[type];
+    document.getElementById('modalTitle').textContent = content.title;
+    document.getElementById('modalBody').innerHTML = content.body;
+    const modal = document.getElementById('policyModal');
+    modal.style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('policyModal').style.display = 'none';
+  }
+
+  // 모달 바깥 클릭 시 닫기
+  document.getElementById('policyModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+</script>
 </body>
 </html>
