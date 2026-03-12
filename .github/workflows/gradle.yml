@@ -7,7 +7,7 @@ on:
     branches: [ "dev" ]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -42,4 +42,43 @@ jobs:
         uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew build
+        run: ./gradlew bootJar -x test
+
+      - name: Deploy jar to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "build/libs/*.jar"
+          target: "/home/ubuntu/makify"
+          strip_components: 2
+
+      - name: Start application on EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          envs: SPRING_DATASOURCE_DRIVER_CLASS_NAME,SPRING_DATASOURCE_URL,SPRING_DATASOURCE_USERNAME,SPRING_DATASOURCE_PASSWORD,SPRING_JWT_SECRET,SPRING_JWT_ACCESS_TOKEN_VALIDITY,SPRING_JWT_REFRESH_TOKEN_VALIDITY,SPRING_REDIS_HOST,SPRING_REDIS_PORT,IAMPORT_API_KEY,IAMPORT_SECRET_KEY,CLOUD_AWS_S3_BUCKET_NAME,CLOUD_AWS_CREDENTIALS_ACCESS_KEY,CLOUD_AWS_CREDENTIALS_SECRET_KEY,CLOUD_AWS_REGION_STATIC
+          script: |
+            cd /home/ubuntu/makify
+            sudo fuser -k 8001/tcp || true
+            sleep 2
+            nohup java -jar \
+              -DSPRING_DATASOURCE_DRIVER_CLASS_NAME="$SPRING_DATASOURCE_DRIVER_CLASS_NAME" \
+              -DSPRING_DATASOURCE_URL="$SPRING_DATASOURCE_URL" \
+              -DSPRING_DATASOURCE_USERNAME="$SPRING_DATASOURCE_USERNAME" \
+              -DSPRING_DATASOURCE_PASSWORD="$SPRING_DATASOURCE_PASSWORD" \
+              -DSPRING_JWT_SECRET="$SPRING_JWT_SECRET" \
+              -DSPRING_JWT_ACCESS_TOKEN_VALIDITY="$SPRING_JWT_ACCESS_TOKEN_VALIDITY" \
+              -DSPRING_JWT_REFRESH_TOKEN_VALIDITY="$SPRING_JWT_REFRESH_TOKEN_VALIDITY" \
+              -DSPRING_REDIS_HOST="$SPRING_REDIS_HOST" \
+              -DSPRING_REDIS_PORT="$SPRING_REDIS_PORT" \
+              -DIAMPORT_API_KEY="$IAMPORT_API_KEY" \
+              -DIAMPORT_SECRET_KEY="$IAMPORT_SECRET_KEY" \
+              -DCLOUD_AWS_S3_BUCKET_NAME="$CLOUD_AWS_S3_BUCKET_NAME" \
+              -DCLOUD_AWS_CREDENTIALS_ACCESS_KEY="$CLOUD_AWS_CREDENTIALS_ACCESS_KEY" \
+              -DCLOUD_AWS_CREDENTIALS_SECRET_KEY="$CLOUD_AWS_CREDENTIALS_SECRET_KEY" \
+              -DCLOUD_AWS_REGION_STATIC="$CLOUD_AWS_REGION_STATIC" \
+              *.jar > app.log 2>&1 &
