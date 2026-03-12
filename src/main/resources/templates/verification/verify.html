@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="'인증하기 - ' + ${challenge.title}">인증하기</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+  <link rel="stylesheet" th:href="@{/css/footer.css}" />
+  <link rel="stylesheet" th:href="@{/css/verify.css}" />
+  <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.png}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="verify-container">
+
+  <a th:href="@{/challenges/{id}(id=${challenge.id})}" class="back-button">
+    <i class="bi bi-arrow-left"></i>
+    챌린지로 돌아가기
+  </a>
+
+  <div class="challenge-summary">
+    <div class="summary-badge" th:text="'#' + ${challenge.category}"></div>
+    <h2 class="summary-title" th:text="${challenge.title}"></h2>
+    <div class="summary-meta">
+      <span><i class="bi bi-calendar"></i> <span th:text="${challenge.startDate}"></span> ~ <span th:text="${challenge.endDate}"></span></span>
+      <span><i class="bi bi-clock"></i> 인증 가능 시간: <span th:text="${verificationMethod.startTime}"></span> ~ <span th:text="${verificationMethod.endTime}"></span></span>
+    </div>
+    <div class="today-status">
+      <span class="today-label">오늘 인증</span>
+      <span class="today-count">
+        <span th:text="${todayVerifiedCount}">0</span> / <span th:text="${targetFrequency}">1</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="verify-card">
+    <h3 class="verify-card-title">
+      <i class="bi bi-camera"></i>
+      인증 사진 업로드
+    </h3>
+
+    <div class="verify-notice">
+      <i class="bi bi-info-circle"></i>
+      <span th:if="${verificationMethod.method.name() == 'CAMERA'}">카메라로 직접 촬영한 사진만 인증 가능해요.</span>
+      <span th:if="${verificationMethod.method.name() == 'ALBUM'}">앨범에서 사진을 선택해 인증할 수 있어요.</span>
+      <span th:if="${verificationMethod.method.name() == 'ALL'}">카메라 촬영 또는 앨범에서 사진을 선택해 인증할 수 있어요.</span>
+    </div>
+
+    <form id="verifyForm" th:action="@{/challenges/{id}/verify(id=${challenge.id})}" method="post" enctype="multipart/form-data">
+
+      <!-- CAMERA 타입: 카메라 스트림 -->
+      <div th:if="${verificationMethod.method.name() == 'CAMERA'}">
+        <div class="upload-area" id="uploadArea">
+          <video id="cameraStream" class="image-preview" autoplay playsinline style="display: none;"></video>
+          <img id="imagePreview" class="image-preview" src="" alt="미리보기" style="display: none;"/>
+          <div class="upload-placeholder" id="uploadPlaceholder">
+            <i class="bi bi-camera-video"></i>
+            <p>카메라를 시작해주세요</p>
+            <span>아래 버튼을 눌러 카메라를 켜세요</span>
+          </div>
+        </div>
+        <input type="hidden" id="imageInput" name="image"/>
+        <canvas id="captureCanvas" style="display: none;"></canvas>
+        <div class="camera-controls" id="cameraControls">
+          <button type="button" class="change-photo-btn" id="startCameraBtn" onclick="startCamera()">
+            <i class="bi bi-camera-video"></i> 카메라 시작
+          </button>
+          <button type="button" class="change-photo-btn" id="captureBtn" style="display: none;" onclick="capturePhoto()">
+            <i class="bi bi-camera"></i> 촬영하기
+          </button>
+          <button type="button" class="change-photo-btn" id="retakeBtn" style="display: none;" onclick="retakePhoto()">
+            <i class="bi bi-arrow-repeat"></i> 다시 찍기
+          </button>
+        </div>
+      </div>
+
+      <!-- ALL 타입: 라디오 버튼으로 선택 -->
+      <div th:if="${verificationMethod.method.name() == 'ALL'}">
+        <div class="mode-selector">
+          <label class="mode-option">
+            <input type="radio" name="uploadMode" value="camera" onchange="switchMode('camera')" checked/>
+            <span><i class="bi bi-camera-video"></i> 카메라 촬영</span>
+          </label>
+          <label class="mode-option">
+            <input type="radio" name="uploadMode" value="album" onchange="switchMode('album')"/>
+            <span><i class="bi bi-images"></i> 앨범에서 선택</span>
+          </label>
+        </div>
+
+        <!-- ALL - 카메라 모드 -->
+        <div id="cameraModeArea">
+          <div class="upload-area" id="uploadAreaCamera">
+            <video id="cameraStream" class="image-preview" autoplay playsinline style="display: none;"></video>
+            <img id="imagePreview" class="image-preview" src="" alt="미리보기" style="display: none;"/>
+            <div class="upload-placeholder" id="uploadPlaceholderCamera">
+              <i class="bi bi-camera-video"></i>
+              <p>카메라를 시작해주세요</p>
+              <span>아래 버튼을 눌러 카메라를 켜세요</span>
+            </div>
+          </div>
+          <canvas id="captureCanvas" style="display: none;"></canvas>
+          <div class="camera-controls">
+            <button type="button" class="change-photo-btn" id="startCameraBtn" onclick="startCamera()">
+              <i class="bi bi-camera-video"></i> 카메라 시작
+            </button>
+            <button type="button" class="change-photo-btn" id="captureBtn" style="display: none;" onclick="capturePhoto()">
+              <i class="bi bi-camera"></i> 촬영하기
+            </button>
+            <button type="button" class="change-photo-btn" id="retakeBtn" style="display: none;" onclick="retakePhoto()">
+              <i class="bi bi-arrow-repeat"></i> 다시 찍기
+            </button>
+          </div>
+        </div>
+
+        <!-- ALL - 앨범 모드 -->
+        <div id="albumModeArea" style="display: none;">
+          <div class="upload-area" id="uploadAreaAlbum" onclick="document.getElementById('imageInputAlbum').click()">
+            <div class="upload-placeholder" id="uploadPlaceholderAlbum">
+              <i class="bi bi-cloud-upload"></i>
+              <p>사진을 업로드해주세요</p>
+              <span>클릭하거나 사진을 드래그하세요</span>
+            </div>
+            <img id="imagePreviewAlbum" class="image-preview" src="" alt="미리보기" style="display: none;"/>
+          </div>
+          <input type="file" id="imageInputAlbum" name="image" accept="image/*"
+                 style="display: none;" onchange="previewImageAlbum(this)"/>
+          <button type="button" class="change-photo-btn" id="changePhotoBtnAlbum" style="display: none;"
+                  onclick="document.getElementById('imageInputAlbum').click()">
+            <i class="bi bi-arrow-repeat"></i> 사진 변경
+          </button>
+        </div>
+      </div>
+
+      <!-- ALBUM 타입: 파일 업로드만 -->
+      <div th:if="${verificationMethod.method.name() == 'ALBUM'}">
+        <div class="upload-area" id="uploadArea" onclick="document.getElementById('imageInput').click()">
+          <div class="upload-placeholder" id="uploadPlaceholder">
+            <i class="bi bi-cloud-upload"></i>
+            <p>사진을 업로드해주세요</p>
+            <span>클릭하거나 사진을 드래그하세요</span>
+          </div>
+          <img id="imagePreview" class="image-preview" src="" alt="미리보기" style="display: none;"/>
+        </div>
+        <input type="file" id="imageInput" name="image" accept="image/*"
+               style="display: none;" onchange="previewImage(this)"/>
+        <button type="button" class="change-photo-btn" id="changePhotoBtn" style="display: none;"
+                onclick="document.getElementById('imageInput').click()">
+          <i class="bi bi-arrow-repeat"></i> 사진 변경
+        </button>
+      </div>
+
+      <div class="memo-section">
+        <label class="memo-label">
+          한 줄 메모 <span class="optional-badge">선택</span>
+        </label>
+        <textarea class="memo-input" name="memo" maxlength="200"
+                  placeholder="오늘의 인증 한 줄 메모를 남겨보세요 :)"
+                  oninput="updateCharCount(this)"></textarea>
+        <div class="char-count"><span id="charCount">0</span> / 200</div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn" disabled>
+        <i class="bi bi-check-circle"></i>
+        인증 제출하기
+      </button>
+    </form>
+  </div>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/navbar.js}"></script>
+<script>
+  const isCamera = /*[[${verificationMethod.method.name() == 'CAMERA'}]]*/ false;
+  const isAll = /*[[${verificationMethod.method.name() == 'ALL'}]]*/ false;
+  let stream = null;
+  let currentMode = 'camera'; // ALL 타입 기본값
+
+  // ALL 타입 - 모드 전환
+  function switchMode(mode) {
+    currentMode = mode;
+
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+      stream = null;
+    }
+
+    document.getElementById('submitBtn').disabled = true;
+
+    if (mode === 'camera') {
+      document.getElementById('cameraModeArea').style.display = 'block';
+      document.getElementById('albumModeArea').style.display = 'none';
+      // 카메라 UI 초기화
+      const video = document.getElementById('cameraStream');
+      if (video) video.style.display = 'none';
+      const preview = document.getElementById('imagePreview');
+      if (preview) preview.style.display = 'none';
+      document.getElementById('uploadPlaceholderCamera').style.display = 'block';
+      document.getElementById('startCameraBtn').style.display = 'block';
+      document.getElementById('captureBtn').style.display = 'none';
+      document.getElementById('retakeBtn').style.display = 'none';
+    } else {
+      document.getElementById('cameraModeArea').style.display = 'none';
+      document.getElementById('albumModeArea').style.display = 'block';
+    }
+  }
+
+  // 카메라 시작 (CAMERA 타입 & ALL 타입 공통)
+  async function startCamera() {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
+      const video = document.getElementById('cameraStream');
+      video.srcObject = stream;
+      video.style.display = 'block';
+
+      // placeholder 숨기기
+      const placeholderId = isAll ? 'uploadPlaceholderCamera' : 'uploadPlaceholder';
+      const placeholder = document.getElementById(placeholderId);
+      if (placeholder) placeholder.style.display = 'none';
+
+      // 버튼 전환
+      document.getElementById('startCameraBtn').style.display = 'none';
+      document.getElementById('captureBtn').style.display = 'block';
+    } catch (e) {
+      alert('카메라 접근 권한이 필요해요. 브라우저 설정에서 카메라를 허용해주세요.');
+    }
+  }
+
+  // 사진 촬영
+  function capturePhoto() {
+    const video = document.getElementById('cameraStream');
+    const canvas = document.getElementById('captureCanvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+
+    stream.getTracks().forEach(track => track.stop());
+    video.style.display = 'none';
+
+    const previewId = 'imagePreview';
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+    document.getElementById(previewId).src = dataUrl;
+    document.getElementById(previewId).style.display = 'block';
+
+    canvas.toBlob(blob => {
+      const file = new File([blob], 'capture.jpg', { type: 'image/jpeg' });
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      const form = document.getElementById('verifyForm');
+      let fileInput = form.querySelector('input[type="file"]');
+      if (!fileInput) {
+        fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.name = 'image';
+        fileInput.style.display = 'none';
+        form.appendChild(fileInput);
+      }
+      fileInput.files = dt.files;
+    }, 'image/jpeg', 0.9);
+
+    document.getElementById('captureBtn').style.display = 'none';
+    document.getElementById('retakeBtn').style.display = 'block';
+    document.getElementById('submitBtn').disabled = false;
+  }
+
+  // 다시 찍기
+  function retakePhoto() {
+    document.getElementById('imagePreview').style.display = 'none';
+    document.getElementById('retakeBtn').style.display = 'none';
+    document.getElementById('submitBtn').disabled = true;
+    startCamera();  }
+
+  // 파일 업로드 미리보기 (ALBUM)
+  function previewImage(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('imagePreview').src = e.target.result;
+      document.getElementById('imagePreview').style.display = 'block';
+      document.getElementById('uploadPlaceholder').style.display = 'none';
+      document.getElementById('changePhotoBtn').style.display = 'flex';
+      document.getElementById('submitBtn').disabled = false;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // 파일 업로드 미리보기 (ALL - 앨범 모드)
+  function previewImageAlbum(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('imagePreviewAlbum').src = e.target.result;
+      document.getElementById('imagePreviewAlbum').style.display = 'block';
+      document.getElementById('uploadPlaceholderAlbum').style.display = 'none';
+      document.getElementById('changePhotoBtnAlbum').style.display = 'flex';
+      document.getElementById('submitBtn').disabled = false;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function updateCharCount(textarea) {
+    document.getElementById('charCount').textContent = textarea.value.length;
+  }
+
+  // 드래그앤드롭 (ALBUM)
+  if (!isCamera && !isAll) {
+    const uploadArea = document.getElementById('uploadArea');
+    if (uploadArea) {
+      uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+      uploadArea.addEventListener('dragleave', () => { uploadArea.classList.remove('drag-over'); });
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('drag-over');
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+          const input = document.getElementById('imageInput');
+          const dt = new DataTransfer();
+          dt.items.add(file);
+          input.files = dt.files;
+          previewImage(input);
+        }
+      });
+    }
+  }
+
+  // 드래그앤드롭 (ALL - 앨범 모드)
+  if (isAll) {
+    const uploadAreaAlbum = document.getElementById('uploadAreaAlbum');
+    if (uploadAreaAlbum) {
+      uploadAreaAlbum.addEventListener('dragover', (e) => { e.preventDefault(); uploadAreaAlbum.classList.add('drag-over'); });
+      uploadAreaAlbum.addEventListener('dragleave', () => { uploadAreaAlbum.classList.remove('drag-over'); });
+      uploadAreaAlbum.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadAreaAlbum.classList.remove('drag-over');
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+          const input = document.getElementById('imageInputAlbum');
+          const dt = new DataTransfer();
+          dt.items.add(file);
+          input.files = dt.files;
+          previewImageAlbum(input);
+        }
+      });
+    }
+  }
+
+  window.addEventListener('beforeunload', () => {
+    if (stream) stream.getTracks().forEach(track => track.stop());
+  });
+</script>
+</body>
+</html>

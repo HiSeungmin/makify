@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="'인증 내역 - ' + ${challenge.title}">인증 내역</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/navbar.css}"/>
+  <link rel="stylesheet" th:href="@{/css/footer.css}"/>
+  <link rel="stylesheet" th:href="@{/css/history.css}"/>
+  <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.png}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="history-container">
+
+  <a th:href="@{/mypage}" class="back-button">
+    <i class="bi bi-arrow-left"></i>
+    마이페이지로
+  </a>
+
+  <!-- 챌린지 요약 -->
+  <div class="challenge-summary">
+    <div class="summary-badge" th:text="'#' + ${challenge.category}"></div>
+    <h2 class="summary-title" th:text="${challenge.title}"></h2>
+    <div class="summary-meta">
+      <span>
+        <i class="bi bi-calendar"></i>
+        <span th:text="${challenge.startDate}"></span> ~ <span th:text="${challenge.endDate}"></span>
+      </span>
+      <span>
+        <i class="bi bi-clock"></i>
+        인증 시간: <span th:text="${verificationMethod.startTime}"></span> ~ <span th:text="${verificationMethod.endTime}"></span>
+      </span>
+    </div>
+    <div class="summary-stats">
+      <div class="summary-stat">
+        <span class="stat-num" th:text="${totalCount}">0</span>
+        <span class="stat-lbl">총 인증 횟수</span>
+      </div>
+      <div class="summary-stat-divider"></div>
+      <div class="summary-stat">
+        <span class="stat-num" th:text="${todayCount}">0</span>
+        <span class="stat-lbl">오늘 인증</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 인증 내역 -->
+  <div class="history-section">
+    <h3 class="history-section-title">
+      <i class="bi bi-grid-3x3-gap"></i>
+      인증 내역
+    </h3>
+
+    <!-- 내역 없을 때 -->
+    <div th:if="${#lists.isEmpty(records)}" class="history-empty">
+      <i class="bi bi-camera"></i>
+      <p>아직 인증 내역이 없어요</p>
+      <span>첫 번째 인증을 남겨보세요!</span>
+    </div>
+
+    <!-- 내역 그리드 -->
+    <div th:if="${!#lists.isEmpty(records)}" class="history-grid">
+      <div class="history-card" th:each="r : ${records}" th:id="'card-' + ${r.id}">
+
+        <!-- 이미지 -->
+        <div class="history-img-wrap"
+             th:data-img="${r.imageUrl}"
+             th:data-date="${r.verificatedDate}"
+             th:data-memo="${r.memo != null} ? ${r.memo} : ''"
+             onclick="openModal(this)">
+          <img th:src="${r.imageUrl}" alt="인증 사진" class="history-img" loading="lazy"/>
+          <div class="history-img-overlay">
+            <i class="bi bi-zoom-in"></i>
+          </div>
+          <!-- 승인 아이콘 -->
+          <div th:if="${r.approved}" class="approval-badge approved" title="승인됨">
+            <i class="bi bi-check-lg"></i>
+          </div>
+          <div th:if="${!r.approved}" class="approval-badge rejected" title="거절됨">
+            <i class="bi bi-x-lg"></i>
+          </div>
+        </div>
+
+        <!-- 점점점 메뉴 -->
+        <button class="card-menu-btn" th:data-id="${r.id}" onclick="toggleMenu(this)">
+          <i class="bi bi-three-dots-vertical"></i>
+        </button>
+        <div class="card-dropdown" th:id="'dropdown-' + ${r.id}">
+          <button class="card-dropdown-item danger" th:data-id="${r.id}" onclick="deleteRecord(this)">
+            <i class="bi bi-trash"></i> 삭제하기
+          </button>
+          <button class="card-dropdown-item" th:data-id="${r.id}" onclick="inquireRecord(this)">
+            <i class="bi bi-chat-dots"></i> 문의하기
+          </button>
+        </div>
+
+        <!-- 날짜 + 메모 -->
+        <div class="history-meta">
+          <span class="history-date" th:text="${r.verificatedDate}"></span>
+          <span th:if="${r.memo != null and !r.memo.isEmpty()}" class="history-memo" th:text="${r.memo}"></span>
+        </div>
+
+        <!-- 거절 사유 -->
+        <div th:if="${!r.approved and r.refusalReason != null and !r.refusalReason.isEmpty()}"
+             class="refusal-reason">
+          <i class="bi bi-exclamation-circle"></i>
+          <span th:text="${r.refusalReason}"></span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 사진 확대 모달 -->
+<div class="img-modal-backdrop" id="imgModalBackdrop" onclick="closeModal()">
+  <div class="img-modal" onclick="event.stopPropagation()">
+    <button class="img-modal-close" onclick="closeModal()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+    <img id="modalImg" src="" alt="인증 사진" class="img-modal-img"/>
+    <div class="img-modal-info">
+      <div class="img-modal-date" id="modalDate"></div>
+      <div class="img-modal-memo" id="modalMemo" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/navbar.js}"></script>
+<script th:inline="javascript">
+  const challengeId = /*[[${challenge.id}]]*/ null;
+
+  // 사진 확대 모달
+  function openModal(el) {
+    document.getElementById('modalImg').src = el.dataset.img;
+    document.getElementById('modalDate').textContent = el.dataset.date;
+    const memoEl = document.getElementById('modalMemo');
+    const memo = el.dataset.memo;
+    if (memo && memo.trim()) {
+      memoEl.textContent = '"' + memo + '"';
+      memoEl.style.display = 'block';
+    } else {
+      memoEl.style.display = 'none';
+    }
+    document.getElementById('imgModalBackdrop').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('imgModalBackdrop').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // 드롭다운 메뉴
+  function toggleMenu(btn) {
+    const id = btn.dataset.id;
+    const dropdown = document.getElementById('dropdown-' + id);
+    // 다른 열린 드롭다운 닫기
+    document.querySelectorAll('.card-dropdown.open').forEach(d => {
+      if (d !== dropdown) d.classList.remove('open');
+    });
+    dropdown.classList.toggle('open');
+    event.stopPropagation();
+  }
+
+  // 바깥 클릭 시 드롭다운 닫기
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.card-dropdown.open').forEach(d => d.classList.remove('open'));
+  });
+
+  // 삭제하기
+  function deleteRecord(btn) {
+    const recordId = btn.dataset.id;
+    if (!confirm('인증 내역을 삭제할까요?')) return;
+
+    fetch(`/api/challenges/${challengeId}/records/${recordId}`, { method: 'DELETE' })
+      .then(res => {
+        if (res.ok) {
+          document.getElementById('card-' + recordId).remove();
+        } else {
+          alert('삭제에 실패했어요. 다시 시도해주세요.');
+        }
+      })
+      .catch(() => alert('오류가 발생했어요.'));
+  }
+
+  // 문의하기 (추후 연결)
+  function inquireRecord(btn) {
+    alert('문의 기능은 준비 중이에요.');
+  }
+</script>
+</body>
+</html>
