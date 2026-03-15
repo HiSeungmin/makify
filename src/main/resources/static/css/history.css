@@ -6,7 +6,7 @@ body { background-color: #f8fffe; margin: 0; padding: 0; }
 .back-button { display: flex; align-items: center; gap: 8px; color: #6b7280; text-decoration: none; font-size: 14px; margin-bottom: 24px; width: fit-content; }
 .back-button:hover { color: #374151; text-decoration: none; }
 
-.challenge-summary { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 32px; }
+.challenge-summary { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 28px; }
 .summary-badge { display: inline-block; background: #f0fdf4; color: #10b981; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; margin-bottom: 10px; }
 .summary-title { font-size: 22px; font-weight: 800; color: #111827; margin-bottom: 12px; }
 .summary-meta { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: #6b7280; margin-bottom: 20px; }
@@ -17,6 +17,13 @@ body { background-color: #f8fffe; margin: 0; padding: 0; }
 .summary-stat-divider { width: 1px; height: 36px; background: #bbf7d0; }
 .stat-num { display: block; font-size: 24px; font-weight: 800; color: #10b981; }
 .stat-lbl { display: block; font-size: 12px; color: #6b7280; margin-top: 2px; }
+
+/* 탭 */
+.history-tabs { display: flex; gap: 0; margin-bottom: 24px; background: white; border-radius: 14px; padding: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.history-tab { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 16px; font-size: 14px; font-weight: 600; color: #9ca3af; background: transparent; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s; }
+.history-tab:hover { color: #374151; background: #f9fafb; }
+.history-tab.active { color: #10b981; background: #f0fdf4; }
+.history-tab i { font-size: 16px; }
 
 .history-section-title { font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
 .history-section-title i { color: #10b981; }
@@ -77,7 +84,16 @@ body { background-color: #f8fffe; margin: 0; padding: 0; }
   .history-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .summary-title { font-size: 18px; }
   .stat-num { font-size: 20px; }
+  .history-tab { font-size: 13px; padding: 10px 12px; }
 }
 @media (max-width: 480px) {
   .history-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
 }
+
+/* 신고 버튼 */
+.report-btn { position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.9); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #9ca3af; z-index: 2; transition: all 0.2s; }
+.report-btn:hover { background: #fef2f2; color: #ef4444; }
+
+/* 닉네임 */
+.history-nickname { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+.history-nickname i { color: #10b981; font-size: 12px; }

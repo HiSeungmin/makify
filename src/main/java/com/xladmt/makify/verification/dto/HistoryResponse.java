@@ -11,8 +11,9 @@ public record HistoryResponse(
         String imageUrl,
         String memo,
         String verificatedDate,
-        boolean approved,       // isApproved == Y
-        String refusalReason
+        boolean approved,
+        String refusalReason,
+        String nickname
 ) {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
 
@@ -23,7 +24,8 @@ public record HistoryResponse(
                 record.getMemo(),
                 record.getVerificatedDate().format(FORMATTER),
                 YN.Y.equals(record.getIsApproved()),
-                record.getRefusalReason()
+                record.getRefusalReason(),
+                record.getMember().getNickname()
         );
     }
 }

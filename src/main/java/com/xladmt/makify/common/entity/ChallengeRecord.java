@@ -42,7 +42,7 @@ public class ChallengeRecord extends BaseEntity {
     private String refusalReason;
 
     @Enumerated(EnumType.STRING)
-    private YN isPublic; // 공개/비공개 설정
+    private YN isPublic;
 
     @Enumerated(EnumType.STRING)
     private YN isVisible;
@@ -59,5 +59,9 @@ public class ChallengeRecord extends BaseEntity {
         record.isApproved = YN.Y;  // 기본 자동 승인
         record.isVisible = YN.Y;
         return record;
+    }
+
+    public void delete() {
+        this.isVisible = YN.N;
     }
 }

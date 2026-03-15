@@ -12,6 +12,8 @@ public interface VerificationService {
     void validateVerifyTime(Long challengeId);
     VerifyResponse getHistoryPage(Long challengeId, Long memberId);
     List<HistoryResponse> getRecords(Long challengeId, Long memberId);
+    List<HistoryResponse> getOtherRecords(Long challengeId, Long memberId);
     int getTotalCount(Long challengeId, Long memberId);
     void verify(Long challengeId, Long memberId, MultipartFile image, String memo) throws IOException;
+    void deleteVerify(long recordId, long memberId);
 }

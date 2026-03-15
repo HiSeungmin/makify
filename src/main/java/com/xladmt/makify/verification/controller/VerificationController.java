@@ -1,7 +1,6 @@
 package com.xladmt.makify.verification.controller;
 
 import com.xladmt.makify.common.config.security.MemberDetails;
-import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.verification.dto.VerifyResponse;
 import com.xladmt.makify.verification.service.VerificationService;
 import lombok.RequiredArgsConstructor;
@@ -40,12 +39,8 @@ public class VerificationController {
     @GetMapping("/api/challenges/{id}/verify/validate")
     @ResponseBody
     public ResponseEntity<Map<String, String>> validateVerifyTime(@PathVariable Long id) {
-        try {
-            verificationService.validateVerifyTime(id);
-            return ResponseEntity.ok(Map.of("status", "ok"));
-        } catch (BusinessException e) {
-            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
-        }
+        verificationService.validateVerifyTime(id);
+        return ResponseEntity.ok(Map.of("status", "ok"));
     }
 
     // 인증 제출
@@ -56,6 +51,15 @@ public class VerificationController {
                          @AuthenticationPrincipal MemberDetails memberDetails) throws IOException {
         verificationService.verify(id, memberDetails.getMember().getId(), image, memo);
         return "redirect:/mypage";
+    }
+
+    // 인증 삭제
+    @DeleteMapping("/api/records/{recordId}")
+    @ResponseBody
+    public ResponseEntity<Void> deleteVerify(@PathVariable Long recordId,
+                                             @AuthenticationPrincipal MemberDetails memberDetails) {
+        verificationService.deleteVerify(recordId, memberDetails.getMember().getId());
+        return ResponseEntity.ok().build();
     }
 
     // 인증 내역 페이지
@@ -72,6 +76,7 @@ public class VerificationController {
         model.addAttribute("challenge", verifyResponse.challenge());
         model.addAttribute("verificationMethod", verifyResponse.verificationMethod());
         model.addAttribute("records", verificationService.getRecords(id, memberId));
+        model.addAttribute("otherRecords", verificationService.getOtherRecords(id, memberId));
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("todayCount", todayCount);
 

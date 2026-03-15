@@ -41,7 +41,7 @@
 
 ### 배포
 
-- AWS EC2 + RDS + ElastiCache + S3 연동 완료
+- AWS EC2 + RDS + S3 연동 완료
 - HTTPS 적용 (Nginx + Let's Encrypt)
 - GitHub Actions CI/CD 자동 배포
 

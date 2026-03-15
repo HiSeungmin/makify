@@ -21,9 +21,9 @@ public class Report extends BaseEntity {
     private Member member; // 신고자
 
     @Enumerated(EnumType.STRING)
-    private ReportType type; // 인증 기록
+    private ReportType type; // 챌린지, 인증내역, 게시글
 
-    private Long referenceId; // 신고 참조 ID (인증샷, 게시글 ID)
+    private Long referenceId; // 신고 참조 ID (인증내역, 게시글 ID)
 
     private String reason; // 신고 사유
 

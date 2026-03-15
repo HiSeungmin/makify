@@ -56,6 +56,7 @@ public class VerificationServiceImpl implements VerificationService {
         return new VerifyResponse(challenge, challenge.getVerificationMethod(), targetFrequency, todayVerifiedCount);
     }
 
+    @Override
     public void validateVerifyTime(Long challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
@@ -63,6 +64,7 @@ public class VerificationServiceImpl implements VerificationService {
         verifyValidator.validate(challenge.getVerificationMethod());
     }
 
+    @Override
     public VerifyResponse getHistoryPage(Long challengeId, Long memberId) {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
@@ -76,6 +78,7 @@ public class VerificationServiceImpl implements VerificationService {
         return new VerifyResponse(challenge, challenge.getVerificationMethod(), targetFrequency, todayVerifiedCount);
     }
 
+    @Override
     public List<HistoryResponse> getRecords(Long challengeId, Long memberId) {
         return challengeRecordRepository.findAllByMemberAndChallenge(memberId, challengeId)
                 .stream()
@@ -83,6 +86,15 @@ public class VerificationServiceImpl implements VerificationService {
                 .toList();
     }
 
+    @Override
+    public List<HistoryResponse> getOtherRecords(Long challengeId, Long memberId) {
+        return challengeRecordRepository.findAllByOtherMembers(memberId, challengeId)
+                .stream()
+                .map(HistoryResponse::from)
+                .toList();
+    }
+
+    @Override
     public int getTotalCount(Long challengeId, Long memberId) {
         return challengeRecordRepository.countAllVerifications(memberId, challengeId);
     }
@@ -124,9 +136,15 @@ public class VerificationServiceImpl implements VerificationService {
 
         } catch (Exception e) {
             // DB 저장 실패 시 S3 파일 삭제 (고아 파일 방지)
-            new BusinessException(ErrorCode.FILE_META_DB_UPLOAD_FAIL);
             s3Uploader.delete(key);
-            throw e;
+            throw new BusinessException(ErrorCode.FILE_META_DB_UPLOAD_FAIL);
         }
+    }
+
+    @Override
+    @Transactional
+    public void deleteVerify(long recordId, long memberId) {
+        ChallengeRecord challengeRecord = challengeRecordRepository.findByIdAndMemberId(recordId, memberId);
+        challengeRecord.delete();
     }
 }

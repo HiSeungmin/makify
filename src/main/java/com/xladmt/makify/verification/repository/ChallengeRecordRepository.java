@@ -13,6 +13,7 @@ public interface ChallengeRecordRepository extends JpaRepository<ChallengeRecord
     @Query("SELECT COUNT(cr) FROM ChallengeRecord cr " +
             "WHERE cr.member.id = :memberId " +
             "AND cr.challenge.id = :challengeId " +
+            "AND cr.isVisible = 'Y' " +
             "AND FUNCTION('DATE', cr.verificatedDate) = :today")
     int countTodayVerifications(@Param("memberId") Long memberId,
                                 @Param("challengeId") Long challengeId,
@@ -26,10 +27,20 @@ public interface ChallengeRecordRepository extends JpaRepository<ChallengeRecord
     List<ChallengeRecord> findAllByMemberAndChallenge(@Param("memberId") Long memberId,
                                                        @Param("challengeId") Long challengeId);
 
+    @Query("SELECT cr FROM ChallengeRecord cr " +
+            "WHERE cr.member.id != :memberId " +
+            "AND cr.challenge.id = :challengeId " +
+            "AND cr.isVisible = 'Y' " +
+            "ORDER BY cr.verificatedDate DESC")
+    List<ChallengeRecord> findAllByOtherMembers(@Param("memberId") Long memberId,
+                                                @Param("challengeId") Long challengeId);
+
     @Query("SELECT COUNT(cr) FROM ChallengeRecord cr " +
             "WHERE cr.member.id = :memberId " +
             "AND cr.challenge.id = :challengeId " +
             "AND cr.isVisible = 'Y'")
     int countAllVerifications(@Param("memberId") Long memberId,
                               @Param("challengeId") Long challengeId);
+
+    ChallengeRecord findByIdAndMemberId(Long id, Long memberId);
 }
