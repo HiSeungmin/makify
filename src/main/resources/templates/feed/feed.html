@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>인증 피드 - Makify</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+  <link rel="stylesheet" th:href="@{/css/footer.css}" />
+  <link rel="stylesheet" th:href="@{/css/feed.css}" />
+  <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.png}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="feed-layout">
+
+  <!-- 사이드바 -->
+  <aside class="feed-sidebar">
+    <div class="sidebar-section">
+      <p class="sidebar-label">정렬</p>
+      <ul class="sidebar-menu">
+        <li>
+          <a th:href="@{/feed(sort='latest')}"
+             th:classappend="${currentSort == 'latest'} ? ' active'">
+            <i class="bi bi-clock"></i> 최신순
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/feed(sort='likes')}"
+             th:classappend="${currentSort == 'likes'} ? ' active'">
+            <i class="bi bi-heart"></i> 좋아요순
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <p class="sidebar-label">카테고리</p>
+      <ul class="sidebar-menu category-menu">
+        <li><button class="active" onclick="setCategory(this)"><i class="bi bi-grid"></i> 전체</button></li>
+        <li><button onclick="setCategory(this)"><i class="bi bi-lightning"></i> 운동</button></li>
+        <li><button onclick="setCategory(this)"><i class="bi bi-book"></i> 공부</button></li>
+        <li><button onclick="setCategory(this)"><i class="bi bi-sun"></i> 규칙적인 생활</button></li>
+        <li><button onclick="setCategory(this)"><i class="bi bi-wind"></i> 마음챙김</button></li>
+        <li><button onclick="setCategory(this)"><i class="bi bi-egg-fried"></i> 식습관</button></li>
+        <li><button onclick="setCategory(this)"><i class="bi bi-palette"></i> 취미</button></li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- 피드 메인 -->
+  <main class="feed-main">
+
+    <div class="feed-top">
+      <h1>🏅 인증 피드</h1>
+      <p>함께하는 사람들의 오늘 인증</p>
+    </div>
+
+    <div th:if="${#lists.isEmpty(feeds)}" class="feed-empty">
+      <i class="bi bi-camera"></i>
+      <p>아직 인증 내역이 없어요</p>
+      <span>첫 번째 인증을 남겨보세요!</span>
+    </div>
+
+    <div th:each="feed : ${feeds}"
+         class="feed-card"
+         th:data-category="${feed.category}"
+         th:data-record-id="${feed.recordId}">
+
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="user-avatar" th:text="${#strings.substring(feed.nickname, 0, 1)}"></div>
+          <div>
+            <div class="user-name" th:text="${feed.nickname}"></div>
+            <div class="challenge-name" th:text="${feed.challengeTitle}"></div>
+          </div>
+        </div>
+        <div class="card-header-right">
+          <span class="card-time" th:text="${feed.verificatedDate}"></span>
+          <button class="card-more-btn" onclick="toggleDropdown(this)">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+          <div class="card-dropdown">
+            <button class="card-dropdown-item danger" onclick="reportCard(this)">
+              <i class="bi bi-flag"></i> 신고하기
+            </button>
+            <button class="card-dropdown-item" onclick="blockUser(this)">
+              <i class="bi bi-slash-circle"></i> 차단하기
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <img th:if="${feed.imageUrl != null}" th:src="${feed.imageUrl}"
+           alt="인증 사진" class="card-img" loading="lazy"/>
+      <div th:if="${feed.imageUrl == null}" class="card-img-placeholder">
+        <i class="bi bi-camera"></i>
+      </div>
+
+      <div class="card-body">
+        <span class="card-category-badge" th:text="${feed.category}"></span>
+        <p th:if="${feed.memo != null and !feed.memo.isEmpty()}"
+           class="card-memo" th:text="${feed.memo}"></p>
+
+        <div class="card-footer">
+          <div class="card-actions">
+            <button class="action-btn like-btn"
+                    th:classappend="${feed.liked} ? ' liked'"
+                    th:data-record-id="${feed.recordId}"
+                    onclick="toggleLike(this)">
+              <i th:class="${feed.liked} ? 'bi bi-heart-fill' : 'bi bi-heart'"></i>
+              <span th:text="${feed.likeCount}">0</span>
+            </button>
+            <button class="action-btn comment-btn"
+                    th:data-record-id="${feed.recordId}"
+                    onclick="toggleComments(this)">
+              <i class="bi bi-chat"></i>
+              <span th:text="${feed.commentCount}">0</span>
+            </button>
+          </div>
+          <span class="card-date" th:text="${feed.verificatedDate}"></span>
+        </div>
+
+        <div class="comment-section" th:id="'comments-' + ${feed.recordId}" style="display:none;">
+          <div class="comment-list" th:id="'comment-list-' + ${feed.recordId}"></div>
+          <div class="comment-input-wrap" sec:authorize="isAuthenticated()">
+            <input type="text" class="comment-input"
+                   th:id="'comment-input-' + ${feed.recordId}"
+                   placeholder="댓글을 입력하세요..."
+                   th:data-record-id="${feed.recordId}"
+                   onkeydown="if(event.key==='Enter') submitComment(this)"/>
+            <button class="comment-submit-btn"
+                    th:data-record-id="${feed.recordId}"
+                    onclick="submitComment(document.getElementById('comment-input-' + this.dataset.recordId))">
+              <i class="bi bi-send"></i>
+            </button>
+          </div>
+          <p class="comment-login-msg" sec:authorize="!isAuthenticated()">
+            <a href="/login">로그인</a> 후 댓글을 작성할 수 있어요.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/navbar.js}"></script>
+<script th:inline="javascript">
+  const currentNickname = /*[[${currentNickname}]]*/ null;
+
+  function toggleDropdown(btn) {
+    const dropdown = btn.nextElementSibling;
+    const isOpen = dropdown.classList.contains('open');
+    document.querySelectorAll('.card-dropdown.open').forEach(d => d.classList.remove('open'));
+    if (!isOpen) dropdown.classList.add('open');
+    event.stopPropagation();
+  }
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.card-dropdown.open').forEach(d => d.classList.remove('open'));
+  });
+
+  function reportCard(btn) {
+    if (!confirm('이 인증을 신고할까요?')) return;
+    alert('신고가 접수됐어요. 검토 후 처리해드릴게요.');
+    btn.closest('.card-dropdown').classList.remove('open');
+  }
+
+  function blockUser(btn) {
+    if (!confirm('이 사용자를 차단할까요?')) return;
+    const card = btn.closest('.feed-card');
+    card.style.opacity = '0';
+    card.style.transition = 'opacity 0.3s';
+    setTimeout(() => card.remove(), 300);
+  }
+
+  function setCategory(btn) {
+    document.querySelectorAll('.category-menu button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const category = btn.childNodes[btn.childNodes.length - 1].textContent.trim();
+    document.querySelectorAll('.feed-card').forEach(card => {
+      card.style.display = (category === '전체' || card.dataset.category === category) ? 'block' : 'none';
+    });
+  }
+
+  function toggleLike(btn) {
+    const recordId = btn.dataset.recordId;
+    fetch(`/api/feed/${recordId}/like`, { method: 'POST', credentials: 'include' })
+    .then(res => {
+      if (res.status === 401) { window.location.href = '/login'; return null; }
+      return res.json();
+    })
+    .then(data => {
+      if (!data) return;
+      const icon = btn.querySelector('i');
+      const countEl = btn.querySelector('span');
+      if (data.liked) {
+        icon.className = 'bi bi-heart-fill';
+        btn.classList.add('liked');
+      } else {
+        icon.className = 'bi bi-heart';
+        btn.classList.remove('liked');
+      }
+      countEl.textContent = data.likeCount;
+    });
+  }
+
+  function toggleComments(btn) {
+    const recordId = btn.dataset.recordId;
+    const section = document.getElementById('comments-' + recordId);
+    const isHidden = section.style.display === 'none';
+    if (isHidden) {
+      section.style.display = 'block';
+      loadComments(recordId);
+    } else {
+      section.style.display = 'none';
+    }
+  }
+
+  function loadComments(recordId) {
+    fetch(`/api/feed/${recordId}/comments`, { credentials: 'include' })
+    .then(res => res.json())
+    .then(comments => {
+      const list = document.getElementById('comment-list-' + recordId);
+      if (comments.length === 0) {
+        list.innerHTML = '<p class="no-comment">아직 댓글이 없어요. 첫 댓글을 남겨보세요!</p>';
+        return;
+      }
+      list.innerHTML = comments.map(c => {
+        const isMine = currentNickname && c.nickname === currentNickname;
+        const deleteBtn = isMine
+          ? `<button class="comment-delete-btn" onclick="deleteComment(${c.id}, ${recordId}, this)">
+               <i class="bi bi-trash"></i>
+             </button>`
+          : '';
+        return `
+          <div class="comment-item" data-comment-id="${c.id}">
+            <span class="comment-nickname">${c.nickname}</span>
+            <span class="comment-content">${c.content}</span>
+            <div class="comment-right">
+              <span class="comment-time">${c.createdAt}</span>
+              ${deleteBtn}
+            </div>
+          </div>
+        `;
+      }).join('');
+    });
+  }
+
+  function deleteComment(commentId, recordId, btn) {
+    if (!confirm('댓글을 삭제할까요?')) return;
+    fetch(`/api/feed/comments/${commentId}`, { method: 'DELETE', credentials: 'include' })
+    .then(res => {
+      if (res.ok) {
+        loadComments(recordId);
+        const commentBtn = document.querySelector(`.comment-btn[data-record-id="${recordId}"] span`);
+        if (commentBtn) commentBtn.textContent = Math.max(0, parseInt(commentBtn.textContent) - 1);
+      }
+    });
+  }
+
+  function submitComment(input) {
+    const recordId = input.dataset.recordId;
+    const content = input.value.trim();
+    if (!content) return;
+
+    fetch(`/api/feed/${recordId}/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ content })
+    })
+    .then(res => {
+      if (res.status === 401) { window.location.href = '/login'; return null; }
+      return res.json();
+    })
+    .then(data => {
+      if (!data) return;
+      input.value = '';
+      loadComments(recordId);
+      const commentBtn = document.querySelector(`.comment-btn[data-record-id="${recordId}"] span`);
+      if (commentBtn) commentBtn.textContent = parseInt(commentBtn.textContent) + 1;
+    });
+  }
+</script>
+</body>
+</html>

@@ -42,10 +42,10 @@ public class ChallengeRecord extends BaseEntity {
     private String refusalReason;
 
     @Enumerated(EnumType.STRING)
-    private YN isPublic;
+    private YN isPublic;  // 피드 공개 여부
 
     @Enumerated(EnumType.STRING)
-    private YN isVisible;
+    private YN isVisible; // 소프트 딜리트 여부
 
     private Long manager;
 
@@ -56,7 +56,7 @@ public class ChallengeRecord extends BaseEntity {
         record.imageUrl = imageUrl;
         record.memo = memo;
         record.verificatedDate = LocalDateTime.now();
-        record.isApproved = YN.Y;  // 기본 자동 승인
+        record.isApproved = YN.Y;
         record.isVisible = YN.Y;
         return record;
     }
