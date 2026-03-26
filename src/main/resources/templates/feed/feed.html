@@ -83,7 +83,8 @@
           </div>
         </div>
         <div class="card-header-right">
-          <span class="card-time" th:text="${feed.verificatedDate}"></span>
+          <!-- 상대 시간 표시 (JS로 변환) -->
+          <span class="card-time" th:data-date="${feed.verificatedDateIso}"></span>
           <button class="card-more-btn" onclick="toggleDropdown(this)">
             <i class="bi bi-three-dots-vertical"></i>
           </button>
@@ -125,7 +126,7 @@
               <span th:text="${feed.commentCount}">0</span>
             </button>
           </div>
-          <span class="card-date" th:text="${feed.verificatedDate}"></span>
+          <!-- 아래 날짜 제거 -->
         </div>
 
         <div class="comment-section" th:id="'comments-' + ${feed.recordId}" style="display:none;">
@@ -158,6 +159,30 @@
 <script th:src="@{/js/navbar.js}"></script>
 <script th:inline="javascript">
   const currentNickname = /*[[${currentNickname}]]*/ null;
+
+  // 상대 시간 변환 함수
+  function timeAgo(isoStr) {
+    const now = new Date();
+    const date = new Date(isoStr);
+    const diff = Math.floor((now - date) / 1000); // 초 단위
+
+    if (diff < 60)             return '방금 전';
+    if (diff < 60 * 10)        return `${Math.floor(diff / 60)}분 전`;
+    if (diff < 60 * 60)        return `${Math.floor(diff / 60)}분 전`;
+    if (diff < 60 * 60 * 24)   return `${Math.floor(diff / 3600)}시간 전`;
+    if (diff < 60 * 60 * 24 * 2) return '1일 전';
+
+    // 그 이후는 날짜 포맷으로
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}.${m}.${d}`;
+  }
+
+  // 페이지 로드 시 모든 카드 시간 변환
+  document.querySelectorAll('.card-time[data-date]').forEach(el => {
+    el.textContent = timeAgo(el.dataset.date);
+  });
 
   function toggleDropdown(btn) {
     const dropdown = btn.nextElementSibling;
