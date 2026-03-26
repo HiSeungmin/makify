@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" 
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -29,7 +29,7 @@
           생활 습관 개선 챌린지에 참여하고, 매일 인증하며 건강한 변화를
           만들어보세요.
         </p>
-        
+
         <div class="hero-actions">
           <a sec:authorize="isAuthenticated()" href="/challenges" class="btn-primary-large">챌린지 시작하기</a>
           <a sec:authorize="!isAuthenticated()" href="/login" class="btn-primary-large">챌린지 시작하기</a>
@@ -44,7 +44,7 @@
             <div class="stat-number">1,234</div>
             <div class="stat-label">완료된 챌린지</div>
           </div>
-          
+
           <div class="stat-item">
             <div class="stat-icon">
               <i class="bi bi-people" style="color: #10b981; font-size: 20px;"></i>
@@ -52,7 +52,7 @@
             <div class="stat-number">5,678</div>
             <div class="stat-label">활성 사용자</div>
           </div>
-          
+
           <div class="stat-item">
             <div class="stat-icon">
               <i class="bi bi-trophy" style="color: #f59e0b; font-size: 20px;"></i>
@@ -60,7 +60,7 @@
             <div class="stat-number">42</div>
             <div class="stat-label">챌린지 종류</div>
           </div>
-          
+
           <div class="stat-item">
             <div class="stat-icon">
               <i class="bi bi-graph-up" style="color: #10b981; font-size: 20px;"></i>
@@ -70,7 +70,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="hero-image">
         <div class="hero-illustration"></div>
       </div>
@@ -83,87 +83,25 @@
       <h2 class="section-title">인기 챌린지</h2>
       <p class="section-subtitle">많은 사람들이 함께하고 있는 인기 챌린지에 참여해보세요</p>
     </div>
-    
+
     <div class="challenges-grid">
-      <!-- Challenge 1: 운동 -->
-      <div class="challenge-card">
-        <div class="challenge-image" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=200&fit=crop');">
-          <div class="challenge-badge">운동</div>
-          <div class="challenge-difficulty difficulty-초급">초급</div>
+      <div class="challenge-card" th:each="challenge : ${homeChallenges}">
+        <div class="challenge-image"
+             th:style="${challenge.thumbnailUrl != null}
+               ? 'background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(' + ${challenge.thumbnailUrl} + ');'
+               : 'background-image: linear-gradient(135deg, #10b981, #059669);'">
+          <div class="challenge-badge" th:text="${challenge.category}"></div>
         </div>
         <div class="challenge-content">
-          <h3 class="challenge-title">매일 10,000보 걷기</h3>
-          <p class="challenge-description">건강한 몸을 위해 매일 만보 걷기 챌린지에 도전해보세요. 꾸준한 걷기로 체력 향상과 건강 관리를 실천합니다. </p>
+          <h3 class="challenge-title" th:text="${challenge.title}"></h3>
+          <p class="challenge-description" th:text="${challenge.description}"></p>
           <div class="challenge-meta">
-            <span><i class="bi bi-people"></i> 15,420명 참여</span>
-            <span><i class="bi bi-calendar"></i> 30일</span>
+            <span><i class="bi bi-people"></i> <span th:text="${challenge.participantCount}"></span>명 참여</span>
+            <span><i class="bi bi-calendar"></i>
+              <span th:text="${challenge.startDate}"></span> ~ <span th:text="${challenge.endDate}"></span>
+            </span>
           </div>
-          <div class="challenge-progress">
-            <div class="progress-text">
-              <span>진행률</span>
-              <span>65%</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 65%"></div>
-            </div>
-          </div>
-          <a href="/challenges/#" class="challenge-join-btn">
-            <i class="bi bi-trophy"></i> 챌린지 참여
-          </a>
-        </div>
-      </div>
-
-      <!-- Challenge 2: 독서 -->
-      <div class="challenge-card">
-        <div class="challenge-image" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=200&fit=crop');">
-          <div class="challenge-badge">자기계발</div>
-          <div class="challenge-difficulty difficulty-중급">중급</div>
-        </div>
-        <div class="challenge-content">
-          <h3 class="challenge-title">하루 한 권 독서하기</h3>
-          <p class="challenge-description">지식과 교양을 쌓는 독서 습관 만들기. 매일 책을 읽고 인증하며 독서왕이 되어보세요.</p>
-          <div class="challenge-meta">
-            <span><i class="bi bi-people"></i> 8,930명 참여</span>
-            <span><i class="bi bi-calendar"></i> 21일</span>
-          </div>
-          <div class="challenge-progress">
-            <div class="progress-text">
-              <span>진행률</span>
-              <span>42%</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 42%"></div>
-            </div>
-          </div>
-          <a href="/challenges/#" class="challenge-join-btn">
-            <i class="bi bi-trophy"></i> 챌린지 참여
-          </a>
-        </div>
-      </div>
-
-      <!-- Challenge 3: 미라클 모닝 -->
-      <div class="challenge-card">
-        <div class="challenge-image" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=200&fit=crop');">
-          <div class="challenge-badge">라이프스타일</div>
-          <div class="challenge-difficulty difficulty-고급">고급</div>
-        </div>
-        <div class="challenge-content">
-          <h3 class="challenge-title">미라클 모닝 실천</h3>
-          <p class="challenge-description">새벽 6시 기상으로 하루를 활기차게 시작하세요. 성공하는 사람들의 아침 루틴을 만들어보세요.</p>
-          <div class="challenge-meta">
-            <span><i class="bi bi-people"></i> 12,650명 참여</span>
-            <span><i class="bi bi-calendar"></i> 14일</span>
-          </div>
-          <div class="challenge-progress">
-            <div class="progress-text">
-              <span>진행률</span>
-              <span>38%</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 38%"></div>
-            </div>
-          </div>
-          <a href="/challenges/#" class="challenge-join-btn">
+          <a th:href="@{/challenges/{id}(id=${challenge.id})}" class="challenge-join-btn">
             <i class="bi bi-trophy"></i> 챌린지 참여
           </a>
         </div>
@@ -178,7 +116,7 @@
         <h2 class="stats-title">함께 만들어가는 성과</h2>
         <p class="stats-subtitle">수많은 사람들이 함께 만들어가는 긍정적인 변화의 숫자들</p>
       </div>
-      
+
       <div class="stats-grid">
         <div class="stats-item">
           <div class="stats-icon users">
@@ -188,7 +126,7 @@
           <div class="stats-label">총 참여자</div>
           <div class="stats-description">전국의 사용자들이 함께하고 있어요</div>
         </div>
-        
+
         <div class="stats-item">
           <div class="stats-icon trophy">
             <i class="bi bi-trophy"></i>
@@ -197,7 +135,7 @@
           <div class="stats-label">완료된 챌린지</div>
           <div class="stats-description">성공적으로 완료된 챌린지 수</div>
         </div>
-        
+
         <div class="stats-item">
           <div class="stats-icon chart">
             <i class="bi bi-graph-up"></i>
@@ -206,7 +144,7 @@
           <div class="stats-label">성공률</div>
           <div class="stats-description">평균 챌린지 완료 성공률</div>
         </div>
-        
+
         <div class="stats-item">
           <div class="stats-icon calendar">
             <i class="bi bi-calendar-check"></i>
