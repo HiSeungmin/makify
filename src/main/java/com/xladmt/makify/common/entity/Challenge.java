@@ -23,7 +23,8 @@ public class Challenge extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_challenge_member"))
     private Member member;
 
     @Column(name = "title", nullable = false, length = 50)
@@ -44,7 +45,8 @@ public class Challenge extends BaseEntity {
     private BigDecimal maxDeposit;  // 예치금
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "verification_id", nullable = false)
+    @JoinColumn(name = "verification_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_challenge_verification"))
     private VerificationMethod verificationMethod; // 인증 방법 ID
 
     private String privateCode; // 비공개 참여 코드

@@ -18,11 +18,13 @@ public class ChallengeRecord extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_challenge_record_member"))
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "challenge_id", nullable = false)
+    @JoinColumn(name = "challenge_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_challenge_record_challenge"))
     private Challenge challenge;
 
     @Column(name = "verificated_date", nullable = false)
@@ -42,20 +44,21 @@ public class ChallengeRecord extends BaseEntity {
     private String refusalReason;
 
     @Enumerated(EnumType.STRING)
-    private YN isPublic;  // 피드 공개 여부
+    private YN isPublic;
 
     @Enumerated(EnumType.STRING)
-    private YN isVisible; // 소프트 딜리트 여부
+    private YN isVisible;
 
     private Long manager;
 
-    public static ChallengeRecord create(Member member, Challenge challenge, String imageUrl, String memo) {
+    public static ChallengeRecord create(Member member, Challenge challenge, String imageUrl, String memo, YN isPublic) {
         ChallengeRecord record = new ChallengeRecord();
         record.member = member;
         record.challenge = challenge;
         record.imageUrl = imageUrl;
         record.memo = memo;
         record.verificatedDate = LocalDateTime.now();
+        record.isPublic = isPublic;
         record.isApproved = YN.Y;
         record.isVisible = YN.Y;
         return record;
@@ -63,5 +66,9 @@ public class ChallengeRecord extends BaseEntity {
 
     public void delete() {
         this.isVisible = YN.N;
+    }
+
+    public void togglePublic() {
+        this.isPublic = YN.Y.equals(this.isPublic) ? YN.N : YN.Y;
     }
 }

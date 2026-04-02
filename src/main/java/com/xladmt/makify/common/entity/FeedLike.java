@@ -22,11 +22,13 @@ public class FeedLike {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "record_id", nullable = false)
+    @JoinColumn(name = "record_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_feed_like_record"))
     private ChallengeRecord record;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_feed_like_member"))
     private Member member;
 
     @Column(name = "created_at", nullable = false, updatable = false)
