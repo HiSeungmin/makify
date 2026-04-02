@@ -64,7 +64,11 @@ public enum ErrorCode {
 
     // 이미지 관련 에러
     FILE_UPLOAD_FAIL(5001, HttpStatus.BAD_REQUEST, "이미지 파일 업로드 중 오류가 발생했습니다."),
-    FILE_META_DB_UPLOAD_FAIL(5002, HttpStatus.BAD_REQUEST, "데이터베이스 이미지 파일 업로드 중 오류가 발생했습니다.");
+    FILE_META_DB_UPLOAD_FAIL(5002, HttpStatus.BAD_REQUEST, "데이터베이스 이미지 파일 업로드 중 오류가 발생했습니다."),
+
+    // 리뷰 관련 에러
+    REVIEW_NOT_FOUND(6001, HttpStatus.NOT_FOUND, "리뷰를 찾을 수 없습니다."),
+    REVIEW_ALREADY_EXISTS(6002, HttpStatus.BAD_REQUEST, "이미 작성한 리뷰가 있습니다.");
 
     private final Integer code;
     private final HttpStatus httpStatus;

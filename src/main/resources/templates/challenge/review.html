@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'리뷰 쓰기 - ' + ${challenge.title}">리뷰 쓰기</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/review.css}" />
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.png}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="review-container">
+
+    <a th:href="@{/mypage}" class="back-button">
+        <i class="bi bi-arrow-left"></i>
+        마이페이지로 돌아가기
+    </a>
+
+    <!-- 챌린지 요약 -->
+    <div class="challenge-summary">
+        <div class="summary-badge" th:text="'#' + ${challenge.category}"></div>
+        <h2 class="summary-title" th:text="${challenge.title}"></h2>
+        <div class="summary-meta">
+            <span><i class="bi bi-calendar"></i> <span th:text="${challenge.startDate}"></span> ~ <span th:text="${challenge.endDate}"></span></span>
+            <span><i class="bi bi-people"></i> <span th:text="${challenge.participantCount}"></span>명 참여</span>
+        </div>
+        <div class="summary-completed-badge">
+            <i class="bi bi-check-circle-fill"></i> 챌린지 완료
+        </div>
+    </div>
+
+    <!-- 이미 작성한 경우 -->
+    <div th:if="${alreadyReviewed}" class="already-reviewed-card">
+        <i class="bi bi-check-circle-fill"></i>
+        <p>이미 리뷰를 작성했어요</p>
+        <span>챌린지당 하나의 리뷰만 작성할 수 있어요.</span>
+        <a th:href="@{/mypage}" class="back-mypage-btn">마이페이지로</a>
+    </div>
+
+    <!-- 리뷰 작성 폼 -->
+    <div th:if="${!alreadyReviewed}" class="review-card">
+        <h3 class="review-card-title">
+            <i class="bi bi-pencil-square"></i>
+            리뷰 작성
+        </h3>
+
+        <form th:action="@{/challenges/{id}/review(id=${challenge.id})}" method="post">
+
+            <!-- 별점 -->
+            <div class="form-section">
+                <label class="form-label">별점</label>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="star" value="5" />
+                    <label for="star5"><i class="bi bi-star-fill"></i></label>
+                    <input type="radio" id="star4" name="star" value="4" />
+                    <label for="star4"><i class="bi bi-star-fill"></i></label>
+                    <input type="radio" id="star3" name="star" value="3" checked />
+                    <label for="star3"><i class="bi bi-star-fill"></i></label>
+                    <input type="radio" id="star2" name="star" value="2" />
+                    <label for="star2"><i class="bi bi-star-fill"></i></label>
+                    <input type="radio" id="star1" name="star" value="1" />
+                    <label for="star1"><i class="bi bi-star-fill"></i></label>
+                </div>
+                <div class="star-label" id="starLabel">보통이에요</div>
+            </div>
+
+            <!-- 리뷰 내용 -->
+            <div class="form-section">
+                <label class="form-label">
+                    리뷰 내용
+                    <span class="required-badge">필수</span>
+                </label>
+                <textarea class="review-textarea"
+                          name="content"
+                          maxlength="500"
+                          placeholder="챌린지에 참여한 소감을 자유롭게 남겨주세요 :)"
+                          oninput="updateCharCount(this)"
+                          required></textarea>
+                <div class="char-count"><span id="charCount">0</span> / 500</div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="bi bi-check-circle"></i>
+                리뷰 등록하기
+            </button>
+        </form>
+    </div>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/navbar.js}"></script>
+<script>
+    const starLabels = { 1: '별로예요', 2: '아쉬워요', 3: '보통이에요', 4: '좋아요', 5: '최고예요!' };
+
+    document.querySelectorAll('.star-rating input').forEach(input => {
+        input.addEventListener('change', () => {
+            document.getElementById('starLabel').textContent = starLabels[input.value];
+        });
+    });
+
+    function updateCharCount(textarea) {
+        document.getElementById('charCount').textContent = textarea.value.length;
+    }
+</script>
+</body>
+</html>

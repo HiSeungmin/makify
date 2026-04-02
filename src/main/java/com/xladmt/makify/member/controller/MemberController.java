@@ -23,37 +23,32 @@ public class MemberController {
         return "member/login";
     }
 
-
     @PostMapping("/signup")
     @ResponseBody
     public SignupResponse signup(@RequestBody SignupRequest request) {
-
         signUpValidator.validateSignupRequest(request);
-
         memberService.signup(request);
-
         return new SignupResponse(true, "회원가입이 완료되었습니다.");
     }
 
-
-
     @GetMapping("/mypage")
     public String mypage(@AuthenticationPrincipal MemberDetails member, Model model) {
-        model.addAttribute("mypageData", memberService.mypage(member.getId()));
-        model.addAttribute("challenges", memberService.myChallenge(member.getId()));
+        Long memberId = member.getId();
+        model.addAttribute("mypageData", memberService.mypage(memberId));
+        model.addAttribute("challenges", memberService.myChallenge(memberId));
+        model.addAttribute("reviews", memberService.myReview(memberId));
         return "member/mypage";
     }
 
-
     @GetMapping("/mypage/challenges")
     public String mypageChallenges(@AuthenticationPrincipal MemberDetails member, Model model) {
-        model.addAttribute("challenges",memberService.myChallenge(member.getId()));
+        model.addAttribute("challenges", memberService.myChallenge(member.getId()));
         return "member/mypage";
     }
 
     @GetMapping("/mypage/reviews")
     public String mypageReviews(@AuthenticationPrincipal MemberDetails member, Model model) {
-
+        model.addAttribute("reviews", memberService.myReview(member.getId()));
         return "member/mypage";
     }
 
@@ -61,5 +56,4 @@ public class MemberController {
     public String mypageInquiry(@AuthenticationPrincipal MemberDetails member, Model model) {
         return "member/mypage";
     }
-
 }

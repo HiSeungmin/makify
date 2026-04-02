@@ -1,0 +1,60 @@
+* { font-family: 'Noto Sans KR', sans-serif; }
+body { background-color: #f8fffe; margin: 0; padding: 0; }
+
+.review-container { max-width: 640px; margin: 0 auto; padding: 32px 20px 60px; }
+
+.back-button { display: flex; align-items: center; gap: 8px; color: #6b7280; text-decoration: none; font-size: 14px; margin-bottom: 24px; }
+.back-button:hover { color: #374151; text-decoration: none; }
+
+/* 챌린지 요약 */
+.challenge-summary { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 24px; }
+.summary-badge { display: inline-block; background: #f0fdf4; color: #10b981; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; margin-bottom: 10px; }
+.summary-title { font-size: 22px; font-weight: 800; color: #111827; margin-bottom: 12px; }
+.summary-meta { display: flex; gap: 16px; flex-wrap: wrap; font-size: 14px; color: #6b7280; margin-bottom: 14px; }
+.summary-meta i { color: #10b981; margin-right: 4px; }
+.summary-completed-badge { display: inline-flex; align-items: center; gap: 6px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #059669; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 20px; }
+
+/* 이미 리뷰 작성한 경우 */
+.already-reviewed-card { background: white; border-radius: 16px; padding: 48px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; }
+.already-reviewed-card i { font-size: 48px; color: #10b981; display: block; margin-bottom: 16px; }
+.already-reviewed-card p { font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px; }
+.already-reviewed-card span { font-size: 14px; color: #6b7280; display: block; margin-bottom: 24px; }
+.back-mypage-btn { display: inline-block; background: #10b981; color: white; padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none; }
+.back-mypage-btn:hover { background: #059669; color: white; text-decoration: none; }
+
+/* 리뷰 카드 */
+.review-card { background: white; border-radius: 16px; padding: 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.review-card-title { font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 28px; display: flex; align-items: center; gap: 8px; }
+.review-card-title i { color: #10b981; }
+
+.form-section { margin-bottom: 28px; }
+.form-label { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; color: #374151; margin-bottom: 12px; }
+.required-badge { font-size: 11px; color: #ef4444; background: #fef2f2; padding: 2px 8px; border-radius: 10px; }
+
+/* 별점 */
+.star-rating { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 4px; margin-bottom: 10px; }
+.star-rating input { display: none; }
+.star-rating label { font-size: 36px; color: #d1d5db; cursor: pointer; transition: color 0.15s; }
+.star-rating label i { pointer-events: none; }
+.star-rating input:checked ~ label { color: #f59e0b; }
+.star-rating label:hover,
+.star-rating label:hover ~ label { color: #f59e0b; }
+
+.star-label { font-size: 15px; font-weight: 600; color: #f59e0b; min-height: 22px; }
+
+/* 리뷰 텍스트 영역 */
+.review-textarea { width: 100%; height: 160px; border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px 16px; font-size: 14px; resize: none; outline: none; transition: border-color 0.2s; box-sizing: border-box; line-height: 1.6; }
+.review-textarea:focus { border-color: #10b981; }
+.review-textarea::placeholder { color: #9ca3af; }
+.char-count { text-align: right; font-size: 12px; color: #9ca3af; margin-top: 6px; }
+
+/* 제출 버튼 */
+.submit-btn { width: 100%; background: #10b981; color: white; border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
+.submit-btn:hover { background: #059669; transform: translateY(-1px); }
+
+@media (max-width: 768px) {
+    .review-container { padding: 20px 16px 80px; }
+    .review-card { padding: 20px; }
+    .summary-title { font-size: 18px; }
+    .star-rating label { font-size: 30px; }
+}

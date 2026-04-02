@@ -32,7 +32,8 @@ public interface UserChallengeRepository extends JpaRepository<UserChallenge, Lo
 
     @Query("SELECT uc " +
             "FROM UserChallenge uc " +
+            "JOIN FETCH uc.challenge " +
             "WHERE uc.member.id = :memberId " +
-            "AND (uc.status = 'JOINED' OR uc.status = 'COMPLETED')")
+            "AND uc.status IN ('JOINED', 'COMPLETED', 'FAIL')")
     List<UserChallenge> findByMemberId(@Param("memberId") Long memberId);
 }

@@ -16,13 +16,11 @@
 <div th:replace="fragments/navbar :: navbar"></div>
 
 <div class="mypage-container">
-  <!-- 헤더 섹션 -->
   <div class="header-section">
     <h1 class="page-title">마이페이지</h1>
     <p class="page-subtitle">나의 챌린지 여정을 확인해보세요</p>
   </div>
 
-  <!-- 프로필 카드 -->
   <div class="profile-card">
     <div class="profile-header">
       <div class="profile-info">
@@ -37,7 +35,6 @@
     </div>
   </div>
 
-  <!-- 통계 카드 -->
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-number">5</div>
@@ -57,7 +54,6 @@
     </div>
   </div>
 
-  <!-- 탭 네비게이션 -->
   <div class="custom-tabs">
     <button class="custom-tab active" onclick="showTab('challenges')">
       <i class="bi bi-trophy"></i> 내 챌린지
@@ -70,7 +66,6 @@
     </button>
   </div>
 
-  <!-- 탭 콘텐츠 -->
   <div id="challengesTab" class="tab-content-section">
 
     <!-- 진행중인 챌린지 -->
@@ -163,7 +158,10 @@
       <p>챌린지를 완주하면 여기에 기록돼요!</p>
     </div>
     <div th:if="${!challenges.completed.isEmpty()}" class="challenges-scroll">
-      <div class="challenge-card" th:each="c : ${challenges.completed}">
+      <div class="challenge-card completed-card"
+           th:each="c : ${challenges.completed}"
+           th:data-url="@{/challenges/{id}(id=${c.challengeId})}"
+           onclick="goToDetail(this)">
         <div class="challenge-status status-completed">완료</div>
         <h3 class="challenge-title" th:text="${c.title}"></h3>
         <p class="challenge-description" th:text="${c.description}"></p>
@@ -180,8 +178,23 @@
             <div class="progress-bar-fill" th:style="'width: ' + ${c.progressPercentage} + '%'"></div>
           </div>
         </div>
-        <div class="challenge-actions">
-          <a th:href="@{/challenges/{id}(id=${c.challengeId})}" class="action-btn btn-secondary">상세보기</a>
+        <div class="challenge-actions" onclick="event.stopPropagation()">
+          <a th:href="@{/challenges/{id}/history(id=${c.challengeId})}"
+             class="action-btn btn-secondary"
+             onclick="event.stopPropagation()">
+            <i class="bi bi-camera"></i> 인증 내역
+          </a>
+          <a th:if="${!c.reviewed}"
+             th:href="@{/challenges/{id}/review(id=${c.challengeId})}"
+             class="action-btn btn-primary"
+             onclick="event.stopPropagation()">
+            <i class="bi bi-pencil"></i> 리뷰 쓰기
+          </a>
+          <span th:if="${c.reviewed}"
+                class="action-btn btn-reviewed"
+                onclick="event.stopPropagation()">
+            <i class="bi bi-check-lg"></i> 리뷰 등록됨
+          </span>
         </div>
       </div>
     </div>
@@ -194,21 +207,35 @@
       <i class="bi bi-chat-square-text"></i>
       작성한 후기
     </div>
-    <div class="list-section">
-      <div class="list-item">
-        <div class="list-item-title">물 2L 마시기 후기</div>
-        <div class="list-item-content">이 챌린지를 통해 진짜 몸이 가벼워졌어요! 매일 물을 마시는 습관이 생기니까 피부도 좋아지고 전체적으로 컨디션이 많이 개선되었습니다.</div>
-        <div class="list-item-meta">
-          <span>2024.12.15</span>
-          <span class="status-badge status-completed">게시됨</span>
+
+    <div th:if="${reviews == null or reviews.reviews.isEmpty()}" class="empty-state">
+      <i class="bi bi-chat-square-text"></i>
+      <h4>작성한 후기가 없어요</h4>
+      <p>완료된 챌린지에 후기를 남겨보세요!</p>
+    </div>
+
+    <div th:if="${reviews != null and !reviews.reviews.isEmpty()}" class="list-section">
+      <div class="list-item" th:each="r : ${reviews.reviews}">
+        <div class="review-item-header">
+          <a class="review-title"
+             th:href="@{/challenges/{id}(id=${r.challengeId})}"
+             th:text="${r.challengeTitle}"></a>
+          <div class="review-stars">
+            <span th:each="i : ${#numbers.sequence(1, 5)}">
+              <i th:class="${i <= r.star} ? 'bi bi-star-fill' : 'bi bi-star'"></i>
+            </span>
+          </div>
         </div>
-      </div>
-      <div class="list-item">
-        <div class="list-item-title">한 달 독서 챌린지 후기</div>
-        <div class="list-item-content">처음에는 매일 30분 독서가 힘들었는데, 다른 분들과 함께 하니까 끝까지 할 수 있었어요. 총 5권의 책을 완독했습니다!</div>
+        <p class="list-item-content" th:text="${r.content}"></p>
         <div class="list-item-meta">
-          <span>2025.01.02</span>
-          <span class="status-badge status-completed">게시됨</span>
+          <span th:text="${r.createdAt}"></span>
+          <button class="review-edit-btn"
+                  th:data-review-id="${r.reviewId}"
+                  th:data-content="${r.content}"
+                  th:data-star="${r.star}"
+                  onclick="openEditModal(this)">
+            <i class="bi bi-pencil"></i> 수정
+          </button>
         </div>
       </div>
     </div>
@@ -220,23 +247,54 @@
       <i class="bi bi-question-circle"></i>
       문의 내역
     </div>
-    <div class="list-section">
-      <div class="list-item">
-        <div class="list-item-title">환급 관련 문의</div>
-        <div class="list-item-content">챌린지 완료 후 환급 절차에 대해 문의드립니다. 언제쯤 처리되는지 알고 싶습니다.</div>
-        <div class="list-item-meta">
-          <span>2024.12.20</span>
-          <span class="status-badge status-completed">답변 완료</span>
+    <div class="empty-state">
+      <i class="bi bi-question-circle"></i>
+      <h4>문의 내역이 없어요</h4>
+    </div>
+  </div>
+</div>
+
+<!-- 리뷰 수정 모달 -->
+<div class="review-modal-backdrop" id="reviewModalBackdrop" onclick="closeEditModal()">
+  <div class="review-modal" onclick="event.stopPropagation()">
+    <div class="review-modal-header">
+      <h4>리뷰 수정</h4>
+      <button class="review-modal-close" onclick="closeEditModal()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="review-modal-body">
+      <!-- 별점 -->
+      <div class="modal-form-section">
+        <label class="modal-form-label">별점</label>
+        <div class="modal-star-rating">
+          <input type="radio" id="mstar5" name="modalStar" value="5" />
+          <label for="mstar5"><i class="bi bi-star-fill"></i></label>
+          <input type="radio" id="mstar4" name="modalStar" value="4" />
+          <label for="mstar4"><i class="bi bi-star-fill"></i></label>
+          <input type="radio" id="mstar3" name="modalStar" value="3" />
+          <label for="mstar3"><i class="bi bi-star-fill"></i></label>
+          <input type="radio" id="mstar2" name="modalStar" value="2" />
+          <label for="mstar2"><i class="bi bi-star-fill"></i></label>
+          <input type="radio" id="mstar1" name="modalStar" value="1" />
+          <label for="mstar1"><i class="bi bi-star-fill"></i></label>
         </div>
+        <div class="modal-star-label" id="modalStarLabel"></div>
       </div>
-      <div class="list-item">
-        <div class="list-item-title">챌린지 오류 제보</div>
-        <div class="list-item-content">인증 사진 업로드가 안 되는 문제가 있습니다. 확인 부탁드립니다.</div>
-        <div class="list-item-meta">
-          <span>2025.01.10</span>
-          <span class="status-badge status-pending">처리 중</span>
-        </div>
+      <!-- 내용 -->
+      <div class="modal-form-section">
+        <label class="modal-form-label">리뷰 내용</label>
+        <textarea class="modal-textarea" id="modalContent" maxlength="500"
+                  oninput="updateModalCharCount(this)"
+                  placeholder="리뷰 내용을 입력해주세요."></textarea>
+        <div class="modal-char-count"><span id="modalCharCount">0</span> / 500</div>
       </div>
+    </div>
+    <div class="review-modal-footer">
+      <button class="modal-cancel-btn" onclick="closeEditModal()">취소</button>
+      <button class="modal-submit-btn" onclick="submitEditReview()">
+        <i class="bi bi-check-circle"></i> 수정 완료
+      </button>
     </div>
   </div>
 </div>
@@ -246,15 +304,19 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/navbar.js}"></script>
 
-<!-- 전역 토스트 제거 - 카드 인라인 메시지로 대체 -->
-
 <script>
+  let currentReviewId = null;
+  const starLabels = { 1: '별로예요 😞', 2: '아쉬워요 😐', 3: '보통이에요 🙂', 4: '좋아요 😊', 5: '최고예요! 🎉' };
+
+  function goToDetail(card) {
+    window.location.href = card.dataset.url;
+  }
+
   async function checkVerifyTime(event, el) {
     event.preventDefault();
     const challengeId = el.dataset.challengeId;
     const wrapper = el.closest('.challenges-scroll').closest('.challenges-scroll-wrapper');
     const msgEl = wrapper.querySelector('.verify-inline-msg');
-
     try {
       const res = await fetch(`/api/challenges/${challengeId}/verify/validate`);
       if (res.ok) {
@@ -281,6 +343,63 @@
     event.target.closest('.custom-tab').classList.add('active');
     document.getElementById(tabName + 'Tab').style.display = 'block';
   }
+
+  // 리뷰 수정 모달 열기
+  function openEditModal(btn) {
+    currentReviewId = btn.dataset.reviewId;
+    const content = btn.dataset.content;
+    const star = parseInt(btn.dataset.star);
+
+    document.getElementById('modalContent').value = content;
+    document.getElementById('modalCharCount').textContent = content.length;
+    document.getElementById('modalStarLabel').textContent = starLabels[star];
+
+    const radioEl = document.getElementById('mstar' + star);
+    if (radioEl) radioEl.checked = true;
+
+    document.getElementById('reviewModalBackdrop').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeEditModal() {
+    document.getElementById('reviewModalBackdrop').classList.remove('active');
+    document.body.style.overflow = '';
+    currentReviewId = null;
+  }
+
+  function updateModalCharCount(textarea) {
+    document.getElementById('modalCharCount').textContent = textarea.value.length;
+  }
+
+  document.querySelectorAll('.modal-star-rating input').forEach(input => {
+    input.addEventListener('change', () => {
+      document.getElementById('modalStarLabel').textContent = starLabels[input.value];
+    });
+  });
+
+  async function submitEditReview() {
+    const content = document.getElementById('modalContent').value.trim();
+    const starEl = document.querySelector('input[name="modalStar"]:checked');
+
+    if (!content) { alert('리뷰 내용을 입력해주세요.'); return; }
+    if (!starEl) { alert('별점을 선택해주세요.'); return; }
+
+    const params = new URLSearchParams({ content, star: starEl.value });
+
+    const res = await fetch(`/api/reviews/${currentReviewId}?${params}`, {
+      method: 'PATCH',
+      credentials: 'include'
+    });
+
+    if (res.ok) {
+      closeEditModal();
+      location.reload();
+    } else {
+      alert('수정에 실패했어요. 다시 시도해주세요.');
+    }
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEditModal(); });
 </script>
 </body>
 </html>
