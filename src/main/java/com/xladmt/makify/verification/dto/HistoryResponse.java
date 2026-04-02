@@ -13,7 +13,8 @@ public record HistoryResponse(
         String verificatedDate,
         boolean approved,
         String refusalReason,
-        String nickname
+        String nickname,
+        boolean isPublic
 ) {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
 
@@ -25,7 +26,8 @@ public record HistoryResponse(
                 record.getVerificatedDate().format(FORMATTER),
                 YN.Y.equals(record.getIsApproved()),
                 record.getRefusalReason(),
-                record.getMember().getNickname()
+                record.getMember().getNickname(),
+                YN.Y.equals(record.getIsPublic())
         );
     }
 }

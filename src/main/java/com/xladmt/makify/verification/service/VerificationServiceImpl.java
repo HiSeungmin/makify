@@ -4,6 +4,7 @@ import com.xladmt.makify.challenge.repository.ChallengeRepository;
 import com.xladmt.makify.challenge.repository.UserChallengeRepository;
 import com.xladmt.makify.common.config.fileUpload.S3Uploader;
 import com.xladmt.makify.common.constant.ImageType;
+import com.xladmt.makify.common.constant.YN;
 import com.xladmt.makify.common.entity.Challenge;
 import com.xladmt.makify.common.entity.ChallengeRecord;
 import com.xladmt.makify.common.entity.FileMeta;
@@ -42,7 +43,6 @@ public class VerificationServiceImpl implements VerificationService {
 
     @Override
     public VerifyResponse getVerifyPage(Long challengeId, Long memberId) {
-
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
 
@@ -104,25 +104,24 @@ public class VerificationServiceImpl implements VerificationService {
         return filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
     }
 
+    @Override
     @Transactional
-    public void verify(Long challengeId, Long memberId, MultipartFile image, String memo) throws IOException {
+    public void verify(Long challengeId, Long memberId, MultipartFile image, boolean isPublic, String memo) throws IOException {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
-        // S3 업로드 - verification/{challengeId}/{memberId} 경로에 저장
         String folder = "verification/" + challengeId + "/" + memberId;
         String key = s3Uploader.uploadAndGetKey(image, folder);
+        YN isPublicYn = isPublic ? YN.Y : YN.N;
 
         try {
-            // 인증 내역 저장
             String imageUrl = s3Uploader.getPublicUrl(key);
-            ChallengeRecord record = ChallengeRecord.create(member, challenge, imageUrl, memo);
+            ChallengeRecord record = ChallengeRecord.create(member, challenge, imageUrl, memo, isPublicYn);
             challengeRecordRepository.save(record);
 
-            // FileMeta 저장
             String ext = extractExtension(image.getOriginalFilename());
             FileMeta fileMeta = FileMeta.create(
                     record.getId(),
@@ -135,7 +134,6 @@ public class VerificationServiceImpl implements VerificationService {
             fileMetaRepository.save(fileMeta);
 
         } catch (Exception e) {
-            // DB 저장 실패 시 S3 파일 삭제 (고아 파일 방지)
             s3Uploader.delete(key);
             throw new BusinessException(ErrorCode.FILE_META_DB_UPLOAD_FAIL);
         }
@@ -146,5 +144,13 @@ public class VerificationServiceImpl implements VerificationService {
     public void deleteVerify(long recordId, long memberId) {
         ChallengeRecord challengeRecord = challengeRecordRepository.findByIdAndMemberId(recordId, memberId);
         challengeRecord.delete();
+    }
+
+    @Override
+    @Transactional
+    public boolean togglePublic(long recordId, long memberId) {
+        ChallengeRecord record = challengeRecordRepository.findByIdAndMemberId(recordId, memberId);
+        record.togglePublic();
+        return YN.Y.equals(record.getIsPublic());
     }
 }

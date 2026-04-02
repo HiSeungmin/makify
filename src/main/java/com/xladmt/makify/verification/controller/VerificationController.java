@@ -35,7 +35,6 @@ public class VerificationController {
         return "verification/verify";
     }
 
-    // 인증 시간 검증 API
     @GetMapping("/api/challenges/{id}/verify/validate")
     @ResponseBody
     public ResponseEntity<Map<String, String>> validateVerifyTime(@PathVariable Long id) {
@@ -43,17 +42,16 @@ public class VerificationController {
         return ResponseEntity.ok(Map.of("status", "ok"));
     }
 
-    // 인증 제출
     @PostMapping("/challenges/{id}/verify")
     public String verify(@PathVariable Long id,
                          @RequestParam("image") MultipartFile image,
+                         @RequestParam(value = "isPublic", required = false, defaultValue = "false") boolean isPublic,
                          @RequestParam(value = "memo", required = false) String memo,
                          @AuthenticationPrincipal MemberDetails memberDetails) throws IOException {
-        verificationService.verify(id, memberDetails.getMember().getId(), image, memo);
+        verificationService.verify(id, memberDetails.getMember().getId(), image, isPublic, memo);
         return "redirect:/mypage";
     }
 
-    // 인증 삭제
     @DeleteMapping("/api/records/{recordId}")
     @ResponseBody
     public ResponseEntity<Void> deleteVerify(@PathVariable Long recordId,
@@ -62,7 +60,14 @@ public class VerificationController {
         return ResponseEntity.ok().build();
     }
 
-    // 인증 내역 페이지
+    @PatchMapping("/api/records/{recordId}/toggle-public")
+    @ResponseBody
+    public ResponseEntity<Map<String, Boolean>> togglePublic(@PathVariable Long recordId,
+                                                             @AuthenticationPrincipal MemberDetails memberDetails) {
+        boolean isPublic = verificationService.togglePublic(recordId, memberDetails.getMember().getId());
+        return ResponseEntity.ok(Map.of("isPublic", isPublic));
+    }
+
     @GetMapping("/challenges/{id}/history")
     public String showHistoryPage(@PathVariable Long id,
                                   @AuthenticationPrincipal MemberDetails memberDetails,

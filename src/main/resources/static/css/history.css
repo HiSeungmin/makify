@@ -51,10 +51,15 @@ body { background-color: #f8fffe; margin: 0; padding: 0; }
 .approval-badge.approved { background: #10b981; color: white; }
 .approval-badge.rejected { background: #ef4444; color: white; }
 
+/* 공개 여부 뱃지 */
+.public-badge { position: absolute; bottom: 10px; left: 10px; display: flex; align-items: center; justify-content: center; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; gap: 4px; z-index: 2; backdrop-filter: blur(4px); }
+.public-badge.public { background: rgba(16, 185, 129, 0.85); color: white; }
+.public-badge.private { background: rgba(107, 114, 128, 0.75); color: white; }
+
 .card-menu-btn { position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.9); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #374151; z-index: 2; transition: background 0.2s; }
 .card-menu-btn:hover { background: white; }
 
-.card-dropdown { position: absolute; top: 44px; right: 8px; background: white; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); overflow: hidden; z-index: 10; min-width: 130px; display: none; }
+.card-dropdown { position: absolute; top: 44px; right: 8px; background: white; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); overflow: hidden; z-index: 10; min-width: 140px; display: none; }
 .card-dropdown.open { display: block; }
 
 .card-dropdown-item { display: flex; align-items: center; gap: 8px; padding: 11px 16px; font-size: 14px; color: #374151; cursor: pointer; border: none; background: none; width: 100%; text-align: left; transition: background 0.15s; }

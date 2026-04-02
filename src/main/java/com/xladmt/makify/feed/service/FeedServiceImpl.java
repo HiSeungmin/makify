@@ -35,8 +35,8 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public List<FeedResponse> getFeed(Long memberId, String sort) {
         List<ChallengeRecord> records = "likes".equals(sort)
-                ? feedRepository.findFeedOrderByLikes(YN.Y, YN.Y)
-                : feedRepository.findFeedOrderByLatest(YN.Y, YN.Y);
+                ? feedRepository.findFeedOrderByLikes(YN.Y, YN.Y, YN.Y)
+                : feedRepository.findFeedOrderByLatest(YN.Y, YN.Y, YN.Y);
 
         return records.stream()
                 .map(record -> {
@@ -44,7 +44,7 @@ public class FeedServiceImpl implements FeedService {
                     int commentCount = feedCommentRepository.countByRecordId(record.getId());
                     boolean liked = memberId != null &&
                             feedLikeRepository.findByRecordIdAndMemberId(record.getId(), memberId).isPresent();
-                    return FeedResponse.from(record, likeCount, commentCount, liked);
+                    return FeedResponse.from(record, likeCount, commentCount, liked, memberId);
                 })
                 .toList();
     }

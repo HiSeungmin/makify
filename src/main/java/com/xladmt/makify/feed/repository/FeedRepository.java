@@ -18,9 +18,11 @@ public interface FeedRepository extends JpaRepository<ChallengeRecord, Long> {
             "JOIN FETCH cr.challenge " +
             "WHERE cr.isVisible = :isVisible " +
             "AND cr.isApproved = :isApproved " +
+            "AND cr.isPublic = :isPublic " +
             "ORDER BY cr.verificatedDate DESC")
     List<ChallengeRecord> findFeedOrderByLatest(@Param("isVisible") YN isVisible,
-                                                @Param("isApproved") YN isApproved);
+                                                @Param("isApproved") YN isApproved,
+                                                @Param("isPublic") YN isPublic);
 
     // 좋아요순
     @Query("SELECT cr FROM ChallengeRecord cr " +
@@ -29,8 +31,10 @@ public interface FeedRepository extends JpaRepository<ChallengeRecord, Long> {
             "LEFT JOIN FeedLike fl ON fl.record.id = cr.id " +
             "WHERE cr.isVisible = :isVisible " +
             "AND cr.isApproved = :isApproved " +
+            "AND cr.isPublic = :isPublic " +
             "GROUP BY cr.id " +
             "ORDER BY COUNT(fl.id) DESC, cr.verificatedDate DESC")
     List<ChallengeRecord> findFeedOrderByLikes(@Param("isVisible") YN isVisible,
-                                               @Param("isApproved") YN isApproved);
+                                               @Param("isApproved") YN isApproved,
+                                               @Param("isPublic") YN isPublic);
 }

@@ -85,17 +85,30 @@
           <div th:if="${!r.approved}" class="approval-badge rejected" title="거절됨">
             <i class="bi bi-x-lg"></i>
           </div>
+          <!-- 공개 여부 뱃지 -->
+          <div class="public-badge" th:id="'badge-' + ${r.id}"
+               th:classappend="${r.isPublic} ? 'public' : 'private'"
+               th:title="${r.isPublic} ? '피드 공개' : '피드 비공개'">
+            <i th:class="${r.isPublic} ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+          </div>
         </div>
         <button class="card-menu-btn" th:data-id="${r.id}" onclick="toggleMenu(this)">
           <i class="bi bi-three-dots-vertical"></i>
         </button>
         <div class="card-dropdown" th:id="'dropdown-' + ${r.id}">
+          <!-- 공개 여부 토글 -->
+          <button class="card-dropdown-item" th:data-id="${r.id}"
+                  th:data-public="${r.isPublic}"
+                  th:id="'toggle-btn-' + ${r.id}"
+                  onclick="togglePublic(this)">
+            <i th:class="${r.isPublic} ? 'bi bi-eye-slash' : 'bi bi-eye'"
+               th:id="'toggle-icon-' + ${r.id}"></i>
+            <span th:id="'toggle-text-' + ${r.id}"
+                  th:text="${r.isPublic} ? '비공개로 전환' : '공개로 전환'"></span>
+          </button>
           <button class="card-dropdown-item danger" th:data-id="${r.id}" onclick="deleteRecord(this)">
             <i class="bi bi-trash"></i> 삭제하기
           </button>
-<!--          <button class="card-dropdown-item" th:data-id="${r.id}" onclick="inquireRecord(this)">-->
-<!--            <i class="bi bi-chat-dots"></i> 문의하기-->
-<!--          </button>-->
         </div>
         <div class="history-meta">
           <span class="history-date" th:text="${r.verificatedDate}"></span>
@@ -134,13 +147,11 @@
           <div th:if="${!r.approved}" class="approval-badge rejected" title="거절됨">
             <i class="bi bi-x-lg"></i>
           </div>
-          <!-- 신고하기 버튼 -->
           <button class="report-btn" th:data-id="${r.id}"
                   onclick="reportRecord(this); event.stopPropagation();" title="신고하기">
             <i class="bi bi-flag-fill"></i>
           </button>
         </div>
-
         <div class="history-meta">
           <span class="history-nickname">
             <i class="bi bi-person-fill"></i>
@@ -176,7 +187,6 @@
 <script th:inline="javascript">
   const challengeId = /*[[${challenge.id}]]*/ null;
 
-  // 탭 전환
   function switchTab(tab) {
     const isMyTab = tab === 'my';
     document.getElementById('sectionMy').style.display = isMyTab ? 'block' : 'none';
@@ -185,7 +195,6 @@
     document.getElementById('tabOther').classList.toggle('active', !isMyTab);
   }
 
-  // 사진 확대 모달
   function openModal(el) {
     document.getElementById('modalImg').src = el.dataset.img;
     document.getElementById('modalDate').textContent = el.dataset.date;
@@ -208,7 +217,6 @@
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  // 드롭다운 메뉴
   function toggleMenu(btn) {
     const id = btn.dataset.id;
     const dropdown = document.getElementById('dropdown-' + id);
@@ -223,7 +231,6 @@
     document.querySelectorAll('.card-dropdown.open').forEach(d => d.classList.remove('open'));
   });
 
-  // 삭제하기
   function deleteRecord(btn) {
     const recordId = btn.dataset.id;
     if (!confirm('인증 내역을 삭제할까요?')) return;
@@ -235,6 +242,33 @@
         } else {
           alert('삭제에 실패했어요. 다시 시도해주세요.');
         }
+      })
+      .catch(() => alert('오류가 발생했어요.'));
+  }
+
+  function togglePublic(btn) {
+    const recordId = btn.dataset.id;
+
+    fetch(`/api/records/${recordId}/toggle-public`, { method: 'PATCH' })
+      .then(res => res.json())
+      .then(data => {
+        const isPublic = data.isPublic;
+        const badge = document.getElementById('badge-' + recordId);
+        const icon = document.getElementById('toggle-icon-' + recordId);
+        const text = document.getElementById('toggle-text-' + recordId);
+
+        // 뱃지 업데이트
+        badge.className = 'public-badge ' + (isPublic ? 'public' : 'private');
+        badge.title = isPublic ? '피드 공개' : '피드 비공개';
+        badge.querySelector('i').className = isPublic ? 'bi bi-eye' : 'bi bi-eye-slash';
+
+        // 드롭다운 버튼 업데이트
+        btn.dataset.public = isPublic;
+        icon.className = isPublic ? 'bi bi-eye-slash' : 'bi bi-eye';
+        text.textContent = isPublic ? '비공개로 전환' : '공개로 전환';
+
+        // 드롭다운 닫기
+        document.querySelectorAll('.card-dropdown.open').forEach(d => d.classList.remove('open'));
       })
       .catch(() => alert('오류가 발생했어요.'));
   }

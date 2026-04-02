@@ -1,5 +1,6 @@
 package com.xladmt.makify.feed.dto;
 
+import com.xladmt.makify.common.constant.YN;
 import com.xladmt.makify.common.entity.ChallengeRecord;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,11 +17,13 @@ public class FeedResponse {
     private String category;
     private String imageUrl;
     private String memo;
-    private String verificatedDate;    // 포맷된 날짜 (yyyy.MM.dd HH:mm)
-    private String verificatedDateIso; // ISO 형식 (JS 상대시간 계산용)
+    private String verificatedDate;
+    private String verificatedDateIso;
     private int likeCount;
     private int commentCount;
     private boolean liked;
+    private boolean isPublic;
+    private boolean isOwner;
 
     private static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
@@ -28,7 +31,7 @@ public class FeedResponse {
     private static final DateTimeFormatter ISO_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
-    public static FeedResponse from(ChallengeRecord record, int likeCount, int commentCount, boolean liked) {
+    public static FeedResponse from(ChallengeRecord record, int likeCount, int commentCount, boolean liked, Long currentMemberId) {
         return FeedResponse.builder()
                 .recordId(record.getId())
                 .nickname(record.getMember().getNickname())
@@ -41,6 +44,8 @@ public class FeedResponse {
                 .likeCount(likeCount)
                 .commentCount(commentCount)
                 .liked(liked)
+                .isPublic(YN.Y.equals(record.getIsPublic()))
+                .isOwner(currentMemberId != null && currentMemberId.equals(record.getMember().getId()))
                 .build();
     }
 }

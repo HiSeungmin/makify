@@ -78,6 +78,56 @@ video.image-preview { object-fit: cover; z-index: 2; }
   color: #10b981;
 }
 
+/* 인증 피드 공개 토글 */
+.memo-section:has(.toggleSwitch) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+}
+
+.memo-section:has(.toggleSwitch) .memo-label {
+  margin-bottom: 0;
+  font-size: 15px;
+  color: #374151;
+}
+
+.toggleSwitch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 26px;
+  background: #d1d5db;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.25s ease;
+  flex-shrink: 0;
+}
+
+#toggle:checked + .toggleSwitch {
+  background: #10b981;
+}
+
+.toggleButton {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  transition: transform 0.25s ease;
+}
+
+#toggle:checked + .toggleSwitch .toggleButton {
+  transform: translateX(22px);
+}
+
 @media (max-width: 768px) {
     .verify-container { padding: 20px 16px 80px; }
     .verify-card { padding: 20px; }
