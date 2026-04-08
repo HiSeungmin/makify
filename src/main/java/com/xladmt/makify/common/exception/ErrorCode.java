@@ -68,7 +68,10 @@ public enum ErrorCode {
 
     // 리뷰 관련 에러
     REVIEW_NOT_FOUND(6001, HttpStatus.NOT_FOUND, "리뷰를 찾을 수 없습니다."),
-    REVIEW_ALREADY_EXISTS(6002, HttpStatus.BAD_REQUEST, "이미 작성한 리뷰가 있습니다.");
+    REVIEW_ALREADY_EXISTS(6002, HttpStatus.BAD_REQUEST, "이미 작성한 리뷰가 있습니다."),
+
+    // 알림 관련 에러
+    NOTIFICATION_NOT_FOUND(7001, HttpStatus.NOT_FOUND, "알림을 찾을 수 없습니다.");
 
     private final Integer code;
     private final HttpStatus httpStatus;

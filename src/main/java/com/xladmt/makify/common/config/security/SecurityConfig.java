@@ -68,6 +68,8 @@ public class SecurityConfig {
                         .requestMatchers("GET", "/api/challenges/{id}/verify/validate").authenticated()
                         .requestMatchers("POST", "/api/challenges/{id}/verify-code").authenticated()
                         .requestMatchers("GET", "/mypage").authenticated()
+                        .requestMatchers("/notifications").authenticated()
+                        .requestMatchers("/api/notifications/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterAt(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
