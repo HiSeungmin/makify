@@ -253,26 +253,61 @@
     });
   }
 
+  // recordId별 debounce 타이머와 진행 중 요청 관리
+  const likeTimers   = {};  // debounce 타이머
+  const likePending  = {};  // API 요청 진행 중 여부
+
   function toggleLike(btn) {
     const recordId = btn.dataset.recordId;
-    fetch(`/api/feed/${recordId}/like`, { method: 'POST', credentials: 'include' })
-    .then(res => {
-      if (res.status === 401) { window.location.href = '/login'; return null; }
-      return res.json();
-    })
-    .then(data => {
-      if (!data) return;
-      const icon = btn.querySelector('i');
-      const countEl = btn.querySelector('span');
-      if (data.liked) {
-        icon.className = 'bi bi-heart-fill';
-        btn.classList.add('liked');
-      } else {
-        icon.className = 'bi bi-heart';
-        btn.classList.remove('liked');
-      }
-      countEl.textContent = data.likeCount;
-    });
+
+    // 이미 요청 진행 중이면 무시
+    if (likePending[recordId]) return;
+
+    // 기존 타이머 취소 후 재설정 (연속 클릭 시 마지막 클릭만 실행)
+    clearTimeout(likeTimers[recordId]);
+
+    // UI는 즉시 반영 (낙관적 업데이트)
+    const icon    = btn.querySelector('i');
+    const countEl = btn.querySelector('span');
+    const isLiked = btn.classList.contains('liked');
+    const currentCount = parseInt(countEl.textContent);
+
+    if (isLiked) {
+      icon.className = 'bi bi-heart';
+      btn.classList.remove('liked');
+      countEl.textContent = currentCount - 1;
+    } else {
+      icon.className = 'bi bi-heart-fill';
+      btn.classList.add('liked');
+      countEl.textContent = currentCount + 1;
+    }
+
+    // 300ms 내 추가 클릭 없으면 API 호출
+    likeTimers[recordId] = setTimeout(() => {
+      likePending[recordId] = true;
+
+      fetch(`/api/feed/${recordId}/like`, { method: 'POST', credentials: 'include' })
+        .then(res => {
+          if (res.status === 401) { window.location.href = '/login'; return null; }
+          return res.json();
+        })
+        .then(data => {
+          if (!data) return;
+          // 서버 응답 기준으로 최종 동기화
+          icon.className    = data.liked ? 'bi bi-heart-fill' : 'bi bi-heart';
+          countEl.textContent = data.likeCount;
+          data.liked ? btn.classList.add('liked') : btn.classList.remove('liked');
+        })
+        .catch(() => {
+          // 실패 시 UI 롤백
+          icon.className    = isLiked ? 'bi bi-heart-fill' : 'bi bi-heart';
+          countEl.textContent = currentCount;
+          isLiked ? btn.classList.add('liked') : btn.classList.remove('liked');
+        })
+        .finally(() => {
+          likePending[recordId] = false;
+        });
+    }, 300);
   }
 
   function toggleComments(btn) {
