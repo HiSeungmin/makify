@@ -20,18 +20,111 @@
     </ul>
   </nav>
 
-  <button class="habit-mobile-toggle">
+  <button class="habit-mobile-toggle" id="mobileToggleBtn">
     <span></span>
     <span></span>
     <span></span>
   </button>
 
+  <!-- 데스크탑 액션 -->
   <div class="habit-nav-actions">
-    <a sec:authorize="isAuthenticated()" href="/mypage" class="habit-btn-login">마이페이지</a>
-    <a sec:authorize="isAuthenticated()" href="/notifications" class="habit-btn-login">알림</a>
-    <a sec:authorize="!isAuthenticated()" href="/login" class="habit-btn-login">로그인</a>
-    <a sec:authorize="!isAuthenticated()" href="/register" class="habit-btn-signup">회원가입</a>
+    <div sec:authorize="isAuthenticated()" class="nav-auth-group">
+      <a href="/notifications" class="habit-btn-login notification-bell" id="notificationBell">
+        <i class="bi bi-bell"></i>
+        <span class="notification-badge" id="notificationBadge" style="display:none">0</span>
+      </a>
+      <a href="/mypage" class="habit-btn-login">
+        <i class="bi bi-person"></i> 마이페이지
+      </a>
+      <button class="habit-btn-login" id="logoutBtn">
+        <i class="bi bi-box-arrow-right"></i> 로그아웃
+      </button>
+    </div>
+    <div sec:authorize="!isAuthenticated()" class="nav-auth-group">
+      <a href="/login" class="habit-btn-login">로그인</a>
+    </div>
   </div>
+
+  <!-- 모바일 오버레이 -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+  <!-- 모바일 서랍 -->
+  <div class="mobile-menu-drawer" id="mobileMenuDrawer">
+    <ul>
+      <li><a href="/">홈</a></li>
+      <li><a href="/challenges">챌린지</a></li>
+      <li><a href="/feed">인증 피드</a></li>
+      <li class="mobile-divider" sec:authorize="isAuthenticated()"></li>
+      <li sec:authorize="isAuthenticated()"><a href="/notifications"><i class="bi bi-bell"></i> 알림</a></li>
+      <li sec:authorize="isAuthenticated()"><a href="/mypage"><i class="bi bi-person"></i> 마이페이지</a></li>
+      <li sec:authorize="isAuthenticated()"><button id="mobileLogoutBtn"><i class="bi bi-box-arrow-right"></i> 로그아웃</button></li>
+      <li class="mobile-divider" sec:authorize="!isAuthenticated()"></li>
+      <li sec:authorize="!isAuthenticated()"><a href="/login">로그인</a></li>
+    </ul>
+  </div>
+
+  <!-- navbar 인라인 스크립트 — onclick 대신 addEventListener 사용 -->
+  <script>
+    (function() {
+      function _toggleMenu() {
+        var overlay = document.getElementById('mobileMenuOverlay');
+        var drawer  = document.getElementById('mobileMenuDrawer');
+        var toggle  = document.getElementById('mobileToggleBtn');
+        if (!overlay || !drawer) return;
+        var isActive = drawer.classList.contains('active');
+        if (isActive) {
+          _closeMenu();
+        } else {
+          overlay.classList.add('active');
+          drawer.classList.add('active');
+          toggle.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      }
+
+      function _closeMenu() {
+        var overlay = document.getElementById('mobileMenuOverlay');
+        var drawer  = document.getElementById('mobileMenuDrawer');
+        var toggle  = document.getElementById('mobileToggleBtn');
+        if (!overlay || !drawer) return;
+        overlay.classList.remove('active');
+        drawer.classList.remove('active');
+        if (toggle) toggle.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      // 햄버거 버튼
+      document.getElementById('mobileToggleBtn').addEventListener('click', _toggleMenu);
+
+      // 오버레이 클릭 시 닫기
+      document.getElementById('mobileMenuOverlay').addEventListener('click', _closeMenu);
+
+      // 서랍 내 링크 클릭 시 닫기
+      document.getElementById('mobileMenuDrawer').querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', _closeMenu);
+      });
+
+      // 로그아웃 버튼 (데스크탑)
+      var logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+          if (typeof logout === 'function') logout();
+        });
+      }
+
+      // 로그아웃 버튼 (모바일)
+      var mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+      if (mobileLogoutBtn) {
+        mobileLogoutBtn.addEventListener('click', function() {
+          if (typeof logout === 'function') logout();
+        });
+      }
+
+      // navbar.js의 toggleMobileMenu와 연결
+      window.toggleMobileMenu = _toggleMenu;
+      window.closeMobileMenu  = _closeMenu;
+    })();
+  </script>
 </header>
 </body>
 </html>

@@ -2,11 +2,15 @@ package com.xladmt.makify.application;
 
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
+import com.xladmt.makify.challenge.repository.UserChallengeRepository;
 import com.xladmt.makify.challenge.service.ChallengeService;
+import com.xladmt.makify.common.constant.NotificationType;
+import com.xladmt.makify.common.entity.UserChallenge;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.common.validator.ChallengeValidator;
 import com.xladmt.makify.common.validator.PaymentValidator;
+import com.xladmt.makify.notification.service.NotificationService;
 import com.xladmt.makify.payment.dto.PaymentCallbackRequest;
 import com.xladmt.makify.payment.dto.PaymentInitRequest;
 import com.xladmt.makify.payment.service.PaymentService;
@@ -23,6 +27,8 @@ public class PaymentFacade {
     private final PaymentService paymentService;
     private final ChallengeValidator challengeValidator;
     private final PaymentValidator paymentValidator;
+    private final NotificationService notificationService;
+    private final UserChallengeRepository userChallengeRepository;
 
     /**
      * 결제 초기화 - "결제하기" 버튼 클릭 시 호출
@@ -74,6 +80,17 @@ public class PaymentFacade {
             // 3. 상태 변경: PENDING → COMPLETE
             challengeService.completeUserChallenge(request.getUuid());
             paymentService.completePayment(request.getUuid(), request.getPaymentUid());
+
+            // 결제 완료 알림 발행
+            userChallengeRepository.findByUuid(request.getUuid()).ifPresent(uc -> {
+                Long memberId = uc.getMember().getId();
+                notificationService.send(
+                        memberId,
+                        NotificationType.PAYMENT_COMPLETE,
+                        "'" + uc.getChallenge().getTitle() + "' " + NotificationType.PAYMENT_COMPLETE.getDefaultMessage(),
+                        "/mypage"
+                );
+            });
 
             return iamportResponse;
 

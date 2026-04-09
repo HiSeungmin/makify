@@ -1,242 +1,211 @@
 // Notifications Page JavaScript
 
+let currentPage    = 0;
+let isLastPage     = false;
+let isLoading      = false;
+let currentFilter  = 'all';
+
 document.addEventListener('DOMContentLoaded', function() {
-    initNotifications();
+    loadNotifications(true);
+    initFilterTabs();
+    initMarkAllAsRead();
+    initInfiniteScroll();
 });
 
-function initNotifications() {
-    // 필터 탭 이벤트
-    const filterTabs = document.querySelectorAll('.filter-tab');
-    filterTabs.forEach(tab => {
-        tab.addEventListener('click', handleFilterClick);
-    });
+// 알림 목록 로드
 
-    // 삭제 버튼 이벤트
-    const deleteButtons = document.querySelectorAll('.notification-delete');
-    deleteButtons.forEach(btn => {
-        btn.addEventListener('click', handleDeleteNotification);
-    });
+async function loadNotifications(reset = false) {
+    if (isLoading || isLastPage) return;
+    isLoading = true;
 
-    // 알림 아이템 클릭 이벤트 (읽음 표시)
-    const notificationItems = document.querySelectorAll('.notification-item');
-    notificationItems.forEach(item => {
-        item.addEventListener('click', handleNotificationClick);
-    });
+    if (reset) {
+        currentPage = 0;
+        isLastPage  = false;
+        document.getElementById('notificationsList').innerHTML = '';
+    }
 
-    // 모두 읽음으로 표시 버튼
-    const markAllBtn = document.getElementById('markAllAsRead');
-    if (markAllBtn) {
-        markAllBtn.addEventListener('click', handleMarkAllAsRead);
+    try {
+        const res = await secureFetch(`/api/notifications?page=${currentPage}&size=20`);
+        if (!res || !res.ok) return;
+
+        const data = await res.json();
+        data.content.forEach(n => renderNotification(n, false));
+        isLastPage = data.last;
+        if (!isLastPage) currentPage++;
+
+        updateEmptyState(document.querySelectorAll('.notification-item').length === 0);
+        applyFilter(currentFilter);
+
+    } catch (e) {
+        console.error('[Notifications] 목록 로드 실패', e);
+    } finally {
+        isLoading = false;
     }
 }
 
-/**
- * 필터 탭 클릭 처리
- */
-function handleFilterClick(e) {
-    const clickedTab = e.currentTarget;
-    const filterValue = clickedTab.getAttribute('data-filter');
+// 렌더링
 
-    // 활성 탭 변경
-    document.querySelectorAll('.filter-tab').forEach(tab => {
-        tab.classList.remove('active');
-    });
-    clickedTab.classList.add('active');
-
-    // 알림 필터링
-    filterNotifications(filterValue);
-}
-
-/**
- * 알림 필터링
- */
-function filterNotifications(filterValue) {
-    const notificationItems = document.querySelectorAll('.notification-item');
-    let visibleCount = 0;
-
-    notificationItems.forEach(item => {
-        if (filterValue === 'all') {
-            item.style.display = 'flex';
-            visibleCount++;
-        } else {
-            const category = item.getAttribute('data-category');
-            if (category === filterValue) {
-                item.style.display = 'flex';
-                visibleCount++;
-            } else {
-                item.style.display = 'none';
-            }
-        }
-    });
-
-    // 필터 결과가 없으면 빈 상태 표시
-    updateEmptyState(visibleCount === 0);
-}
-
-/**
- * 알림 삭제 처리
- */
-function handleDeleteNotification(e) {
-    e.stopPropagation();
-    const notificationItem = e.currentTarget.closest('.notification-item');
-    
-    // 애니메이션 효과
-    notificationItem.style.opacity = '0';
-    notificationItem.style.transform = 'translateX(100%)';
-
-    setTimeout(() => {
-        notificationItem.remove();
-        // 남은 알림이 없으면 빈 상태 표시
-        const remainingNotifications = document.querySelectorAll('.notification-item');
-        if (remainingNotifications.length === 0) {
-            updateEmptyState(true);
-        }
-    }, 300);
-}
-
-/**
- * 알림 클릭 처리 (읽음 표시)
- */
-function handleNotificationClick(e) {
-    if (e.target.closest('.notification-delete')) {
-        return; // 삭제 버튼 클릭은 무시
-    }
-
-    const notificationItem = e.currentTarget;
-    if (notificationItem.classList.contains('unread')) {
-        notificationItem.classList.remove('unread');
-        notificationItem.classList.add('read');
-    }
-}
-
-/**
- * 모든 알림을 읽음으로 표시
- */
-function handleMarkAllAsRead() {
-    const unreadNotifications = document.querySelectorAll('.notification-item.unread');
-    unreadNotifications.forEach(item => {
-        item.classList.remove('unread');
-        item.classList.add('read');
-    });
-}
-
-/**
- * 빈 상태 업데이트
- */
-function updateEmptyState(isEmpty) {
-    const emptyState = document.querySelector('.notifications-empty');
-    const notificationsList = document.getElementById('notificationsList');
-
-    if (isEmpty) {
-        emptyState.style.display = 'flex';
-        notificationsList.style.display = 'none';
+function renderNotification(n, prepend = false) {
+    const list = document.getElementById('notificationsList');
+    const el   = createNotificationElement(n);
+    if (prepend) {
+        list.insertBefore(el, list.firstChild);
     } else {
-        emptyState.style.display = 'none';
-        notificationsList.style.display = 'flex';
+        list.appendChild(el);
     }
-}
-
-/**
- * (옵션) 실시간 알림 추가 함수
- * 나중에 WebSocket이나 Server-Sent Events와 통합할 수 있습니다.
- */
-function addNotification(notification) {
-    const notificationsList = document.getElementById('notificationsList');
-    
-    const notificationItem = document.createElement('div');
-    notificationItem.className = 'notification-item unread';
-    notificationItem.setAttribute('data-category', notification.category);
-    
-    const iconClass = getIconClass(notification.category);
-    const iconColor = getIconColor(notification.category);
-    
-    notificationItem.innerHTML = `
-        <div class="notification-icon ${iconColor}">
-            <i class="bi bi-${iconClass}"></i>
-        </div>
-        <div class="notification-content">
-            <div class="notification-header-text">
-                <p class="notification-title">${notification.title}</p>
-                <span class="notification-time">방금 전</span>
-            </div>
-            <p class="notification-description">${notification.description}</p>
-        </div>
-        <button class="notification-delete" aria-label="삭제">
-            <i class="bi bi-x"></i>
-        </button>
-    `;
-    
-    // 이벤트 리스너 추가
-    const deleteBtn = notificationItem.querySelector('.notification-delete');
-    deleteBtn.addEventListener('click', handleDeleteNotification);
-    
-    notificationItem.addEventListener('click', handleNotificationClick);
-    
-    // 목록의 맨 앞에 추가
-    if (notificationsList.firstChild) {
-        notificationsList.insertBefore(notificationItem, notificationsList.firstChild);
-    } else {
-        notificationsList.appendChild(notificationItem);
-    }
-    
-    // 빈 상태 제거
     updateEmptyState(false);
 }
 
-/**
- * 카테고리에 따른 아이콘 클래스 반환
- */
-function getIconClass(category) {
-    const iconMap = {
-        'challenge': 'target',
-        'payment': 'credit-card',
-        'community': 'chat-dots',
-        'system': 'gear'
-    };
-    return iconMap[category] || 'bell';
-}
+function createNotificationElement(n) {
+    const isRead    = n.isRead;
+    const category  = n.filterCategory;
+    const iconClass = n.iconClass || 'bi-bell';
+    const timeStr   = formatTime(n.createdAt);
 
-/**
- * 카테고리에 따른 아이콘 색상 클래스 반환
- */
-function getIconColor(category) {
-    const colorMap = {
-        'challenge': 'challenge-icon',
-        'payment': 'payment-icon',
-        'community': 'community-icon',
-        'system': 'system-icon'
-    };
-    return colorMap[category] || 'challenge-icon';
-}
+    const el = document.createElement('div');
+    el.className = `notification-item ${isRead ? 'read' : 'unread'}`;
+    el.setAttribute('data-id', n.id);
+    el.setAttribute('data-category', category);
 
-/**
- * (옵션) 테스트 함수 - 콘솔에서 호출 가능
- * testAddNotification()
- */
-function testAddNotification() {
-    const testNotifications = [
-        {
-            category: 'challenge',
-            title: '새로운 챌린지 추천',
-            description: '당신이 좋아할 만한 챌린지를 찾았습니다.'
-        },
-        {
-            category: 'payment',
-            title: '결제 예약 알림',
-            description: '내일 정기 구독 결제가 예정되어 있습니다.'
-        },
-        {
-            category: 'community',
-            title: '새로운 팔로워',
-            description: '누군가 당신을 팔로우했습니다.'
-        },
-        {
-            category: 'system',
-            title: '시스템 유지보수',
-            description: '내일 새벽 2시부터 2시간간 정기 유지보수가 있습니다.'
+    el.innerHTML = `
+    <div class="notification-icon ${category}-icon">
+      <i class="bi ${iconClass}"></i>
+    </div>
+    <div class="notification-content">
+      <div class="notification-header-text">
+        <p class="notification-title">${escapeHtml(n.message)}</p>
+        <span class="notification-time">${timeStr}</span>
+      </div>
+    </div>
+    <button class="notification-delete" aria-label="삭제">
+      <i class="bi bi-x"></i>
+    </button>
+  `;
+
+    el.addEventListener('click', async function(e) {
+        if (e.target.closest('.notification-delete')) return;
+
+        const item = e.currentTarget;
+
+        // 1. 즉시 UI 반영
+        item.classList.remove('unread');
+        item.classList.add('read');
+
+        // 2. API 호출
+        markAsRead(n.id, item);
+
+        // 3. UI 반영 확인 후 이동 (300ms 후)
+        if (n.redirectUrl) {
+            setTimeout(() => { window.location.href = n.redirectUrl; }, 300);
         }
-    ];
-    
-    const randomNotification = testNotifications[Math.floor(Math.random() * testNotifications.length)];
-    addNotification(randomNotification);
+    });
+
+    el.querySelector('.notification-delete').addEventListener('click', function(e) {
+        e.stopPropagation();
+        markAsRead(n.id, el);
+        el.style.opacity = '0';
+        el.style.transform = 'translateX(100%)';
+        el.style.transition = 'opacity .3s, transform .3s';
+        setTimeout(() => {
+            el.remove();
+            updateEmptyState(document.querySelectorAll('.notification-item').length === 0);
+        }, 300);
+    });
+
+    return el;
+}
+
+// SSE 실시간 알림 수신 시 navbar.js 가 호출
+window.prependNotification = function(n) {
+    renderNotification(n, true);
+    applyFilter(currentFilter);
+};
+
+// 읽음 처리
+
+async function markAsRead(notificationId, el) {
+    try {
+        await secureFetch(`/api/notifications/${notificationId}/read`, { method: 'PATCH' });
+        el.classList.remove('unread');
+        el.classList.add('read');
+    } catch (e) {
+        console.error('[Notifications] 읽음 처리 실패', e);
+    }
+}
+
+function initMarkAllAsRead() {
+    const btn = document.getElementById('markAllAsRead');
+    if (!btn) return;
+    btn.addEventListener('click', async function() {
+        try {
+            await secureFetch('/api/notifications/read-all', { method: 'PATCH' });
+            document.querySelectorAll('.notification-item.unread').forEach(el => {
+                el.classList.remove('unread');
+                el.classList.add('read');
+            });
+            if (typeof window.updateBadge === 'function') window.updateBadge(0);
+        } catch (e) {
+            console.error('[Notifications] 전체 읽음 처리 실패', e);
+        }
+    });
+}
+
+// 필터 탭
+
+function initFilterTabs() {
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            currentFilter = this.getAttribute('data-filter');
+            applyFilter(currentFilter);
+        });
+    });
+}
+
+function applyFilter(filter) {
+    let visible = 0;
+    document.querySelectorAll('.notification-item').forEach(el => {
+        const show = filter === 'all' || el.getAttribute('data-category') === filter;
+        el.style.display = show ? 'flex' : 'none';
+        if (show) visible++;
+    });
+    updateEmptyState(visible === 0);
+}
+
+function initInfiniteScroll() {
+    window.addEventListener('scroll', function() {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
+            loadNotifications();
+        }
+    });
+}
+
+// 유틸
+
+function updateEmptyState(isEmpty) {
+    const empty = document.querySelector('.notifications-empty');
+    const list  = document.getElementById('notificationsList');
+    if (!empty) return;
+    empty.style.display = isEmpty ? 'flex' : 'none';
+    list.style.display  = isEmpty ? 'none' : 'flex';
+}
+
+function formatTime(isoString) {
+    if (!isoString) return '';
+    const diff = Date.now() - new Date(isoString).getTime();
+    const m = Math.floor(diff / 60000);
+    if (m < 1)  return '방금 전';
+    if (m < 60) return `${m}분 전`;
+    const h = Math.floor(m / 60);
+    if (h < 24) return `${h}시간 전`;
+    const d = Math.floor(h / 24);
+    if (d < 7)  return `${d}일 전`;
+    return new Date(isoString).toLocaleDateString('ko-KR');
+}
+
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
 }

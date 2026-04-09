@@ -6,18 +6,14 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "notification",
         indexes = @Index(name = "idx_notification_receiver", columnList = "receiver_id, is_read, created_at"))
-public class Notification extends BaseEntity{
+public class Notification extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,9 +35,8 @@ public class Notification extends BaseEntity{
     @Column(nullable = false)
     private YN isRead = YN.N;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
+    @Column(nullable = false)
+    private YN isDeleted = YN.N;
 
     public static Notification create(Member receiver,
                                       NotificationType type,
@@ -57,5 +52,9 @@ public class Notification extends BaseEntity{
 
     public void markAsRead() {
         this.isRead = YN.Y;
+    }
+
+    public void markAsDeleted() {
+        this.isDeleted = YN.Y;
     }
 }

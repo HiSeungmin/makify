@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -39,24 +40,28 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void send(Long receiverId, NotificationType type, String message, String redirectUrl) {
-        Member receiver = memberRepository.findById(receiverId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+        try {
+            Member receiver = memberRepository.findById(receiverId)
+                    .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
-        Notification notification = Notification.create(receiver, type, message, redirectUrl);
-        notificationRepository.save(notification);
+            Notification notification = Notification.create(receiver, type, message, redirectUrl);
+            notificationRepository.save(notification);
 
-        // Redis 미읽음 카운트 +1
-        redisTemplate.opsForValue().increment(UNREAD_KEY + receiverId);
+            redisTemplate.opsForValue().increment(UNREAD_KEY + receiverId);
 
-        // 온라인 상태일 때만 SSE 실시간 전송
-        if (sseEmitterManager.isConnected(receiverId)) {
-            sseEmitterManager.send(receiverId, "notification", NotificationResponse.from(notification));
-            sseEmitterManager.send(receiverId, "unread-count", getUnreadCount(receiverId));
+            if (sseEmitterManager.isConnected(receiverId)) {
+                sseEmitterManager.send(receiverId, "notification", NotificationResponse.from(notification));
+                sseEmitterManager.send(receiverId, "unread-count", getUnreadCount(receiverId));
+            }
+
+            log.debug("[Notification] type={}, receiverId={}", type, receiverId);
+
+        } catch (Exception e) {
+            // 알림 실패는 호출한 서비스(피드, 결제 등)의 트랜잭션에 영향을 주지 않음
+            log.error("[Notification] 알림 발송 실패 — type={}, receiverId={}, reason={}", type, receiverId, e.getMessage());
         }
-
-        log.debug("[Notification] type={}, receiverId={}", type, receiverId);
     }
 
     @Override

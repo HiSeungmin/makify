@@ -58,7 +58,12 @@ dependencies {
 	implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.3.0'
 
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	// Web Push (VAPID)
+	implementation 'nl.martijndwars:web-push:5.1.1'
+	implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()

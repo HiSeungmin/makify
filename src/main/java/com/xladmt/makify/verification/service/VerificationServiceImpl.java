@@ -4,6 +4,7 @@ import com.xladmt.makify.challenge.repository.ChallengeRepository;
 import com.xladmt.makify.challenge.repository.UserChallengeRepository;
 import com.xladmt.makify.common.config.fileUpload.S3Uploader;
 import com.xladmt.makify.common.constant.ImageType;
+import com.xladmt.makify.common.constant.NotificationType;
 import com.xladmt.makify.common.constant.YN;
 import com.xladmt.makify.common.entity.Challenge;
 import com.xladmt.makify.common.entity.ChallengeRecord;
@@ -15,6 +16,7 @@ import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.common.repository.FileMetaRepository;
 import com.xladmt.makify.common.validator.VerifyValidator;
 import com.xladmt.makify.member.repository.MemberRepository;
+import com.xladmt.makify.notification.service.NotificationService;
 import com.xladmt.makify.verification.dto.HistoryResponse;
 import com.xladmt.makify.verification.dto.VerifyResponse;
 import com.xladmt.makify.verification.repository.ChallengeRecordRepository;
@@ -40,6 +42,7 @@ public class VerificationServiceImpl implements VerificationService {
     private final MemberRepository memberRepository;
     private final VerifyValidator verifyValidator;
     private final S3Uploader s3Uploader;
+    private final NotificationService notificationService;
 
     @Override
     public VerifyResponse getVerifyPage(Long challengeId, Long memberId) {
@@ -133,6 +136,17 @@ public class VerificationServiceImpl implements VerificationService {
             );
             fileMetaRepository.save(fileMeta);
 
+            // 인증 완료 알림 발행
+            String redirectUrl = "/challenges/" + challengeId + "/history";
+            notificationService.send(
+                    memberId,
+                    NotificationType.VERIFICATION_APPROVED,
+                    "'" + challenge.getTitle() + "' " + NotificationType.VERIFICATION_APPROVED.getDefaultMessage(),
+                    redirectUrl
+            );
+
+        } catch (BusinessException e) {
+            throw e;
         } catch (Exception e) {
             s3Uploader.delete(key);
             throw new BusinessException(ErrorCode.FILE_META_DB_UPLOAD_FAIL);

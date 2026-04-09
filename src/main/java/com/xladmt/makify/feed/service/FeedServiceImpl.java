@@ -1,6 +1,7 @@
 package com.xladmt.makify.feed.service;
 
 import com.xladmt.makify.common.constant.YN;
+import com.xladmt.makify.common.constant.NotificationType;
 import com.xladmt.makify.common.entity.ChallengeRecord;
 import com.xladmt.makify.common.entity.FeedComment;
 import com.xladmt.makify.common.entity.FeedLike;
@@ -13,6 +14,7 @@ import com.xladmt.makify.feed.repository.FeedCommentRepository;
 import com.xladmt.makify.feed.repository.FeedLikeRepository;
 import com.xladmt.makify.feed.repository.FeedRepository;
 import com.xladmt.makify.member.repository.MemberRepository;
+import com.xladmt.makify.notification.service.NotificationService;
 import com.xladmt.makify.verification.repository.ChallengeRecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,7 @@ public class FeedServiceImpl implements FeedService {
     private final FeedCommentRepository feedCommentRepository;
     private final MemberRepository memberRepository;
     private final ChallengeRecordRepository challengeRecordRepository;
+    private final NotificationService notificationService;
 
     @Override
     public List<FeedResponse> getFeed(Long memberId, String sort) {
@@ -67,6 +70,18 @@ public class FeedServiceImpl implements FeedService {
         } else {
             feedLikeRepository.save(FeedLike.create(record, member));
             int count = feedLikeRepository.countByRecordId(recordId);
+
+            // 본인 인증에 좋아요를 누른 경우 알림 제외
+            Long recordOwnerId = record.getMember().getId();
+            if (!recordOwnerId.equals(memberId)) {
+                notificationService.send(
+                        recordOwnerId,
+                        NotificationType.FEED_LIKE,
+                        member.getNickname() + "님이 회원님의 인증에 좋아요를 눌렀어요.",
+                        "/feed#record-" + recordId
+                );
+            }
+
             return Map.of("liked", true, "likeCount", count);
         }
     }
@@ -82,6 +97,18 @@ public class FeedServiceImpl implements FeedService {
 
         FeedComment comment = FeedComment.create(record, member, content);
         feedCommentRepository.save(comment);
+
+        // 본인 인증에 댓글을 단 경우 알림 제외
+        Long recordOwnerId = record.getMember().getId();
+        if (!recordOwnerId.equals(memberId)) {
+            notificationService.send(
+                    recordOwnerId,
+                    NotificationType.FEED_COMMENT,
+                    member.getNickname() + "님이 회원님의 인증에 댓글을 달았어요.",
+                    "/feed#record-" + recordId
+            );
+        }
+
         return FeedCommentResponse.from(comment);
     }
 
