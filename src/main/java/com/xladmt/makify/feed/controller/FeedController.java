@@ -3,6 +3,7 @@ package com.xladmt.makify.feed.controller;
 import com.xladmt.makify.common.config.security.MemberDetails;
 import com.xladmt.makify.feed.dto.FeedCommentResponse;
 import com.xladmt.makify.feed.dto.FeedResponse;
+import com.xladmt.makify.feed.dto.ToggleLikeResponse;
 import com.xladmt.makify.feed.service.FeedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,12 +36,11 @@ public class FeedController {
 
     @PostMapping("/api/feed/{recordId}/like")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> toggleLike(
+    public ResponseEntity<ToggleLikeResponse> toggleLike(
             @PathVariable Long recordId,
             @AuthenticationPrincipal MemberDetails memberDetails) {
         Long memberId = memberDetails.getMember().getId();
-        Map<String, Object> result = feedService.toggleLike(recordId, memberId);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(feedService.toggleLike(recordId, memberId));
     }
 
     @GetMapping("/api/feed/{recordId}/comments")

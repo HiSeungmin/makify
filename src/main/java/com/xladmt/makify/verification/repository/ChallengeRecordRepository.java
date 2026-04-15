@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface ChallengeRecordRepository extends JpaRepository<ChallengeRecord, Long> {
 
@@ -43,4 +44,7 @@ public interface ChallengeRecordRepository extends JpaRepository<ChallengeRecord
                               @Param("challengeId") Long challengeId);
 
     ChallengeRecord findByIdAndMemberId(Long id, Long memberId);
+
+    @Query("SELECT cr FROM ChallengeRecord cr JOIN FETCH cr.member WHERE cr.id = :id")
+    Optional<ChallengeRecord> findByIdWithMember(@Param("id") Long id);
 }

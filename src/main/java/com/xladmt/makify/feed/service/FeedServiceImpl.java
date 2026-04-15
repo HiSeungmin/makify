@@ -10,6 +10,7 @@ import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.feed.dto.FeedCommentResponse;
 import com.xladmt.makify.feed.dto.FeedResponse;
+import com.xladmt.makify.feed.dto.ToggleLikeResponse;
 import com.xladmt.makify.feed.repository.FeedCommentRepository;
 import com.xladmt.makify.feed.repository.FeedLikeRepository;
 import com.xladmt.makify.feed.repository.FeedRepository;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -54,24 +54,23 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     @Transactional
-    public Map<String, Object> toggleLike(Long recordId, Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
-
-        ChallengeRecord record = challengeRecordRepository.findById(recordId)
+    public ToggleLikeResponse toggleLike(Long recordId, Long memberId) {
+        ChallengeRecord record = challengeRecordRepository.findByIdWithMember(recordId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CHALLENGE_NOT_FOUND));
 
         Optional<FeedLike> existing = feedLikeRepository.findByRecordIdAndMemberId(recordId, memberId);
+        boolean isLiked;
 
         if (existing.isPresent()) {
             feedLikeRepository.delete(existing.get());
-            int count = feedLikeRepository.countByRecordId(recordId);
-            return Map.of("liked", false, "likeCount", count);
+            isLiked = false;
         } else {
-            feedLikeRepository.save(FeedLike.create(record, member));
-            int count = feedLikeRepository.countByRecordId(recordId);
+            Member member = memberRepository.findById(memberId)
+                    .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
-            // 본인 인증에 좋아요를 누른 경우 알림 제외
+            feedLikeRepository.save(FeedLike.create(record, member));
+            isLiked = true;
+
             Long recordOwnerId = record.getMember().getId();
             if (!recordOwnerId.equals(memberId)) {
                 notificationService.send(
@@ -81,9 +80,10 @@ public class FeedServiceImpl implements FeedService {
                         "/feed#record-" + recordId
                 );
             }
-
-            return Map.of("liked", true, "likeCount", count);
         }
+
+        int count = feedLikeRepository.countByRecordId(recordId);
+        return ToggleLikeResponse.of(isLiked, count);
     }
 
     @Override
