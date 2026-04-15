@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum NotificationType {
     // 챌린지 탭
-    VERIFICATION_APPROVED("challenge", "bi-check-circle",  "인증이 승인되었습니다."),
+    VERIFICATION_APPROVED("challenge", "bi-check-circle",  "인증이 완료되었습니다."),
     VERIFICATION_REJECTED("challenge", "bi-x-circle",      "인증이 거부되었습니다."),
     CHALLENGE_SUCCESS    ("challenge", "bi-trophy",         "챌린지를 성공했습니다!"),
     CHALLENGE_FAIL       ("challenge", "bi-emoji-frown",   "챌린지가 실패로 종료되었습니다."),

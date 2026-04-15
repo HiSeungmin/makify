@@ -57,4 +57,14 @@ public class NotificationController {
         notificationService.markAllAsRead(memberDetails.getId());
         return ResponseEntity.noContent().build();
     }
+
+    // 알림 삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal MemberDetails memberDetails,
+                                       @PathVariable Long id) {
+        boolean needMarkAsRead = notificationService.deleteNotification(id, memberDetails.getId());
+        if(needMarkAsRead) {notificationService.markAsRead(id, memberDetails.getId());}
+
+        return ResponseEntity.noContent().build();
+    }
 }

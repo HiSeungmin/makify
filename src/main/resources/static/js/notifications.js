@@ -100,19 +100,38 @@ function createNotificationElement(n) {
         }
     });
 
-    el.querySelector('.notification-delete').addEventListener('click', function(e) {
+    el.querySelector('.notification-delete').addEventListener('click', async function(e) {
         e.stopPropagation();
-        markAsRead(n.id, el);
-        el.style.opacity = '0';
-        el.style.transform = 'translateX(100%)';
-        el.style.transition = 'opacity .3s, transform .3s';
-        setTimeout(() => {
-            el.remove();
-            updateEmptyState(document.querySelectorAll('.notification-item').length === 0);
-        }, 300);
+
+        try {
+            await deleteNotification(n.id, el);
+
+            // 성공 시 UI 제거
+            el.style.opacity = '0';
+            el.style.transform = 'translateX(100%)';
+            el.style.transition = 'opacity .3s, transform .3s';
+
+            setTimeout(() => {
+                el.remove();
+                updateEmptyState(document.querySelectorAll('.notification-item').length === 0);
+            }, 300);
+
+        } catch (e) {
+            console.error(e);
+        }
     });
 
     return el;
+}
+
+async function deleteNotification(notificationId, el) {
+    try {
+        await secureFetch(`/api/notifications/${notificationId}`, {
+            method: 'DELETE'
+        });
+    } catch (e) {
+        console.error('[Notifications] 삭제 실패', e);
+    }
 }
 
 // SSE 실시간 알림 수신 시 navbar.js 가 호출

@@ -68,7 +68,7 @@ public class NotificationServiceImpl implements NotificationService{
     @Transactional(readOnly = true)
     public Slice<NotificationResponse> getNotifications(Long memberId, int page, int size) {
         return notificationRepository
-                .findByReceiverIdOrderByCreatedAtDesc(memberId, PageRequest.of(page, size))
+                .findByReceiverIdAndIsDeletedOrderByCreatedAtDesc(memberId, YN.N, PageRequest.of(page, size))
                 .map(NotificationResponse::from);
     }
 
@@ -109,5 +109,22 @@ public class NotificationServiceImpl implements NotificationService{
                 redisTemplate.opsForValue().set(key, String.valueOf(current - 1));
             }
         }
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public boolean deleteNotification(Long notificationId, Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Notification notification = notificationRepository.findByIdAndReceiverId(notificationId, member.getId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOTIFICATION_NOT_FOUND));
+
+        boolean needMarkAsRead = false;
+
+        if(notification.getIsRead().equals(YN.N)) needMarkAsRead = true;
+        notification.markAsDeleted();
+
+        return needMarkAsRead;
     }
 }

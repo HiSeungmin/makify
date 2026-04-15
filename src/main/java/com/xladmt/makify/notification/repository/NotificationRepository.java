@@ -9,10 +9,16 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
     // 알림 목록 — 최신순, 무한스크롤
-    Slice<Notification> findByReceiverIdOrderByCreatedAtDesc(Long receiverId, Pageable pageable);
+    Slice<Notification> findByReceiverIdAndIsDeletedOrderByCreatedAtDesc(
+            Long receiverId,
+            YN isDeleted,
+            Pageable pageable
+    );
 
     // 미읽음 수 — Redis 캐시 미스 시 폴백
     long countByReceiverIdAndIsRead(Long receiverId, YN isRead);
@@ -28,4 +34,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     @Query("UPDATE Notification n SET n.isRead = com.xladmt.makify.common.constant.YN.Y " +
            "WHERE n.id = :id AND n.receiver.id = :receiverId AND n.isRead = com.xladmt.makify.common.constant.YN.N")
     int markAsRead(@Param("id") Long id, @Param("receiverId") Long receiverId);
+
+
+    Optional<Notification> findByIdAndReceiverId(Long id, Long memberId);
 }
