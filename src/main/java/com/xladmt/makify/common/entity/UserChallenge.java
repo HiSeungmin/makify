@@ -75,6 +75,11 @@ public class UserChallenge extends BaseEntity {
         this.status = UserChallengeStatus.FAIL;
     }
 
+    // 챌린지 참여 상태를 COMPLETED로 변경
+    public void markAsCompleted() {
+        this.status = UserChallengeStatus.COMPLETED;
+    }
+
     // 챌린지 참여 상태를 취소로 변경
     public void markAsCancelled() {
         this.status = UserChallengeStatus.CANCEL;
