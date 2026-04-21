@@ -30,12 +30,12 @@ public class ServiceLoggingAspect {
             " || execution(* com.xladmt.makify..facade..*(..))" +
             " || execution(* com.xladmt.makify..application..*(..))")
     public Object logServiceExecution(ProceedingJoinPoint joinPoint) throws Throwable {
-        // 1️⃣ 메서드 정보 수집
+        // 1. 메서드 정보 수집
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String methodName = joinPoint.getSignature().getName();
         Object[] args = joinPoint.getArgs();
 
-        // 2️⃣ 메서드 시작 로그
+        // 2. 메서드 시작 로그
         log.info("───────────────────────────────────────────────────────────────");
         log.info("[SERVICE START] {}.{}", className, methodName);
         
@@ -44,12 +44,12 @@ public class ServiceLoggingAspect {
             log.info("  Parameters: [{}]", maskedArgs);
         }
 
-        // 3️⃣ 메서드 실행
+        // 3. 메서드 실행
         long startTime = System.currentTimeMillis();
         try {
             Object result = joinPoint.proceed();
 
-            // 4️⃣ 메서드 성공 로그
+            // 4. 메서드 성공 로그
             long executionTime = System.currentTimeMillis() - startTime;
             log.info("[SERVICE END] {}.{}", className, methodName);
             
@@ -66,7 +66,7 @@ public class ServiceLoggingAspect {
             return result;
 
         } catch (Throwable e) {
-            // 5️⃣ 메서드 실패 로그
+            // 5. 메서드 실패 로그
             long executionTime = System.currentTimeMillis() - startTime;
             log.error("───────────────────────────────────────────────────────────────");
             log.error("[SERVICE ERROR] {}.{}", className, methodName);
