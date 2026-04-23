@@ -54,6 +54,7 @@ public class SecurityConfig {
                 .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/auth/login", "/signup", "/css/**", "/js/**", "/images/**", "/videos/**").permitAll()
+                        .requestMatchers("GET","/api/push/vapid-key").permitAll()
                         .requestMatchers("POST", "/signup").permitAll()
                         .requestMatchers("/auth/reissue").permitAll()
                         .requestMatchers("GET", "/feed").permitAll()
@@ -103,6 +104,8 @@ public class SecurityConfig {
         return (web) -> web.ignoring()
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/videos/**")
                 .requestMatchers("/favicon.ico")
+                .requestMatchers("/service_worker.js")
+                .requestMatchers("/manifest.json")
                 .requestMatchers("/webjars/**")
                 .requestMatchers("/static/**");
     }

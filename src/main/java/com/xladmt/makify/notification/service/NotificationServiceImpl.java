@@ -30,6 +30,7 @@ public class NotificationServiceImpl implements NotificationService{
     private final MemberRepository memberRepository;
     private final SseEmitterManager sseEmitterManager;
     private final StringRedisTemplate redisTemplate;
+    private final WebPushService webPushService;
 
     @Override
     public SseEmitter subscribe(Long memberId) {
@@ -54,12 +55,13 @@ public class NotificationServiceImpl implements NotificationService{
             if (sseEmitterManager.isConnected(receiverId)) {
                 sseEmitterManager.send(receiverId, "notification", NotificationResponse.from(notification));
                 sseEmitterManager.send(receiverId, "unread-count", getUnreadCount(receiverId));
+            } else {
+                webPushService.sendToMember(receiverId, type, message, redirectUrl);
             }
 
             log.debug("[Notification] type={}, receiverId={}", type, receiverId);
 
         } catch (Exception e) {
-            // 알림 실패는 호출한 서비스(피드, 결제 등)의 트랜잭션에 영향을 주지 않음
             log.error("[Notification] 알림 발송 실패 — type={}, receiverId={}, reason={}", type, receiverId, e.getMessage());
         }
     }
@@ -78,7 +80,6 @@ public class NotificationServiceImpl implements NotificationService{
         if (cached != null) {
             return Long.parseLong(cached);
         }
-        // 캐시 미스 → DB 폴백 후 캐시 복구
         long count = notificationRepository.countByReceiverIdAndIsRead(memberId, YN.N);
         redisTemplate.opsForValue().set(UNREAD_KEY + memberId, String.valueOf(count));
         return count;

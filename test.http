@@ -1,0 +1,13 @@
+### 1단계 - 로그인 (토큰 받기)
+POST http://localhost:8001/api/login
+Content-Type: application/json
+
+{
+  "loginId": "sin1234",
+  "password": "sin1234"
+}
+
+### 2단계 - Web Push 테스트 (위에서 받은 토큰을 Bearer 뒤에 붙여넣기)
+POST http://localhost:8001/api/push/test?memberId=1
+access-token: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaW4xMjM0IiwiZXhwIjoxNzc5NTAzMjc4fQ.0Q-TWvrX2wIAk_48Rp_QY7zZlUq6eY_x6zgGC10pzrg
+refresh-token: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3Nzk1MDMyNzh9.wjRe9H1lMNYgyc_DRXeS97JBQAQL0tavrcq1abBw678
