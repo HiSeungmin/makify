@@ -53,8 +53,13 @@ public class NotificationServiceImpl implements NotificationService{
             redisTemplate.opsForValue().increment(UNREAD_KEY + receiverId);
 
             if (sseEmitterManager.isConnected(receiverId)) {
-                sseEmitterManager.send(receiverId, "notification", NotificationResponse.from(notification));
-                sseEmitterManager.send(receiverId, "unread-count", getUnreadCount(receiverId));
+                boolean sseSent = sseEmitterManager.trySend(receiverId, "notification", NotificationResponse.from(notification));
+                if (sseSent) {
+                    sseEmitterManager.send(receiverId, "unread-count", getUnreadCount(receiverId));
+                } else {
+                    // SSE 전송 실패 (탭 닫힘 등) → Web Push fallback
+                    webPushService.sendToMember(receiverId, type, message, redirectUrl);
+                }
             } else {
                 webPushService.sendToMember(receiverId, type, message, redirectUrl);
             }

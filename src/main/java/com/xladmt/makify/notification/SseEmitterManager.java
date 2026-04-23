@@ -48,6 +48,20 @@ public class SseEmitterManager {
         }
     }
 
+    public boolean trySend(Long memberId, String eventName, Object data) {
+        SseEmitter emitter = emitters.get(memberId);
+        if (emitter == null) return false;
+
+        try {
+            emitter.send(SseEmitter.event().name(eventName).data(data));
+            return true;
+        } catch (IOException e) {
+            emitters.remove(memberId);
+            log.debug("[SSE] trySend failed, removed memberId={}", memberId);
+            return false;
+        }
+    }
+
     public boolean isConnected(Long memberId) {
         return emitters.containsKey(memberId);
     }
