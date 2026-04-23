@@ -19,29 +19,58 @@ document.addEventListener('DOMContentLoaded', function() {
 async function initPushSubscription() {
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
 
+  const permission = Notification.permission;
+
+  if (permission === 'granted') {
+    await registerPushSubscription();
+    return;
+  }
+
+  if (permission === 'default') {
+    showPushPermissionModal();
+  }
+}
+
+function showPushPermissionModal() {
+  const modal = document.getElementById('pushPermissionModal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function hidePushPermissionModal() {
+  const modal = document.getElementById('pushPermissionModal');
+  if (modal) modal.style.display = 'none';
+}
+
+async function requestPushPermission() {
+  hidePushPermissionModal();
+  const permission = await Notification.requestPermission();
+  if (permission !== 'granted') return;
+  await registerPushSubscription();
+}
+
+// 모달 버튼 이벤트
+document.addEventListener('DOMContentLoaded', function() {
+  const allowBtn = document.getElementById('pushPermissionAllowBtn');
+  const denyBtn  = document.getElementById('pushPermissionDenyBtn');
+  if (allowBtn) allowBtn.addEventListener('click', requestPushPermission);
+  if (denyBtn)  denyBtn.addEventListener('click', hidePushPermissionModal);
+});
+
+async function registerPushSubscription() {
   try {
     const reg = await navigator.serviceWorker.register('/service_worker.js');
     await navigator.serviceWorker.ready;
 
-    // 이미 구독 중이면 서버에 재등록 (키 갱신 대비)
     let sub = await reg.pushManager.getSubscription();
-
     if (!sub) {
-      // 권한 요청
-      const permission = await Notification.requestPermission();
-      if (permission !== 'granted') return;
-
-      // VAPID public key 조회
       const res = await fetch('/api/push/vapid-key');
       const { publicKey } = await res.json();
-
       sub = await reg.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(publicKey)
       });
     }
 
-    // 서버에 구독 정보 전송
     await fetch('/api/push/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -64,6 +93,20 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 // iOS PWA 설치 안내 배너
+
+var pushPermissionBtn = document.getElementById('pushPermissionBtn');
+if (pushPermissionBtn) {
+  pushPermissionBtn.addEventListener('click', function() {
+    if (typeof requestPushPermission === 'function') requestPushPermission();
+  });
+}
+var mobilePushPermissionBtn = document.getElementById('mobilePushPermissionBtn');
+if (mobilePushPermissionBtn) {
+  mobilePushPermissionBtn.addEventListener('click', function() {
+    if (typeof requestPushPermission === 'function') requestPushPermission();
+    if (typeof closeMobileMenu === 'function') closeMobileMenu();
+  });
+}
 
 function showIosInstallBanner() {
   // iOS Safari에서만 + standalone 모드가 아닐 때만 + 이전에 닫지 않았을 때만
