@@ -17,11 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
 // Web Push 구독
 
 async function initPushSubscription() {
-  alert('SW:'+('serviceWorker' in navigator)+' Push:'+('PushManager' in window));
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
-
   const permission = Notification.permission;
-  alert('permission:' + Notification.permission);
 
   if (permission === 'granted') {
     await registerPushSubscription();
@@ -33,14 +30,16 @@ async function initPushSubscription() {
   }
 }
 
-function showPushPermissionModal() {
-  const modal = document.getElementById('pushPermissionModal');
-  if (modal) modal.style.display = 'flex';
-}
-
 function hidePushPermissionModal() {
   const modal = document.getElementById('pushPermissionModal');
   if (modal) modal.style.display = 'none';
+  localStorage.setItem('makify-push-modal-dismissed', 'true');
+}
+
+function showPushPermissionModal() {
+  if (localStorage.getItem('makify-push-modal-dismissed')) return;
+  const modal = document.getElementById('pushPermissionModal');
+  if (modal) modal.style.display = 'flex';
 }
 
 async function requestPushPermission() {
