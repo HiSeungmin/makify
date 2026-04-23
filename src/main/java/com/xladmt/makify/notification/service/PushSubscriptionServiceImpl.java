@@ -26,8 +26,14 @@ public class PushSubscriptionServiceImpl implements PushSubscriptionService {
                 pushSubscriptionRepository.findByEndpoint(request.getEndpoint());
 
         if (existing.isPresent()) {
-            // 같은 endpoint면 키만 갱신 (브라우저가 키를 재발급하는 경우)
-            existing.get().updateKeys(
+            PushSubscription sub = existing.get();
+            // 다른 회원이 같은 브라우저로 로그인한 경우 회원도 갱신
+            if (!sub.getMember().getId().equals(memberId)) {
+                Member member = memberRepository.findById(memberId)
+                        .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+                sub.updateMember(member);
+            }
+            sub.updateKeys(
                     request.getKeys().getP256dh(),
                     request.getKeys().getAuth());
         } else {

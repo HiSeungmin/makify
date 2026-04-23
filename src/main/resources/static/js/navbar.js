@@ -17,9 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
 // Web Push 구독
 
 async function initPushSubscription() {
+  alert('SW:'+('serviceWorker' in navigator)+' Push:'+('PushManager' in window));
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
 
   const permission = Notification.permission;
+  alert('permission:' + Notification.permission);
 
   if (permission === 'granted') {
     await registerPushSubscription();

@@ -3,7 +3,8 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="ko">
 <body>
-<header class="habit-header" th:fragment="navbar">
+<div th:fragment="navbar">
+<header class="habit-header">
   <link rel="manifest" href="/manifest.json">
   <a href="/" class="habit-logo">
     <div class="habit-logo-icon">
@@ -133,31 +134,33 @@
     })();
   </script>
 
-</header>
 
-<!-- 알림 권한 모달 -->
-<div id="pushPermissionModal" style="
-  display:none; position:fixed; inset:0; z-index:9999;
-  background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
-  <div style="
-    background:#fff; border-radius:16px; padding:32px 24px;
-    max-width:320px; width:90%; text-align:center; box-shadow:0 8px 32px rgba(0,0,0,0.2);">
-    <div style="font-size:48px; margin-bottom:16px;">🔔</div>
-    <h3 style="margin:0 0 8px; font-size:18px;">알림을 허용해주세요</h3>
-    <p style="margin:0 0 24px; font-size:14px; color:#666; line-height:1.6;">
-      챌린지 인증 시간, 새 댓글 등<br>중요한 알림을 놓치지 마세요
-    </p>
-    <button id="pushPermissionAllowBtn" style="
-      width:100%; padding:12px; background:#000; color:#fff;
-      border:none; border-radius:8px; font-size:15px; cursor:pointer; margin-bottom:8px;">
-      알림 허용하기
-    </button>
-    <button id="pushPermissionDenyBtn" style="
-      width:100%; padding:12px; background:none; color:#999;
-      border:none; font-size:14px; cursor:pointer;">
-      나중에 하기
-    </button>
+  <!-- 알림 권한 모달 -->
+  <div id="pushPermissionModal" style="
+    display:none; position:fixed; inset:0; z-index:99999;
+    background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+    <div style="
+      background:#fff; border-radius:16px; padding:32px 24px;
+      max-width:320px; width:90%; text-align:center; box-shadow:0 8px 32px rgba(0,0,0,0.2);">
+      <div style="font-size:48px; margin-bottom:16px;">🔔</div>
+      <h3 style="margin:0 0 8px; font-size:18px;">알림을 허용해주세요</h3>
+      <p style="margin:0 0 24px; font-size:14px; color:#666; line-height:1.6;">
+        챌린지 인증 시간, 새 댓글 등<br>중요한 알림을 놓치지 마세요
+      </p>
+      <button id="pushPermissionAllowBtn" style="
+        width:100%; padding:12px; background:#000; color:#fff;
+        border:none; border-radius:8px; font-size:15px; cursor:pointer; margin-bottom:8px;">
+        알림 허용하기
+      </button>
+      <button id="pushPermissionDenyBtn" style="
+        width:100%; padding:12px; background:none; color:#999;
+        border:none; font-size:14px; cursor:pointer;">
+        나중에 하기
+      </button>
+    </div>
   </div>
+
+</header>
 </div>
 </body>
 </html>
