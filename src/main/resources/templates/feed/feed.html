@@ -148,7 +148,7 @@
                    th:id="'comment-input-' + ${feed.recordId}"
                    placeholder="댓글을 입력하세요..."
                    th:data-record-id="${feed.recordId}"
-                   onkeydown="if(event.key==='Enter') submitComment(this)"/>
+                   onkeydown="handleCommentKeydown(event, this)"/>
             <button class="comment-submit-btn"
                     th:data-record-id="${feed.recordId}"
                     onclick="submitComment(document.getElementById('comment-input-' + this.dataset.recordId))">
@@ -364,10 +364,24 @@
     });
   }
 
+  // 댓글 중복 전송 방지 플래그
+  const commentPending = {};
+
+  function handleCommentKeydown(event, input) {
+    if (event.key === 'Enter') {
+      event.preventDefault();  // Enter로 인한 버튼 click 이벤트 전파 차단
+      submitComment(input);
+    }
+  }
+
   function submitComment(input) {
     const recordId = input.dataset.recordId;
     const content = input.value.trim();
     if (!content) return;
+
+    // 이미 요청 진행 중이면 무시 (중복 전송 방지)
+    if (commentPending[recordId]) return;
+    commentPending[recordId] = true;
 
     fetch(`/api/feed/${recordId}/comments`, {
       method: 'POST',
@@ -385,6 +399,9 @@
       loadComments(recordId);
       const commentBtn = document.querySelector(`.comment-btn[data-record-id="${recordId}"] span`);
       if (commentBtn) commentBtn.textContent = parseInt(commentBtn.textContent) + 1;
+    })
+    .finally(() => {
+      commentPending[recordId] = false;
     });
   }
 </script>
