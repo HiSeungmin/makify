@@ -1,5 +1,7 @@
 package com.xladmt.makify.challenge.service;
 
+import com.xladmt.makify.challenge.domain.Challenge;
+import com.xladmt.makify.challenge.domain.UserChallenge;
 import com.xladmt.makify.challenge.dto.*;
 import com.xladmt.makify.challenge.repository.ChallengeRepository;
 import com.xladmt.makify.challenge.repository.UserChallengeRepository;
@@ -13,9 +15,12 @@ import com.xladmt.makify.common.entity.*;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.common.repository.FileMetaRepository;
+import com.xladmt.makify.member.domain.Member;
 import com.xladmt.makify.member.repository.MemberRepository;
+import com.xladmt.makify.payment.domain.Payment;
 import com.xladmt.makify.payment.dto.RequestPayDto;
 import com.xladmt.makify.payment.repository.PaymentRepository;
+import com.xladmt.makify.verification.domain.VerificationMethod;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

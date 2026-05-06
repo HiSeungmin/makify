@@ -2,15 +2,13 @@ package com.xladmt.makify.payment.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 import com.xladmt.makify.challenge.repository.UserChallengeRepository;
 import com.xladmt.makify.common.constant.PaidStatus;
-import com.xladmt.makify.common.entity.UserChallenge;
+import com.xladmt.makify.challenge.domain.UserChallenge;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
-import com.xladmt.makify.payment.repository.PaymentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

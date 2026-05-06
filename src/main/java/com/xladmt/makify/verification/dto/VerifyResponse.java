@@ -1,7 +1,7 @@
 package com.xladmt.makify.verification.dto;
 
-import com.xladmt.makify.common.entity.Challenge;
-import com.xladmt.makify.common.entity.VerificationMethod;
+import com.xladmt.makify.challenge.domain.Challenge;
+import com.xladmt.makify.verification.domain.VerificationMethod;
 
 public record VerifyResponse (Challenge challenge,
         VerificationMethod verificationMethod,

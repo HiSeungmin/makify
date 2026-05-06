@@ -1,7 +1,7 @@
 package com.xladmt.makify.feed.dto;
 
 import com.xladmt.makify.common.constant.YN;
-import com.xladmt.makify.common.entity.ChallengeRecord;
+import com.xladmt.makify.challenge.domain.ChallengeRecord;
 import lombok.Builder;
 import lombok.Getter;
 

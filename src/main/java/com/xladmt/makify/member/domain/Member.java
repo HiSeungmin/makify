@@ -1,8 +1,8 @@
-package com.xladmt.makify.common.entity;
+package com.xladmt.makify.member.domain;
 
 import com.xladmt.makify.common.constant.MemberStatus;
 import com.xladmt.makify.common.constant.Role;
-import com.xladmt.makify.common.constant.YN;
+import com.xladmt.makify.common.entity.BaseEntity;
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

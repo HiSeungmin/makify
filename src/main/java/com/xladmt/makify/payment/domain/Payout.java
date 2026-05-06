@@ -1,11 +1,11 @@
-package com.xladmt.makify.common.entity;
+package com.xladmt.makify.payment.domain;
 
 import com.xladmt.makify.common.constant.PayoutStatus;
+import com.xladmt.makify.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

@@ -1,13 +1,12 @@
 package com.xladmt.makify.common.config.security;
 
-import com.xladmt.makify.common.entity.Member;
+import com.xladmt.makify.member.domain.Member;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Getter

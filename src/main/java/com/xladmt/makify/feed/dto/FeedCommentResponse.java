@@ -1,6 +1,6 @@
 package com.xladmt.makify.feed.dto;
 
-import com.xladmt.makify.common.entity.FeedComment;
+import com.xladmt.makify.feed.domain.FeedComment;
 import lombok.Builder;
 import lombok.Getter;
 

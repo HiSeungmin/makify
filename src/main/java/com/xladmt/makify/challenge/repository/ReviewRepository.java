@@ -1,6 +1,6 @@
 package com.xladmt.makify.challenge.repository;
 
-import com.xladmt.makify.common.entity.Review;
+import com.xladmt.makify.member.domain.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

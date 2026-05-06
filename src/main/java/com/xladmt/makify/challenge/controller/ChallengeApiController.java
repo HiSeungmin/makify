@@ -1,11 +1,9 @@
 package com.xladmt.makify.challenge.controller;
 
-import com.xladmt.makify.challenge.repository.ChallengeRepository;
 import com.xladmt.makify.challenge.service.ChallengeServiceImpl;
 import com.xladmt.makify.common.config.security.MemberDetails;
-import com.xladmt.makify.common.entity.Challenge;
+import com.xladmt.makify.challenge.domain.Challenge;
 import com.xladmt.makify.common.exception.BusinessException;
-import com.xladmt.makify.common.validator.ChallengeCreateRequestValidator;
 import com.xladmt.makify.common.validator.ChallengeValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

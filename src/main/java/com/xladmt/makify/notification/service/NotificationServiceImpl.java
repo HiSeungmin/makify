@@ -2,8 +2,8 @@ package com.xladmt.makify.notification.service;
 
 import com.xladmt.makify.common.constant.NotificationType;
 import com.xladmt.makify.common.constant.YN;
-import com.xladmt.makify.common.entity.Member;
-import com.xladmt.makify.common.entity.Notification;
+import com.xladmt.makify.member.domain.Member;
+import com.xladmt.makify.notification.domain.Notification;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.member.repository.MemberRepository;

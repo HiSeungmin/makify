@@ -1,6 +1,7 @@
-package com.xladmt.makify.common.entity;
+package com.xladmt.makify.payment.domain;
 
 import com.xladmt.makify.common.constant.RefundStatus;
+import com.xladmt.makify.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

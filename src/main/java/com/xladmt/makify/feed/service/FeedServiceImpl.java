@@ -2,10 +2,10 @@ package com.xladmt.makify.feed.service;
 
 import com.xladmt.makify.common.constant.YN;
 import com.xladmt.makify.common.constant.NotificationType;
-import com.xladmt.makify.common.entity.ChallengeRecord;
-import com.xladmt.makify.common.entity.FeedComment;
-import com.xladmt.makify.common.entity.FeedLike;
-import com.xladmt.makify.common.entity.Member;
+import com.xladmt.makify.challenge.domain.ChallengeRecord;
+import com.xladmt.makify.feed.domain.FeedComment;
+import com.xladmt.makify.feed.domain.FeedLike;
+import com.xladmt.makify.member.domain.Member;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.feed.dto.FeedCommentResponse;

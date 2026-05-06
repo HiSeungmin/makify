@@ -1,7 +1,7 @@
 package com.xladmt.makify.home.controller;
 
 import com.xladmt.makify.challenge.repository.ChallengeRepository;
-import com.xladmt.makify.common.entity.Challenge;
+import com.xladmt.makify.challenge.domain.Challenge;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

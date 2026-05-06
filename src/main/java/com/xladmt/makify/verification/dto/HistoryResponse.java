@@ -1,9 +1,8 @@
 package com.xladmt.makify.verification.dto;
 
 import com.xladmt.makify.common.constant.YN;
-import com.xladmt.makify.common.entity.ChallengeRecord;
+import com.xladmt.makify.challenge.domain.ChallengeRecord;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public record HistoryResponse(

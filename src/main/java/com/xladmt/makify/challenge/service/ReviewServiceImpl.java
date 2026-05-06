@@ -2,9 +2,9 @@ package com.xladmt.makify.challenge.service;
 
 import com.xladmt.makify.challenge.repository.ReviewRepository;
 import com.xladmt.makify.challenge.repository.ChallengeRepository;
-import com.xladmt.makify.common.entity.Challenge;
-import com.xladmt.makify.common.entity.Member;
-import com.xladmt.makify.common.entity.Review;
+import com.xladmt.makify.challenge.domain.Challenge;
+import com.xladmt.makify.member.domain.Member;
+import com.xladmt.makify.member.domain.Review;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.member.repository.MemberRepository;

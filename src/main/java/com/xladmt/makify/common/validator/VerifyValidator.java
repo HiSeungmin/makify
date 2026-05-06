@@ -1,7 +1,7 @@
 package com.xladmt.makify.common.validator;
 
 import com.xladmt.makify.common.constant.Frequency;
-import com.xladmt.makify.common.entity.VerificationMethod;
+import com.xladmt.makify.verification.domain.VerificationMethod;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;

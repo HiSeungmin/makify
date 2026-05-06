@@ -1,7 +1,7 @@
 package com.xladmt.makify.notification.repository;
 
 import com.xladmt.makify.common.constant.YN;
-import com.xladmt.makify.common.entity.Notification;
+import com.xladmt.makify.notification.domain.Notification;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;

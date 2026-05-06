@@ -3,30 +3,22 @@ package com.xladmt.makify.challenge.controller;
 import com.xladmt.makify.challenge.dto.ChallengeCreateRequest;
 import com.xladmt.makify.challenge.dto.ChallengeDetailResponse;
 import com.xladmt.makify.challenge.dto.ChallengePageDto;
-import com.xladmt.makify.verification.repository.ChallengeRecordRepository;
 import com.xladmt.makify.challenge.repository.ChallengeRepository;
-import com.xladmt.makify.challenge.repository.UserChallengeRepository;
 import com.xladmt.makify.challenge.service.ChallengeServiceImpl;
 import com.xladmt.makify.common.config.security.MemberDetails;
-import com.xladmt.makify.common.entity.Challenge;
-import com.xladmt.makify.common.entity.UserChallenge;
+import com.xladmt.makify.challenge.domain.Challenge;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.common.validator.ChallengeCreateRequestValidator;
 import com.xladmt.makify.common.validator.ChallengeValidator;
-import com.xladmt.makify.common.validator.VerifyValidator;
 import com.xladmt.makify.payment.dto.RequestPayDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.time.LocalDate;
 
 import java.util.List;
 

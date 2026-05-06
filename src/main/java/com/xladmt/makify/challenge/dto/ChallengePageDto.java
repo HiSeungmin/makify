@@ -1,6 +1,6 @@
 package com.xladmt.makify.challenge.dto;
 
-import com.xladmt.makify.common.entity.Challenge;
+import com.xladmt.makify.challenge.domain.Challenge;
 import lombok.Getter;
 import lombok.Setter;
 

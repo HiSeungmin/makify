@@ -1,7 +1,7 @@
 package com.xladmt.makify.feed.repository;
 
 import com.xladmt.makify.common.constant.YN;
-import com.xladmt.makify.common.entity.FeedComment;
+import com.xladmt.makify.feed.domain.FeedComment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

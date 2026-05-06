@@ -1,6 +1,6 @@
 package com.xladmt.makify.member.dto;
 
-import com.xladmt.makify.common.entity.UserChallenge;
+import com.xladmt.makify.challenge.domain.UserChallenge;
 import lombok.Getter;
 
 import java.util.List;

@@ -5,7 +5,6 @@ import com.siot.IamportRestClient.response.Payment;
 import com.xladmt.makify.challenge.repository.UserChallengeRepository;
 import com.xladmt.makify.challenge.service.ChallengeService;
 import com.xladmt.makify.common.constant.NotificationType;
-import com.xladmt.makify.common.entity.UserChallenge;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import com.xladmt.makify.common.validator.ChallengeValidator;

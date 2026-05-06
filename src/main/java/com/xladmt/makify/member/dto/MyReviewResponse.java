@@ -1,6 +1,6 @@
 package com.xladmt.makify.member.dto;
 
-import com.xladmt.makify.common.entity.Review;
+import com.xladmt.makify.member.domain.Review;
 import lombok.Getter;
 
 import java.time.format.DateTimeFormatter;

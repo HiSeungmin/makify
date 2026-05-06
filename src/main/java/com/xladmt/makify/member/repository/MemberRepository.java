@@ -1,6 +1,6 @@
 package com.xladmt.makify.member.repository;
 
-import com.xladmt.makify.common.entity.Member;
+import com.xladmt.makify.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

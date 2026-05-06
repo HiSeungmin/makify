@@ -3,7 +3,7 @@ package com.xladmt.makify.challenge.repository;
 import com.xladmt.makify.common.constant.Category;
 import com.xladmt.makify.common.constant.ChallengeStatus;
 import com.xladmt.makify.common.constant.YN;
-import com.xladmt.makify.common.entity.Challenge;
+import com.xladmt.makify.challenge.domain.Challenge;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

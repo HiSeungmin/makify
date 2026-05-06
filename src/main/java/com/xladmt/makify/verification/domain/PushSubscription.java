@@ -1,5 +1,7 @@
-package com.xladmt.makify.common.entity;
+package com.xladmt.makify.verification.domain;
 
+import com.xladmt.makify.common.entity.BaseTimeEntity;
+import com.xladmt.makify.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "push_subscription")
-public class PushSubscription extends BaseTimeEntity{
+public class PushSubscription extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

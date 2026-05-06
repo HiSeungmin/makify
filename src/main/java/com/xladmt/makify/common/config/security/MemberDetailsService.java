@@ -1,6 +1,6 @@
 package com.xladmt.makify.common.config.security;
 
-import com.xladmt.makify.common.entity.Member;
+import com.xladmt.makify.member.domain.Member;
 import com.xladmt.makify.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

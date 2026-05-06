@@ -1,6 +1,6 @@
 package com.xladmt.makify.feed.repository;
 
-import com.xladmt.makify.common.entity.FeedLike;
+import com.xladmt.makify.feed.domain.FeedLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,7 +1,7 @@
 package com.xladmt.makify.notification.service;
 
 import com.xladmt.makify.common.constant.NotificationType;
-import com.xladmt.makify.common.entity.UserChallenge;
+import com.xladmt.makify.challenge.domain.UserChallenge;
 import com.xladmt.makify.verification.repository.ChallengeRecordRepository;
 import com.xladmt.makify.challenge.repository.UserChallengeRepository;
 import lombok.RequiredArgsConstructor;

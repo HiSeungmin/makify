@@ -1,7 +1,6 @@
 package com.xladmt.makify.challenge.repository;
 
-import com.xladmt.makify.common.constant.UserChallengeStatus;
-import com.xladmt.makify.common.entity.UserChallenge;
+import com.xladmt.makify.challenge.domain.UserChallenge;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -3,7 +3,7 @@ package com.xladmt.makify.challenge.controller;
 import com.xladmt.makify.challenge.repository.ChallengeRepository;
 import com.xladmt.makify.challenge.service.ReviewService;
 import com.xladmt.makify.common.config.security.MemberDetails;
-import com.xladmt.makify.common.entity.Challenge;
+import com.xladmt.makify.challenge.domain.Challenge;
 import com.xladmt.makify.common.exception.BusinessException;
 import com.xladmt.makify.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;

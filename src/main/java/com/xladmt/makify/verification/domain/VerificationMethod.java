@@ -1,8 +1,9 @@
-package com.xladmt.makify.common.entity;
+package com.xladmt.makify.verification.domain;
 
 import com.xladmt.makify.common.constant.Frequency;
 import com.xladmt.makify.common.constant.VerificationType;
 import com.xladmt.makify.common.constant.YN;
+import com.xladmt.makify.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

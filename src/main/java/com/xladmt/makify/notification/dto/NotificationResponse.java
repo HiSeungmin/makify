@@ -3,7 +3,7 @@ package com.xladmt.makify.notification.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.xladmt.makify.common.constant.NotificationType;
 import com.xladmt.makify.common.constant.YN;
-import com.xladmt.makify.common.entity.Notification;
+import com.xladmt.makify.notification.domain.Notification;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

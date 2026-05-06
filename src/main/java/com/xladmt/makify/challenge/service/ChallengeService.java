@@ -1,7 +1,7 @@
 package com.xladmt.makify.challenge.service;
 
 import com.xladmt.makify.challenge.dto.*;
-import com.xladmt.makify.common.entity.Challenge;
+import com.xladmt.makify.challenge.domain.Challenge;
 import com.xladmt.makify.payment.dto.RequestPayDto;
 
 import java.util.List;

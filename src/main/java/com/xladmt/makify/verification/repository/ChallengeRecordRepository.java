@@ -1,6 +1,6 @@
 package com.xladmt.makify.verification.repository;
 
-import com.xladmt.makify.common.entity.ChallengeRecord;
+import com.xladmt.makify.challenge.domain.ChallengeRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

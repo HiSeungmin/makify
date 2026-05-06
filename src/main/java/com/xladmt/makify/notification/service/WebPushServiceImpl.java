@@ -2,7 +2,7 @@ package com.xladmt.makify.notification.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xladmt.makify.common.constant.NotificationType;
-import com.xladmt.makify.common.entity.PushSubscription;
+import com.xladmt.makify.verification.domain.PushSubscription;
 import com.xladmt.makify.notification.repository.PushSubscriptionRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

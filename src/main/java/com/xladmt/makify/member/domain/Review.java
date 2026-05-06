@@ -1,5 +1,7 @@
-package com.xladmt.makify.common.entity;
+package com.xladmt.makify.member.domain;
 
+import com.xladmt.makify.challenge.domain.Challenge;
+import com.xladmt.makify.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
